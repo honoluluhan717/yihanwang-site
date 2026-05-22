@@ -35,11 +35,11 @@
     "text": "What I Work On\n\n\n📋 CMS Claims Data\nLarge-scale Medicare & Medicaid data — harmonization, linkage, and analytics across millions of beneficiaries.\n\n\n🔗 Causal Inference\nPropensity scoring, instrumental variables, and difference-in-differences to answer real-world treatment questions.\n\n\n📈 Survival & Longitudinal Analysis\nTime-to-event modeling, competing risks, and repeated measures in aging populations.\n\n\n🤖 Machine Learning (In Progress)\nExpanding into gradient boosting, survival ML, and NLP for clinical text — applied to claims and EHR data.\n\n\n🛠️ Tools\nStata · R · Python (learning) · SQL\n\n\n🏥 Domain\nGeriatrics · ADRD · Emergency & Hospital Visit Outcomes · Health Services Research"
   },
   {
-    "objectID": "index.html#featured-project",
-    "href": "index.html#featured-project",
+    "objectID": "index.html#featured-projects",
+    "href": "index.html#featured-projects",
     "title": "Yihan Wang, PhD",
-    "section": "Featured Project",
-    "text": "Featured Project\nJapan Loneliness Study — Stata code and analysis pipeline for a published mediation analysis examining mobile phone use and loneliness among older Japanese adults. Innovation in Aging, 2020."
+    "section": "Featured Projects",
+    "text": "Featured Projects\nJapan Loneliness Study — Stata code and analysis pipeline for a published mediation analysis examining mobile phone use and loneliness among older Japanese adults. Innovation in Aging, 2020.\nWTC First Responders Frailty Study (Ongoing) — Lead biostatistician on a clinical study examining frailty trajectories in World Trade Center first responders. Responsible for statistical analysis plan, modeling, and results interpretation.\nADRD Drug Repurposing Study (In Progress) — Lead analyst using large-scale CMS claims data to identify candidate drugs for Alzheimer’s Disease and Related Dementias (ADRD) repurposing. Applying causal inference methods to observational claims data.\nPalliative Care at Home RCT (Recruitment Ongoing) — Biostatistician on a randomized controlled trial evaluating a home-based palliative care intervention. Responsible for research database management, consort diagram design, and statistical analysis planning."
   },
   {
     "objectID": "index.html#currently-learning",
@@ -124,12 +124,5 @@
     "title": "Research & Code",
     "section": "In Progress",
     "text": "In Progress\n\nPython reimplementation of CMS survival analysis pipeline\nXGBoost model for healthcare utilization prediction\nSHAP explainability walkthrough for clinical ML models"
-  },
-  {
-    "objectID": "index.html#featured-projects",
-    "href": "index.html#featured-projects",
-    "title": "Yihan Wang, PhD",
-    "section": "Featured Projects",
-    "text": "Featured Projects\nJapan Loneliness Study — Stata code and analysis pipeline for a published mediation analysis examining mobile phone use and loneliness among older Japanese adults. Innovation in Aging, 2020.\nWTC First Responders Frailty Study (Ongoing) — Lead biostatistician on a clinical study examining frailty trajectories in World Trade Center first responders. Responsible for statistical analysis plan, modeling, and results interpretation.\nADRD Drug Repurposing Study (In Progress) — Lead analyst using large-scale CMS claims data to identify candidate drugs for Alzheimer’s Disease and Related Dementias (ADRD) repurposing. Applying causal inference methods to observational claims data.\nPalliative Care at Home RCT (Recruitment Ongoing) — Biostatistician on a randomized controlled trial evaluating a home-based palliative care intervention. Responsible for research database management, consort diagram design, and statistical analysis planning."
   }
 ]
