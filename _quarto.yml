@@ -3,6 +3,8 @@ project:
 
 website:
   title: "Yihan Wang"
+  image: "preview.png"
+  description: "Health Data Scientist | CMS Claims | Causal Inference | ML in Healthcare"
   navbar:
     left:
       - href: index.qmd
