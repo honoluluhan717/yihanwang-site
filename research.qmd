@@ -1,0 +1,52 @@
+---
+title: "Research & Code"
+---
+
+This page collects published analyses, code pipelines, and working notebooks. Code is linked to GitHub repositories where available.
+
+---
+
+## Published Work
+
+### Uses and Gratifications Sought From Mobile Phones and Loneliness Among Japanese Midlife and Older Adults
+*Innovation in Aging, 2020*
+
+Mediation analysis examining how mobile phone use patterns relate to loneliness outcomes in a nationally representative Japanese sample.
+
+- **Methods:** Mediation analysis, regression modeling
+- **Tools:** Stata
+- **[View Code on GitHub](https://github.com/honoluluhan717/Japan-loneliness-study)**
+
+---
+
+## CMS Medicare & Medicaid Analyses
+
+*Detailed notebooks and code pipelines coming soon — currently preparing de-identified examples.*
+
+Topics will include:
+- Claims data harmonization workflows
+- Survival analysis in Medicare beneficiaries
+- Causal inference with observational claims data
+- Longitudinal modeling of care utilization
+
+---
+
+## Teaching & Workshop Materials
+
+### Base R for Beginners
+Lecture notes developed for the China House data camp — introduces R fundamentals to students with no prior programming experience.
+
+- **[View on GitHub](https://github.com/honoluluhan717/China-House-class-example)**
+
+### Harvard IQSS Data Science Workshops
+Workshop materials from the Institute for Quantitative Social Science.
+
+- **[View on GitHub](https://github.com/honoluluhan717/Harvard-IQSS-DSS-workshops)**
+
+---
+
+## In Progress
+
+- Python reimplementation of CMS survival analysis pipeline
+- XGBoost model for healthcare utilization prediction
+- SHAP explainability walkthrough for clinical ML models

@@ -1,0 +1,63 @@
+---
+title: "About"
+---
+
+## Yihan Wang, PhD
+
+I'm a senior research scientist in the Brookdale Department of Geriatrics and Palliative Care at **Mount Sinai Hospital**, where I've spent 5+ years working with large-scale CMS Medicare and Medicaid claims data to study aging, ADRD, and emergency and hospital visit outcomes.
+
+My core expertise is in **CMS Medicare and Medicaid data** — from raw claims ingestion and harmonization through to analysis and results interpretation. I've built pipelines and models using Stata and R, applying methods including regression, longitudinal analysis, survival modeling, and causal inference frameworks.
+
+I currently serve as lead biostatistician on a WTC first responders frailty study, lead analyst on an ADRD drug repurposing project using CMS claims, and biostatistician on a randomized controlled trial of a palliative care at home intervention.
+
+I'm currently in a deliberate transition toward **health data science and applied machine learning** — combining my domain expertise and analytical rigor with modern ML methods. I'm actively building Python skills, exploring gradient boosting and survival ML models, and developing literacy in explainability tools for clinical deployment contexts.
+
+---
+
+## Skills
+
+**Statistical Methods**
+Regression · Longitudinal analysis · Survival analysis · Causal inference (PSM, IV, DiD) · Mediation analysis · Multilevel modeling
+
+**Data**
+CMS Medicare & Medicaid claims · EHR-linked data · Large-scale data harmonization · Survey data
+
+**Tools**
+Stata · R · Python (developing) · SQL · Git/GitHub
+
+**Domain**
+Geriatrics · ADRD · Emergency & Hospital Visit Outcomes · Health Services Research · Palliative Care
+
+---
+
+## Education
+
+**Ph.D.** Social Work. Boston College 
+
+**M.A.** Public Administration. University of Maryland, College Park
+
+**B.A.** English. China Agricultural University 
+
+---
+
+## Selected Publications
+
+Harada, K., Wang, Y., Shichijo, Y., Doan, J., Hung, W., Rosen, G., Baim-Lance, A., Lerner, S., Apoeso, O., Ko, F., & Chow, S. (2026). The role of geriatric syndromes in kidney transplant decision-making: A domain-based analysis of comprehensive geriatric assessment in older adults. Journal of the American Geriatrics Society. https://doi.org/10.1111/jgs.70324
+
+Wong, J., Wang, Y., Abbas, M., Bollens-Lund, E., Reich, A. J., Ankuda, C., & Cooper, Z. (2024). Long-term changes in pain, depression, function and informal caregiving after major elective surgeries among seriously ill older adults. Annals of Surgery.
+
+Wang, Y. & Gonzales, E. (2019). Examining the prevalence, risk, and protective factors to family caregiving in China: Findings from CHARLS. China Journal of Social Work, 12(9), 3-19. https://doi.org/10.1080/17525098.2019.1591697
+
+Wang, Y., Matz, C., Miller, J., Carr, D. C., & Kohlbacher, F. (2018). Uses and gratifications sought from mobile phones and loneliness among Japanese midlife and older adults: A mediation analysis. Innovation in Aging, 2(3). https://doi.org/10.1093/geroni/igy027
+
+Wang, Y. & Matz, C. (2018). Gender differences in the effect of social resources and social status on the retirement satisfaction and health of retirees. Journal of Gerontological Social Work, 62(1), 86-107. https://doi.org/10.1080/01634372.2018.1474156
+
+## Contact
+
+- 💼 [LinkedIn](https://www.linkedin.com/in/yihan-wang-6a1832294/)
+- 💻 [GitHub](https://github.com/honoluluhan717)
+- 📧 honoluluhan717@gmail.com
+
+---
+
+*I'm open to roles in health data science, real-world evidence, and applied ML in clinical or payer settings.*

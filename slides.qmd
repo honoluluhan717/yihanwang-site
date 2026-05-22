@@ -1,0 +1,23 @@
+---
+title: "Slides & Presentations"
+---
+
+Presentations from conferences, workshops, and invited talks. Slides will be added as they are prepared for sharing.
+
+---
+
+## Presentations
+
+*Coming soon — converting existing presentations to web format.*
+
+Topics will include:
+- CMS data infrastructure and harmonization approaches
+- Causal inference methods in health services research
+- Survival analysis in aging populations
+- Machine learning for healthcare: opportunities and challenges
+
+---
+
+## How These Are Built
+
+Slides on this site are built using [Quarto](https://quarto.org) with Reveal.js — meaning they run in your browser, no PowerPoint needed. Source `.qmd` files are available on [GitHub](https://github.com/honoluluhan717).

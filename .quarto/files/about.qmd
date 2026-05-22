@@ -1,0 +1,54 @@
+---
+title: "About"
+---
+
+## Yihan Wang, PhD
+
+I'm a senior research scientist in the Department of Geriatrics and Palliative Care at **Mount Sinai Hospital**, where I've spent 5+ years working with large-scale CMS Medicare and Medicaid claims data to study aging, ADRD, and emergency and hospital visit outcomes.
+
+My core expertise is in **CMS Medicare and Medicaid data** — from raw claims ingestion and harmonization through to analysis and results interpretation. I've built pipelines and models using Stata and R, applying methods including regression, longitudinal analysis, survival modeling, and causal inference frameworks.
+
+I currently serve as lead biostatistician on a WTC first responders frailty study, lead analyst on an ADRD drug repurposing project using CMS claims, and biostatistician on a randomized controlled trial of a palliative care at home intervention.
+
+I'm currently in a deliberate transition toward **health data science and applied machine learning** — combining my domain expertise and analytical rigor with modern ML methods. I'm actively building Python skills, exploring gradient boosting and survival ML models, and developing literacy in explainability tools for clinical deployment contexts.
+
+---
+
+## Skills
+
+**Statistical Methods**
+Regression · Longitudinal analysis · Survival analysis · Causal inference (PSM, IV, DiD) · Mediation analysis · Multilevel modeling
+
+**Data**
+CMS Medicare & Medicaid claims · EHR-linked data · Large-scale data harmonization · Survey data
+
+**Tools**
+Stata · R · Python (developing) · SQL · Git/GitHub
+
+**Domain**
+Geriatrics · ADRD · Emergency & Hospital Visit Outcomes · Health Services Research · Palliative Care
+
+---
+
+## Education
+
+*Add your degrees here*
+
+---
+
+## Selected Publications
+
+*Add your key publications here — even 3–5 is enough*
+
+---
+
+## Contact
+
+- 🏥 Mount Sinai Hospital, Icahn School of Medicine
+- 💼 [LinkedIn](#) ← *add your URL*
+- 💻 [GitHub](https://github.com/honoluluhan717)
+- 📧 ← *add email if desired*
+
+---
+
+*I'm open to roles in health data science, real-world evidence, and applied ML in clinical or payer settings.*

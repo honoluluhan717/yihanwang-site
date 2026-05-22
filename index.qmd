@@ -1,0 +1,73 @@
+---
+title: ""
+page-layout: full
+---
+
+::: {.hero}
+# Yihan Wang, PhD
+**Health Data Scientist · Senior Research Scientist, Mount Sinai Hospital**
+
+5+ years working with Medicare & Medicaid claims data — causal inference, survival analysis, and longitudinal modeling in aging, ADRD, and emergency and hospital visit outcomes. Currently expanding into machine learning methods for healthcare.
+
+[View My Work](#research){.btn} &nbsp; [GitHub](https://github.com/honoluluhan717){.btn .btn-outline} &nbsp; [LinkedIn](#){.btn .btn-outline}
+:::
+
+---
+
+## What I Work On {#research}
+
+::: {.grid}
+
+::: {.g-col-4}
+### 📋 CMS Claims Data
+Large-scale Medicare & Medicaid data — harmonization, linkage, and analytics across millions of beneficiaries.
+:::
+
+::: {.g-col-4}
+### 🔗 Causal Inference
+Propensity scoring, instrumental variables, and difference-in-differences to answer real-world treatment questions.
+:::
+
+::: {.g-col-4}
+### 📈 Survival & Longitudinal Analysis
+Time-to-event modeling, competing risks, and repeated measures in aging populations.
+:::
+
+::: {.g-col-4}
+### 🤖 Machine Learning (In Progress)
+Expanding into gradient boosting, survival ML, and NLP for clinical text — applied to claims and EHR data.
+:::
+
+::: {.g-col-4}
+### 🛠️ Tools
+Stata · R · Python (learning) · SQL
+:::
+
+::: {.g-col-4}
+### 🏥 Domain
+Geriatrics · ADRD · Emergency & Hospital Visit Outcomes · Health Services Research
+:::
+
+:::
+
+---
+
+## Featured Projects
+
+**[Japan Loneliness Study](https://github.com/honoluluhan717/Japan-loneliness-study)** — Stata code and analysis pipeline for a published mediation analysis examining mobile phone use and loneliness among older Japanese adults. *Innovation in Aging, 2020.*
+
+**WTC First Responders Frailty Study** *(Ongoing)* — Lead biostatistician on a clinical study examining frailty trajectories in World Trade Center first responders. Responsible for statistical analysis plan, modeling, and results interpretation.
+
+**ADRD Drug Repurposing Study** *(In Progress)* — Lead analyst using large-scale CMS claims data to identify candidate drugs for Alzheimer's Disease and Related Dementias (ADRD) repurposing. Applying causal inference methods to observational claims data.
+
+**Palliative Care at Home RCT** *(Recruitment Ongoing)* — Biostatistician on a randomized controlled trial evaluating a home-based palliative care intervention. Responsible for research database management, consort diagram design, and statistical analysis planning.
+
+---
+
+## Currently Learning
+
+I'm actively building toward health data science and applied ML roles — redoing past analyses in Python, working through survival ML methods, and developing explainability skills (SHAP) for clinical model deployment.
+
+---
+
+*Open to roles in health data science, real-world evidence (RWE), and applied ML in clinical settings.*
