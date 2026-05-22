@@ -1,10 +1,15 @@
 project:
   type: website
+  open-graph:
+    image: "preview.png"
+    description: "Personal research portfolio of Yihan Wang, PhD — Senior Research Scientist specializing in CMS Medicare and Medicaid claims data, causal inference, survival analysis, and machine learning in healthcare."
+  twitter-card:
+    image: "preview.png"
 
 website:
   title: "Yihan Wang"
   image: "preview.png"
-  description: "Health Data Scientist | CMS Claims | Causal Inference | ML in Healthcare"
+  description: "Personal research portfolio of Yihan Wang, PhD — Senior Research Scientist specializing in CMS Medicare and Medicaid claims data, causal inference, survival analysis, and machine learning in healthcare."
   navbar:
     left:
       - href: index.qmd
