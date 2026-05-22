@@ -9,7 +9,7 @@ page-layout: full
 
 5+ years working with Medicare & Medicaid claims data — causal inference, survival analysis, and longitudinal modeling in aging, ADRD, and emergency and hospital visit outcomes. Currently expanding into machine learning methods for healthcare.
 
-[View My Work](#research){.btn} &nbsp; [GitHub](https://github.com/honoluluhan717){.btn .btn-outline} &nbsp; [LinkedIn](https://www.linkedin.com/in/yihan-wang-6a1832294/){.btn .btn-outline}
+[View My Work](#research){.btn} &nbsp; [GitHub](https://github.com/honoluluhan717){.btn .btn-outline} &nbsp; [LinkedIn](https://www.linkedin.com/in/yihan-wang-6a1832294/){.btn .btn-outline target="_blank"}
 :::
 
 ---
