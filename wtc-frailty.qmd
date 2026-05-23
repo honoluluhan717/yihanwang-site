@@ -55,7 +55,7 @@ This ongoing study examines frailty trajectories among World Trade Center (WTC) 
 
 *Code will be added as the study progresses toward publication. All scripts include inline comments explaining analytical decisions.*
 
-📂 [View Repository on GitHub](https://github.com/honoluluhan717)
+📂 [View Repository on GitHub](https://github.com/honoluluhan717/wtc-frailty-study){target="_blank"}
 
 ---
 
