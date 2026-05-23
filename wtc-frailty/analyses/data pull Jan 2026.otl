@@ -1,0 +1,3191 @@
+= V4 Outline MultiLine NoSorting TabWidth=30
+
+H="get data ready"
+*Convert the two pilot datasets sent by Chinmayi to Stata; create a common merge_id 
+*Convert the redcap data downloaded on Jan 16, 2026 
+
+import delimited "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\WTC Pilot_Database.csv",clear 
+drop patientid
+rename subjectid record_id
+rename consentdate consentdate_pilot
+tostring record_id,replace
+gen  merge_id = _n + 5499
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\WTC Pilot_Database.dta",replace
+
+import delimited "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\WTCPilot_Data.csv",clear
+rename participantid record_id 
+tostring record_id,replace 
+gen  merge_id = _n + 5499
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\WTCPilot_Data.dta",replace 
+
+import delimited "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\WTCII_DATA_2026-01-16_1102.csv",clear 
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\WTCII_DATA_2026-01-16_1102.dta",replace 
+
+H="create main data with new ID"
+
+*reshape the redcap dataset from long to wide, keep survey dates for each visit, and create merge_id equals to record_id_main 
+
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\WTCII_DATA_2026-01-16_1102.dta",clear 
+
+keep record_id redcap_event_name survey_date
+
+//fix ID errors 
+replace record_id = "16" if record_id == "16 (withdrawn)"
+replace record_id = "50" if record_id == "50 (withdrawn)"
+replace record_id = "86" if record_id == "86 (withdrawn)"
+replace record_id = "88" if record_id == "88 (Withdrawn)"
+
+//Reshape the main database 
+//create visit names
+gen visit = ""
+replace visit = "baseline" if redcap_event_name == "baseline_arm_1"
+replace visit = "first"    if redcap_event_name == "first_follow_up_arm_1"
+replace visit = "second"   if redcap_event_name == "second_follow_up_arm_1"
+replace visit = "third"   if redcap_event_name == "third_follow_up_arm_1"
+
+//Convert survey_date string to Stata date format
+gen survey_date_clean = date(survey_date, "MDY")
+format survey_date_clean %td
+
+//Keep only relevant variables
+keep record_id visit survey_date_clean
+drop if missing(visit) | missing(survey_date_clean)
+
+//Collapse in case of duplicates (keep earliest per visit per ID)
+collapse (min) survey_date_clean, by(record_id visit)
+
+//Reshape to wide
+reshape wide survey_date_clean, i(record_id) j(visit) string
+
+//add duplicate flag in the main data 
+gen overlap_main_pilot=.
+replace overlap_main_pilot=1 if record_id=="34" | record_id=="32" | record_id=="21" | record_id=="36" | record_id=="4847" | record_id=="121" | record_id=="38" | record_id=="43" | record_id=="49" | record_id=="25" | record_id=="50" | record_id=="118" | record_id=="51" | record_id=="99" | record_id=="77" | record_id=="3102" | record_id=="1487" | record_id=="22" | record_id=="116" | record_id=="194" | record_id=="41" | record_id=="2332" | record_id=="67" | record_id=="1105" | record_id=="55"
+
+// Rename for clarity
+rename survey_date_cleanbaseline survey_date_baseline
+rename survey_date_cleanfirst survey_date_firstfp
+rename survey_date_cleansecond survey_date_secondfp
+rename survey_date_cleanthird survey_date_thirdfp
+
+gen record_id_main=record_id
+
+//sort record ID 
+destring record_id, replace
+gsort record_id 
+
+gen merge_id = record_id
+list record_id merge_id if overlap_main_pilot==1
+
+gen unique_in_main=.
+replace unique_in_main=1 if overlap_main_pilot!=1
+tab unique_in_main
+tab overlap_main_pilot
+
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\main data with new ID Jan 2026.dta",replace 
+
+
+
+
+
+H="pilot data with new ID"
+*merge all info for the pilot data, generated record_id_pilot which is the original ID in the pilot data; pilot ID 1-123 equal to merge_id 5001-5123
+
+import delimited "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\WTC Pilot_Database.csv",clear 
+drop patientid
+rename subjectid record_id
+rename consentdate consentdate_pilot
+gsort record_id
+tostring record_id,replace
+
+gen overlap_main_pilot=.
+replace overlap_main_pilot=1 if record_id=="7" | record_id=="8" | record_id=="9" | record_id=="11" | record_id=="12" | record_id=="21" | record_id=="22" | record_id=="26" | record_id=="28" | record_id=="30" | record_id=="31" | record_id=="41" | record_id=="46" | record_id=="50" | record_id=="60" | record_id=="69" | record_id=="75" | record_id=="93" | record_id=="100" | record_id=="107" | record_id=="109" | record_id=="116" | record_id=="117" | record_id=="119" | record_id=="123"
+tab overlap_main_pilot
+
+gen  merge_id = _n + 5000
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\WTC Pilot_Database.dta",replace
+
+import delimited "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\WTCPilot_Data.csv",clear
+rename participantid record_id 
+gsort record_id
+tostring record_id,replace 
+
+gen overlap_main_pilot=.
+replace overlap_main_pilot=1 if record_id=="7" | record_id=="8" | record_id=="9" | record_id=="11" | record_id=="12" | record_id=="21" | record_id=="22" | record_id=="26" | record_id=="28" | record_id=="30" | record_id=="31" | record_id=="41" | record_id=="46" | record_id=="50" | record_id=="60" | record_id=="69" | record_id=="75" | record_id=="93" | record_id=="100" | record_id=="107" | record_id=="109" | record_id=="116" | record_id=="117" | record_id=="119" | record_id=="123"
+tab overlap_main_pilot
+
+gen  merge_id = _n + 5000
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\WTCPilot_Data.dta",replace 
+
+//merge the two data 
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\WTC Pilot_Database.dta",clear 
+merge 1:1 record_id using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\WTCPilot_Data.dta",nogen
+destring record_id,replace 
+gsort record_id
+
+list record_id merge_id if overlap_main_pilot==1
+
+gen unique_in_pilot=.
+replace unique_in_pilot=1 if overlap_main_pilot!=1
+tab unique_in_pilot
+tab overlap_main_pilot 
+gen record_id_pilot=record_id
+
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\pilot_all.dta",replace
+
+
+H="merge the two data"
+
+*record_id should be abandoned; not useful anymore after merging the pilot and main data. For ID identification, should refer to the two newly created IDs and merge_id. 
+
+//record_id_pilot range: 1-123
+//record_id_main range: 1-4863
+//merge_id range: 1-5123
+
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\main data with new ID Jan 2026.dta",clear 
+append using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\pilot_all.dta"
+
+//keep 8 sample from the pilot data, among the 25 duplicates, which had a JHU assessment
+//dropped the 17 duplicates from the main data; changed 8 main data ID from missing to actual ID from the main 
+drop if merge_id==5007 | merge_id==5008 | merge_id==5009 | merge_id==5011 | merge_id==5012
+drop if merge_id==5021 | merge_id==5022 | merge_id==5028 | merge_id==5030 | merge_id==5031
+drop if merge_id==5041 | merge_id==5060 | merge_id==5093 | merge_id==5109 | merge_id==5116
+drop if merge_id==5117 | merge_id==5123
+
+destring record_id_main,replace 
+
+replace record_id_main=43 if merge_id==5026
+replace record_id_main=51 if merge_id==5046
+replace record_id_main=99 if merge_id==5050
+replace record_id_main=3102 if merge_id==5069
+replace record_id_main=1487 if merge_id==5075
+replace record_id_main=116 if merge_id==5100
+replace record_id_main=194 if merge_id==5107
+replace record_id_main=1105 if merge_id==5119
+
+
+//keep 17 sample from the main data, among the 25 duplicates, which missed a JHU assessment from the pilot 
+//dropped the 8 duplicates from pilot data; changed 17 pilot data from missing to actual ID from the pilot 
+drop if merge_id==43 | merge_id==51 | merge_id==99 | merge_id==3102 | merge_id==1487 | merge_id==116 | merge_id==194 | merge_id==1105 
+
+replace record_id_pilot=9 if merge_id==21
+replace record_id_pilot=93 if merge_id==22
+replace record_id_pilot=30 if merge_id==25
+replace record_id_pilot=8 if merge_id==32
+replace record_id_pilot=7 if merge_id==34
+
+replace record_id_pilot=11 if merge_id==36
+replace record_id_pilot=22 if merge_id==38
+replace record_id_pilot=109 if merge_id==41
+replace record_id_pilot=28 if merge_id==49
+replace record_id_pilot=31 if merge_id==50
+
+replace record_id_pilot=123 if merge_id==55
+replace record_id_pilot=117 if merge_id==67
+replace record_id_pilot=60 if merge_id==77
+replace record_id_pilot=41 if merge_id==118
+replace record_id_pilot=21 if merge_id==121
+
+replace record_id_pilot=116 if merge_id==2332
+replace record_id_pilot=12 if merge_id==4847
+
+list record_id_pilot record_id_main if overlap_main_pilot==1
+
+gen survey_date = date(consentdate_pilot, "MDY")
+format survey_date %td
+drop consentdate_pilot
+rename survey_date survey_date_pilot
+
+order record_id merge_id survey_date_pilot survey_date_baseline survey_date_firstfp survey_date_secondfp survey_date_thirdfp,first
+
+//validity check 
+duplicates report merge_id
+
+tab unique_in_main 
+tab unique_in_pilot
+tab overlap_main_pilot
+
+list record_id_main record_id_pilot merge_id if overlap_main_pilot==1
+
+
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\MERGED_ALL Jan 2026.dta",replace
+
+***//reshape to long format 
+***reshape long survey_date_, i(merge_id) j(visit_type) string
+
+H="**********"
+
+
+H="merge two frail outcomes from redcap"
+import delimited "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\WTCII_DATA_2026-01-16_1102.csv",clear
+
+drop if record_id=="88"
+replace record_id="16" if record_id=="16 (withdrawn)"
+replace record_id="50" if record_id=="50 (withdrawn)"
+replace record_id="86" if record_id=="86 (withdrawn)"
+replace record_id="88" if record_id=="88 (Withdrawn)"
+
+//fill those missing Callahan score on Redcap 
+**#88; #1175; #1577; #4855 has actual missing scores 
+replace callahan_score=6 if record_id=="3"
+replace callahan_score=6 if record_id=="26"
+replace callahan_score=6 if record_id=="28"
+replace callahan_score=6 if record_id=="36"
+replace callahan_score=6 if record_id=="45"
+replace callahan_score=6 if record_id=="46"
+
+
+//create JHU frail flag & frail scale flag 
+**0 = 'Not Frail/Robust Health'
+**1-2 = 'Pre-Frail'
+**3-5 = 'Frail'
+**. = 'Missing' ;
+
+//jhu categorical variable 
+gen jhu_cat=.
+replace jhu_cat=0 if jhu_score==0 
+replace jhu_cat=1 if jhu_score==1 | jhu_score==2 
+replace jhu_cat=2 if jhu_score==3 | jhu_score==4 | jhu_score==5
+
+label define jhu_cat 0 "Not Frail/Robust Health" 1 "Pre-Frail" 2 "Frail"
+label values jhu_cat jhu_cat
+tab jhu_cat,m
+
+//jhu binary flag 
+gen jhu_frail_flag=.
+replace jhu_frail_flag=0 if jhu_cat==0
+replace jhu_frail_flag=1 if jhu_cat==1 | jhu_cat==2 
+label define jhu_frail_flag 0 "Not Frail/Robust Health" 1 "Pre-Frail/Frail"
+label values jhu_frail_flag jhu_frail_flag 
+tab jhu_frail_flag
+
+
+//Frail phenotype categorical variable 
+gen frail_cat=.
+replace frail_cat=0 if frail_total==0
+replace frail_cat=1 if frail_total==1 | frail_total==2
+replace frail_cat=2 if frail_total>=3
+tab frail_cat
+label define frail_cat 0 "Not Frail" 1 "Pre-Frial" 2 "Frail"
+label values frail_cat frail_cat
+tab frail_cat,m
+
+//Frail phenotype flag 
+gen frail_flag=.
+replace frail_flag=0 if frail_cat==0 
+replace frail_flag=1 if frail_cat==1 | frail_cat==2
+label define frail_flag 0 "Not Frail" 1 "Pre-Frail/Frail"
+label values frail_flag frail_flag
+tab frail_flag,m
+
+
+//Other geriatric assessments 
+
+//FESI score 
+gen fesi_cat=.
+replace fesi_cat=0 if fesi_total>=16 & fesi_total<=19
+replace fesi_cat=1 if fesi_total>=20 & fesi_total<=27
+replace fesi_cat=2 if fesi_total>=28 & fesi_total<64 
+label define fesi_cat 0 "Low Concern" 1 "Moderate Concern" 2 "High Concern"
+label values fesi_cat fesi_cat
+tab fesi_cat,m
+
+//MOCA score 
+gen moca_catags=.
+replace moca_catags=0 if moca_total>=26 & moca_total<=31
+replace moca_catags=1 if moca_total>=18 & moca_total<=25
+replace moca_catags=2 if moca_total>=10 & moca_total<=17
+replace moca_catags=3 if moca_total>=0 & moca_total<=9
+label define moca_catags 0 "Normal" 1 "Mild cognitive impairment" 2 "Moderate cognitive impairment" 3 "Severe cognitive impairment"
+label values moca_catags moca_catags
+tab moca_catags,m
+
+//ADL category 
+gen adl_cat=.
+replace adl_cat=0 if adl_score<24
+replace adl_cat=1 if adl_score>=24
+replace adl_cat=2 if adl_score<0
+label define adl_cat 0 "Not fully independent" 1 "Independent" 2 "Unknown"
+label values adl_cat adl_cat
+tab adl_cat
+
+//Callahan Score 
+gen callahan_cat=.
+replace callahan_cat=0 if callahan_score==0 | callahan_score==1 | callahan_score==2 | callahan_score==3
+replace callahan_cat=1 if callahan_score==4 | callahan_score==5 | callahan_score==6
+label define callahan_cat 0 "Impairment likely" 1 "Not impaired"
+label values callahan_cat callahan_cat
+tab callahan_cat,m
+
+//reshape the data from long to wide using necessary geriatric variables 
+
+* 1) Make short wave suffixes for wide names
+gen str6 wave = "_b"    if redcap_event_name=="baseline_arm_1"
+replace  wave = "_fu1"  if redcap_event_name=="first_follow_up_arm_1"
+replace  wave = "_fu2"  if redcap_event_name=="second_follow_up_arm_1"
+replace  wave = "_fu3"  if redcap_event_name=="third_follow_up_arm_1"
+
+* 2) Ensure one row per id×wave before reshaping
+isid record_id wave   // will error if duplicates exist
+
+* 3) Collect all stubs = everything except ID and J
+ds
+local all `r(varlist)'
+local falls_year falls_year_mult callahan_cat adl_cat moca_catags fesi_cat frail_flag frail_cat jhu_frail_flag jhu_cat hospital_stay hospital_stay_6month er_stay er_stay_6month adl_phone adl_move adl_shop adl_meal adl_house adl_med adl_money adl_wash adl_dress adl_eat adl_walk adl_clean adl_score fesi_cleaning fesi_dressed fesi_meals fesi_bathing fesi_shopping fesi_sitting fesi_stairs fesi_walking fesi_reaching fesi_phone fesi_slippery fesi_visit fesi_crowds fesi_uneven fesi_slope fesi_social_event fesi_total falls falls_count cog_word cog_year cog_month cog_day cog_obj_apple cog_obj_table cog_obj_penny callahan_score moca_total weight_current weight_past weight_change weight_height fall_risk falls_afraid: list all - record_id - redcap_event_name - wave
+
+keep falls_year falls_year_mult callahan_cat adl_cat moca_catags fesi_cat frail_flag frail_cat jhu_frail_flag jhu_cat hospital_stay hospital_stay_6month er_stay er_stay_6month adl_phone adl_move adl_shop adl_meal adl_house adl_med adl_money adl_wash adl_dress adl_eat adl_walk adl_clean adl_score fesi_cleaning fesi_dressed fesi_meals fesi_bathing fesi_shopping fesi_sitting fesi_stairs fesi_walking fesi_reaching fesi_phone fesi_slippery fesi_visit fesi_crowds fesi_uneven fesi_slope fesi_social_event fesi_total falls falls_count falls_afraid cog_word cog_year cog_month cog_day cog_obj_apple cog_obj_table cog_obj_penny callahan_score moca_total weight_current weight_past weight_change weight_height fall_risk record_id wave 
+
+rename record_id record_id_main 
+
+* 4) Reshape ALL variables to wide (short suffixes avoid name-length issues)
+reshape wide falls_year falls_year_mult callahan_cat adl_cat moca_catags fesi_cat frail_flag frail_cat jhu_frail_flag jhu_cat hospital_stay hospital_stay_6month er_stay er_stay_6month adl_phone adl_move adl_shop adl_meal adl_house adl_med adl_money adl_wash adl_dress adl_eat adl_walk adl_clean adl_score fesi_cleaning fesi_dressed fesi_meals fesi_bathing fesi_shopping fesi_sitting fesi_stairs fesi_walking fesi_reaching fesi_phone fesi_slippery fesi_visit fesi_crowds fesi_uneven fesi_slope fesi_social_event fesi_total falls falls_count falls_afraid cog_word cog_year cog_month cog_day cog_obj_apple cog_obj_table cog_obj_penny callahan_score moca_total weight_current weight_past weight_change weight_height fall_risk, i(record_id) j(wave) string
+
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\redcap0701_cleaned Jan 2026.dta",replace
+
+
+H="merge to original data"
+
+//use main data: with new merge id created 
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\MERGED_ALL Jan 2026.dta",clear 
+tostring record_id_main,replace
+
+
+//merge to demographic data 
+merge m:1 record_id_main using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\demo main.dta",nogen
+
+preserve 
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\demo pilot.dta",clear 
+rename gender gender_pilot
+rename dob dob_pilot 
+rename race race_pilot
+rename education education_pilot 
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\demo pilot_cleaned.dta",replace
+restore
+
+merge m:1 record_id_pilot using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\demo pilot_cleaned.dta",nogen force
+
+
+//merge to redcap data 
+preserve 
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\redcap0701_cleaned Jan 2026.dta",clear 
+
+tempfile redcap2 
+save `redcap2'
+restore
+merge m:1 record_id_main using `redcap2',nogen
+
+
+merge m:1 record_id_pilot using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\redcap0729_pilot.dta", nogen force
+
+
+preserve 
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\pilot_0728.dta",clear 
+rename participant_id record_id_pilot
+tempfile redcap3 
+save `redcap3'
+restore
+
+merge m:1 record_id_pilot using `redcap3',nogen force
+
+//merge to bmi
+destring record_id_main,replace
+merge m:1 record_id_main using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\bmi all main.dta",nogen
+
+merge m:1 record_id_pilot using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\bmi_pilotdata.dta", nogen force
+
+//merge to smoke 
+tostring record_id_main,replace
+merge m:1 record_id_main using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\smoke all main.dta",nogen force
+merge m:1 record_id_pilot using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\recent smoke_pilotdata.dta", nogen force
+
+//merge to occupation 
+merge m:1 record_id_main using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\occupation all.dta",nogen force
+
+destring record_id_pilot,replace
+merge m:1 record_id_pilot using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\pre911_group_pilot.dta",nogen force
+
+//merge to exposure severity 
+merge m:1 record_id_main using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\exposure all.dta",nogen force
+
+merge m:1 record_id_pilot using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\exposure_pilot.dta",nogen force
+
+//merge to certification 
+
+merge m:1 record_id_main using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\certification_maindata.dta",nogen force 
+
+merge m:1 record_id_pilot using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\certification_pilotfinal.dta",nogen force 
+
+//merge to income from pilot 
+
+merge m:1 record_id_pilot using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\demo pilot.dta",nogen force update 
+
+
+
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\FINAL_MERGED 0728 Jan 2026.dta",replace 
+
+
+H="clean all demo + smoking done"
+
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\FINAL_MERGED 0728 Jan 2026.dta",clear
+
+drop if record_id_pilot==83 
+drop if record_id_pilot==92 
+
+* Build final JHU category and its source (pilot -> baseline -> fu1 -> fu2 -> fu3)
+gen jhu_cat_final = .
+gen str9 jhu_source = ""
+
+replace jhu_cat_final = jhu_cat_p if !missing(jhu_cat_p)
+replace jhu_source    = "pilot"         if jhu_source=="" & !missing(jhu_cat_p)
+
+replace jhu_cat_final = jhu_cat_b       if missing(jhu_cat_final) & !missing(jhu_cat_b)
+replace jhu_source    = "baseline"      if jhu_source=="" & !missing(jhu_cat_b)
+
+replace jhu_cat_final = jhu_cat_fu1     if missing(jhu_cat_final) & !missing(jhu_cat_fu1)
+replace jhu_source    = "fu1"           if jhu_source=="" & !missing(jhu_cat_fu1)
+
+replace jhu_cat_final = jhu_cat_fu2     if missing(jhu_cat_final) & !missing(jhu_cat_fu2)
+replace jhu_source    = "fu2"           if jhu_source=="" & !missing(jhu_cat_fu2)
+
+replace jhu_cat_final = jhu_cat_fu3     if missing(jhu_cat_final) & !missing(jhu_cat_fu3)
+replace jhu_source    = "fu3"           if jhu_source=="" & !missing(jhu_cat_fu3)
+
+* keep labels if the jhu_cat_* variables share a value label
+cap label values jhu_cat_final jhu_cat
+label var jhu_cat_final "JHU frailty category (earliest: pilot?baseline?fu1?fu2 fu3)"
+label var jhu_source    "Source visit for jhu_cat_final"
+
+
+* Frailty category final: use same-visit-as-JHU first, then fallback to any available
+capture drop frail_cat_final
+gen frail_cat_final = .
+
+* 1) Same visit as JHU
+replace frail_cat_final = frail_cat_p if jhu_source=="pilot"    & !missing(frail_cat_p)
+replace frail_cat_final = frail_cat_b       if jhu_source=="baseline" & !missing(frail_cat_b)
+replace frail_cat_final = frail_cat_fu1     if jhu_source=="fu1"      & !missing(frail_cat_fu1)
+replace frail_cat_final = frail_cat_fu2     if jhu_source=="fu2"      & !missing(frail_cat_fu2)
+replace frail_cat_final = frail_cat_fu3     if jhu_source=="fu3"      & !missing(frail_cat_fu3)
+
+
+* 2) Fallbacks: if still missing, take first available in priority (pilot -> baseline -> fu1 -> fu2 -> fu3)
+replace frail_cat_final = frail_cat_p if missing(frail_cat_final) & !missing(frail_cat_p)
+replace frail_cat_final = frail_cat_b       if missing(frail_cat_final) & !missing(frail_cat_b)
+replace frail_cat_final = frail_cat_fu1     if missing(frail_cat_final) & !missing(frail_cat_fu1)
+replace frail_cat_final = frail_cat_fu2     if missing(frail_cat_final) & !missing(frail_cat_fu2)
+replace frail_cat_final = frail_cat_fu3     if missing(frail_cat_final) & !missing(frail_cat_fu3)
+
+* Keep labels/description (if your frailty vars use label "frail_cat")
+capture label values frail_cat_final frail_cat
+label var frail_cat_final "Frailty category (JHU visit if present; else pilot?baseline?fu1?fu2 fu3)"
+
+tab jhu_source, m
+tab jhu_cat_final, m
+tab frail_cat_final,m
+
+
+//overall 
+
+//gender 
+gen gender_final = gender   // start with master version
+replace gender_final = gender_pilot if missing(gender_final) & !missing(gender_pilot)
+drop gender gender_pilot
+tab gender_final
+
+//Pick the survey date from the same visit as jhu_source
+gen jhu_visit_date = .
+replace jhu_visit_date = survey_date_pilot    if jhu_source=="pilot"
+replace jhu_visit_date = survey_date_baseline if jhu_source=="baseline"
+replace jhu_visit_date = survey_date_firstfp  if jhu_source=="fu1"
+replace jhu_visit_date = survey_date_secondfp if jhu_source=="fu2"
+replace jhu_visit_date = survey_date_thirdfp if jhu_source=="fu3"
+
+format jhu_visit_date %td
+
+//dob 
+gen dob_num = date(dob, "YMD")
+format dob_num %td
+
+gen dob_pilot_num = dob_pilot
+format dob_pilot_num %td
+
+gen dob_final = dob_num
+replace dob_final = dob_pilot_num if missing(dob_final) & !missing(dob_pilot_num)
+format dob_final %td
+
+* Age at JHU visit
+gen age_at_jhu = (jhu_visit_date - dob_final) / 365.25
+format age_at_jhu %9.2f
+gen age_at_jhu_int = floor(age_at_jhu)
+
+* Age groups
+gen byte age_group = .
+replace age_group = 1 if inrange(age_at_jhu_int,50,54)
+replace age_group = 2 if inrange(age_at_jhu_int,55,64)
+replace age_group = 3 if age_at_jhu_int>=65
+
+label define agegrp 1 "50-54" 2 "55-64" 3 "65+"
+label values age_group agegrp
+tab age_group,m
+
+
+//race 
+gen race_final = race   // start with master version
+replace race_final = race_pilot if missing(race_final) & !missing(race_pilot)
+drop race race_pilot
+tab race_final
+
+//education
+gen education_final = education   // start with master version
+replace education_final = education_pilot if missing(education_final) & !missing(education_pilot)
+drop education education_pilot
+tab education_final
+
+drop if merge_id==.
+
+//smoking status 
+
+//PILOT DATA 
+* Create final smoking status from the appropriate source
+preserve 
+keep if jhu_source=="pilot"
+
+* Closest visit ? final status; if that status is missing, backfill from prior visits
+gen double __min = .
+gen byte   k     = .
+forvalues i=1/16 {
+    replace k    = `i' if missing(__min) | abs(vis`i'dt - survey_date_pilot) < __min
+    replace __min= abs(vis`i'dt - survey_date_pilot) if k==`i'
+}
+gen str30 smoking_status_final_pilot = ""
+forvalues i=1/16 {
+    replace smoking_status_final_pilot = smoking_status`i'_p if k==`i'
+}
+forvalues j=15(-1)1 {
+    replace smoking_status_final_pilot = smoking_status`j'_p if smoking_status_final_pilot=="" & k>`j' & smoking_status`j'_p!=""
+}
+drop __min k
+
+
+tab smoking_status_final_pilot,m
+list record_id_pilot if smoking_status_final_pilot==""
+keep merge_id record_id_pilot record_id_main smoking_status_final_pilot jhu_source
+tempfile smoking_pilot
+save `smoking_pilot'
+restore 
+
+
+//BASELINE DATA 
+preserve 
+keep if jhu_source=="baseline"
+
+* Set "Unknown" to missing across smoking_status1–smoking_status20
+forvalues i=1/20 {
+    capture confirm string variable smoking_status`i'
+    if !_rc {
+        replace smoking_status`i' = "" if lower(strtrim(smoking_status`i'))=="unknown"
+    }
+    else {
+        tempvar s
+        capture decode smoking_status`i', gen(`s')
+        if !_rc {
+            replace smoking_status`i' = . if lower(strtrim(`s'))=="unknown"
+            drop `s'
+        }
+    }
+}
+
+* Convert string dates to %td, pick closest visit to survey_date_baseline, backfill from prior if needed
+
+* 1) baseline date (string ? %td)
+capture confirm numeric variable survey_date_baseline
+if _rc {
+    gen double _sdb = daily(survey_date_baseline,"DMY")
+    format _sdb %td
+}
+else gen double _sdb = survey_date_baseline
+
+* 2) visit dates (strings ? %td helpers)
+forvalues i=1/20 {
+    gen double _vdt`i' = daily(visit_date`i',"DMY")
+    format _vdt`i' %td
+}
+
+* 3) closest visit index (ignore missing dates)
+gen double __min = .
+gen byte   k     = .
+forvalues i=1/20 {
+    replace k     = `i' if _vdt`i'<. & (missing(__min) | abs(_vdt`i' - _sdb) < __min)
+    replace __min = abs(_vdt`i' - _sdb) if k==`i'
+}
+
+* 4) final status at closest visit; if missing, use prior visit
+gen str30 smoking_status_final_main = ""
+forvalues i=1/20 {
+    replace smoking_status_final_main = smoking_status`i' if k==`i'
+}
+forvalues j=19(-1)1 {
+    replace smoking_status_final_main = smoking_status`j' if smoking_status_final_main=="" & k>`j' & smoking_status`j'!=""
+}
+
+drop _vdt1-_vdt20 _sdb __min k
+
+
+rename smoking_status_final_main smoking_status_final_baseline
+
+tab smoking_status_final_baseline,m
+list smoking_status1- smoking_status20 if smoking_status_final_baseline=="Unknown"
+keep merge_id record_id_pilot record_id_main smoking_status_final_baseline jhu_source
+tempfile smoking_baseline
+save `smoking_baseline'
+restore 
+
+//FIRST FOLLOW UP 
+preserve 
+keep if jhu_source=="fu1"
+
+* Set "Unknown" to missing across smoking_status1–smoking_status20
+forvalues i=1/20 {
+    capture confirm string variable smoking_status`i'
+    if !_rc {
+        replace smoking_status`i' = "" if lower(strtrim(smoking_status`i'))=="Unknown"
+    }
+    else {
+        tempvar s
+        capture decode smoking_status`i', gen(`s')
+        if !_rc {
+            replace smoking_status`i' = . if lower(strtrim(`s'))=="Unknown"
+            drop `s'
+        }
+    }
+}
+
+* Convert string dates to %td, pick closest visit to survey_date_baseline, backfill from prior if needed
+
+* 1) baseline date (string ? %td)
+capture confirm numeric variable survey_date_firstfp
+if _rc {
+    gen double _sdb = daily(survey_date_firstfp,"DMY")
+    format _sdb %td
+}
+else gen double _sdb = survey_date_firstfp
+
+* 2) visit dates (strings ? %td helpers)
+forvalues i=1/20 {
+    gen double _vdt`i' = daily(visit_date`i',"DMY")
+    format _vdt`i' %td
+}
+
+* 3) closest visit index (ignore missing dates)
+gen double __min = .
+gen byte   k     = .
+forvalues i=1/20 {
+    replace k     = `i' if _vdt`i'<. & (missing(__min) | abs(_vdt`i' - _sdb) < __min)
+    replace __min = abs(_vdt`i' - _sdb) if k==`i'
+}
+
+* 4) final status at closest visit; if missing, use prior visit
+gen str30 smoking_status_final_main = ""
+forvalues i=1/20 {
+    replace smoking_status_final_main = smoking_status`i' if k==`i'
+}
+forvalues j=19(-1)1 {
+    replace smoking_status_final_main = smoking_status`j' if smoking_status_final_main=="" & k>`j' & smoking_status`j'!=""
+}
+
+drop _vdt1-_vdt20 _sdb __min k
+
+
+rename smoking_status_final_main smoking_status_final_first_fp
+
+tab smoking_status_final_first_fp,m
+keep merge_id record_id_pilot record_id_main smoking_status_final_first_fp jhu_source
+tempfile smoking_firstfollowup
+save `smoking_firstfollowup'
+restore 
+
+preserve 
+use `smoking_firstfollowup',clear 
+merge 1:1 record_id_main using `smoking_baseline'
+drop _merge
+merge m:1 record_id_pilot using `smoking_pilot'
+
+gen str10 smoking_status_final=""
+replace smoking_status_final = smoking_status_final_baseline if jhu_source=="baseline"
+replace smoking_status_final = smoking_status_final_first_fp if jhu_source=="fu1"
+replace smoking_status_final = smoking_status_final_pilot    if jhu_source=="pilot"
+drop _merge 
+
+tab smoking_status_final,m
+tempfile smoking_all 
+save `smoking_all'
+restore 
+
+
+drop _merge 
+merge 1:1 merge_id using `smoking_all'
+
+//if jhu is missing 
+* earliest from MAIN (smoking_status1..20)
+gen str30 _earliest_main = ""
+foreach v in smoking_status1 smoking_status2 smoking_status3 smoking_status4 smoking_status5 ///
+               smoking_status6 smoking_status7 smoking_status8 smoking_status9 smoking_status10 ///
+               smoking_status11 smoking_status12 smoking_status13 smoking_status14 smoking_status15 ///
+               smoking_status16 smoking_status17 smoking_status18 smoking_status19 smoking_status20 {
+    replace _earliest_main = `v' if _earliest_main=="" & `v'!=""
+}
+
+* earliest from PILOT (smoking_status1_p..20_p)
+gen str30 _earliest_pilot = ""
+foreach v in smoking_status1_p smoking_status2_p smoking_status3_p smoking_status4_p smoking_status5_p ///
+               smoking_status6_p smoking_status7_p smoking_status8_p smoking_status9_p smoking_status10_p ///
+               smoking_status11_p smoking_status12_p smoking_status13_p smoking_status14_p smoking_status15_p ///
+               smoking_status16_p {
+    replace _earliest_pilot = `v' if _earliest_pilot=="" & `v'!=""
+}
+
+* If BOTH smoking_status_final and jhu_source are missing:
+* 1) fill from MAIN when main id present
+replace smoking_status_final = _earliest_main  if smoking_status_final=="" & missing(jhu_source) & !missing(record_id_main)
+
+* 2) fill from PILOT when pilot id present
+replace smoking_status_final = _earliest_pilot if smoking_status_final=="" & missing(jhu_source) & !missing(record_id_pilot)
+
+* 3) if BOTH ids present, prefer PILOT (override)
+replace smoking_status_final = _earliest_pilot if smoking_status_final=="" & missing(jhu_source) ///
+    & !missing(record_id_main) & !missing(record_id_pilot) & _earliest_pilot!=""
+
+drop _earliest_main _earliest_pilot
+
+
+tab smoking_status_final,m
+
+
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\smoking_complete 0902 Jan 2026.dta",replace
+
+
+
+H="soc4 & exposure done"
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\smoking_complete 0902 Jan 2026.dta",clear 
+
+destring record_id_main,replace 
+
+gen soc_4_categories_final=""
+replace soc_4_categories_final=soc_4_categories_main if record_id_main!=.
+replace soc_4_categories_final=soc_4_categories_pilot if record_id_pilot!=.
+tab soc_4_categories_final,m
+
+gen exposure_final=""
+replace exposure_final=exposure_main if record_id_main!=.
+replace exposure_final=exposure_pilot if record_id_pilot!=.
+tab exposure_final,m
+
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\soc&exposure_complete 0902 Jan 2026.dta",replace 
+
+H="bmi done"
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\soc&exposure_complete 0902 Jan 2026.dta",clear 
+
+preserve 
+//get bmi group with jhu source from the baseline 
+* --- Final BMI group (main): closest visit to survey_date_baseline; if missing, use prior visit ---
+
+* 1) baseline date ? %td (works whether string or numeric)
+capture confirm numeric variable survey_date_baseline
+if _rc gen double _sdb = daily(survey_date_baseline,"DMY")
+else    gen double _sdb = survey_date_baseline
+format _sdb %td
+
+* 2) visit dates ? %td helpers
+forvalues i=1/20 {
+    capture confirm numeric variable visit_date`i'
+    if _rc gen double _vd`i' = daily(visit_date`i',"DMY")
+    else    gen double _vd`i' = visit_date`i'
+    format _vd`i' %td
+}
+
+* 3) index of closest visit (ignore missing dates)
+gen double __min = .
+gen byte   k     = .
+forvalues i=1/20 {
+    replace k     = `i' if _vd`i'<. & (missing(__min) | abs(_vd`i' - _sdb) < __min)
+    replace __min = abs(_vd`i' - _sdb) if k==`i'
+}
+
+* 4) treat "Not reported" as missing
+forvalues i=1/20 {
+    replace bmi_Group`i' = "" if lower(strtrim(bmi_Group`i'))=="not reported"
+}
+
+* 5) take BMI group at closest visit; if empty, backfill from prior visits
+gen str20 bmi_Group_baseline = ""
+forvalues i=1/20 {
+    replace bmi_Group_baseline = bmi_Group`i' if k==`i'
+}
+forvalues j=19(-1)1 {
+    replace bmi_Group_baseline = bmi_Group`j' if bmi_Group_baseline=="" & k>`j' & bmi_Group`j'!=""
+}
+
+drop _vd1-_vd20 _sdb __min k
+keep merge_id record_id_main record_id_pilot bmi_Group_baseline
+tab bmi_Group_baseline,m
+keep if record_id_main!=.
+tempfile baseline 
+save `baseline'
+restore 
+
+
+preserve 
+//get bmi group with jhu source from the first follow up 
+* BMI group at first follow-up (closest to survey_date_firstfp; backfill from prior if missing)
+
+* 1) Anchor date -> %td
+capture confirm numeric variable survey_date_firstfp
+if _rc gen double _sdf = daily(survey_date_firstfp,"DMY")
+else    gen double _sdf = survey_date_firstfp
+format _sdf %td
+
+* 2) Visit dates -> %td helpers
+forvalues i=1/20 {
+    capture confirm numeric variable visit_date`i'
+    if _rc gen double _vd`i' = daily(visit_date`i',"DMY")
+    else    gen double _vd`i' = visit_date`i'
+    format _vd`i' %td
+}
+
+* 3) Closest visit index
+gen double __min = .
+gen byte   k     = .
+forvalues i=1/20 {
+    replace k     = `i' if _vd`i'<. & (missing(__min) | abs(_vd`i' - _sdf) < __min)
+    replace __min = abs(_vd`i' - _sdf) if k==`i'
+}
+
+* 4) Treat "Not reported" as missing
+forvalues i=1/20 {
+    replace bmi_Group`i' = "" if lower(strtrim(bmi_Group`i'))=="not reported"
+}
+
+* 5) Final value: pick closest; if empty, use prior visits
+capture drop bmi_Group_first_fp
+gen str20 bmi_Group_first_fp = ""
+forvalues i=1/20 {
+    replace bmi_Group_first_fp = bmi_Group`i' if k==`i'
+}
+forvalues j=19(-1)1 {
+    replace bmi_Group_first_fp = bmi_Group`j' if bmi_Group_first_fp=="" & k>`j' & bmi_Group`j'!=""
+}
+
+drop _vd1-_vd20 _sdf __min k
+keep merge_id record_id_main record_id_pilot bmi_Group_first_fp
+tab bmi_Group_first_fp,m
+tempfile firstfp
+save `firstfp'
+
+restore 
+
+
+preserve 
+//get bmi group with jhu source from the pilot 
+* BMI group (pilot): closest visit to survey_date_pilot; if missing, use prior visit
+
+* anchor date -> %td (works whether string or numeric)
+capture confirm numeric variable survey_date_pilot
+if _rc gen double _sdp = daily(survey_date_pilot,"DMY")
+else    gen double _sdp = survey_date_pilot
+format _sdp %td
+
+* index of closest visit (use vis1dt–vis16dt directly)
+gen double __min = .
+gen byte   k     = .
+forvalues i=1/16 {
+    replace k     = `i' if vis`i'dt<. & (missing(__min) | abs(vis`i'dt - _sdp) < __min)
+    replace __min = abs(vis`i'dt - _sdp) if k==`i'
+}
+
+* treat "Not reported" as missing
+forvalues i=1/16 {
+    replace bmi_Group`i'_p = "" if lower(strtrim(bmi_Group`i'_p))=="not reported"
+}
+
+* take BMI group at closest visit; if empty, backfill from prior visits
+capture drop bmi_Group_pilot
+gen str20 bmi_Group_pilot = ""
+forvalues i=1/16 {
+    replace bmi_Group_pilot = bmi_Group`i'_p if k==`i'
+}
+forvalues j=15(-1)1 {
+    replace bmi_Group_pilot = bmi_Group`j'_p if bmi_Group_pilot=="" & k>`j' & bmi_Group`j'_p!=""
+}
+
+drop _sdp __min k
+keep merge_id record_id_main record_id_pilot bmi_Group_pilot 
+tab bmi_Group_pilot,m
+keep if record_id_pilot!=.
+tempfile pilot
+save `pilot'
+
+restore 
+
+preserve 
+use `pilot'
+merge 1:m record_id_pilot using `firstfp',nogen 
+merge m:1 record_id_main using `baseline',nogen 
+tempfile merge 
+save `merge'
+restore 
+
+
+merge 1:1 merge_id using `merge',nogen 
+
+gen bmi_Group_final=""
+replace bmi_Group_final=bmi_Group_pilot if jhu_source=="pilot"
+replace bmi_Group_final=bmi_Group_baseline if jhu_source=="baseline"
+replace bmi_Group_final=bmi_Group_first_fp if jhu_source=="fu1"
+
+* Fill bmi_Group_final when jhu_source is missing:
+capture confirm string variable jhu_source
+if _rc {
+    * jhu_source is numeric
+    replace bmi_Group_final = bmi_Group_pilot    if missing(jhu_source) & bmi_Group_final=="" & bmi_Group_pilot!=""
+    replace bmi_Group_final = bmi_Group_baseline if missing(jhu_source) & bmi_Group_final=="" & bmi_Group_baseline!=""
+    replace bmi_Group_final = bmi_Group_first_fp if missing(jhu_source) & bmi_Group_final=="" & bmi_Group_first_fp!=""
+}
+else {
+    * jhu_source is string
+    replace bmi_Group_final = bmi_Group_pilot    if (missing(jhu_source) | strtrim(jhu_source)=="") & bmi_Group_final=="" & bmi_Group_pilot!=""
+    replace bmi_Group_final = bmi_Group_baseline if (missing(jhu_source) | strtrim(jhu_source)=="") & bmi_Group_final=="" & bmi_Group_baseline!=""
+    replace bmi_Group_final = bmi_Group_first_fp if (missing(jhu_source) | strtrim(jhu_source)=="") & bmi_Group_final=="" & bmi_Group_first_fp!=""
+}
+
+tab bmi_Group_final, m
+
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\bmi_complete 0902 Jan 2026.dta",replace
+
+
+
+
+
+H="geri done"
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\bmi_complete 0902 Jan 2026.dta",clear 
+
+drop if record_id_pilot==83 
+drop if record_id_pilot==92 
+
+tab jhu_cat_final,m
+tab frail_cat_final,m
+
+//adl 
+gen adl_cat_final = .
+
+* primary: take from the wave indicated by jhu_source
+replace adl_cat_final = adl_cat_b   if jhu_source=="baseline" & adl_cat_b   <.
+replace adl_cat_final = adl_cat_fu1 if jhu_source=="fu1"      & adl_cat_fu1 <.
+replace adl_cat_final = adl_cat_fu2 if jhu_source=="fu2"      & adl_cat_fu2 <.
+replace adl_cat_final = adl_cat_p   if jhu_source=="pilot"    & adl_cat_p   <.
+
+* fallback order when jhu_source is missing/unknown OR the chosen value is missing
+replace adl_cat_final = adl_cat_p   if missing(adl_cat_final) & adl_cat_p   <.
+replace adl_cat_final = adl_cat_b   if missing(adl_cat_final) & adl_cat_b   <.
+replace adl_cat_final = adl_cat_fu1 if missing(adl_cat_final) & adl_cat_fu1 <.
+replace adl_cat_final = adl_cat_fu2 if missing(adl_cat_final) & adl_cat_fu2 <.
+tab adl_cat_final,missing
+
+//callahan score 
+
+* Callahan category aligned to the visit where JHU was collected
+gen callahan_cat_final = .
+
+replace callahan_cat_final = callahan_cat_b   if jhu_source=="baseline" & callahan_cat_b   <.
+replace callahan_cat_final = callahan_cat_fu1 if jhu_source=="fu1"      & callahan_cat_fu1 <.
+replace callahan_cat_final = callahan_cat_fu2 if jhu_source=="fu2"      & callahan_cat_fu2 <.
+replace callahan_cat_final = callahan_cat_p   if jhu_source=="pilot"    & callahan_cat_p   <.
+
+replace callahan_cat_final = callahan_cat_p   if missing(callahan_cat_final) & callahan_cat_p   <.
+replace callahan_cat_final = callahan_cat_b   if missing(callahan_cat_final) & callahan_cat_b   <.
+replace callahan_cat_final = callahan_cat_fu1 if missing(callahan_cat_final) & callahan_cat_fu1 <.
+replace callahan_cat_final = callahan_cat_fu2 if missing(callahan_cat_final) & callahan_cat_fu2 <.
+tab callahan_cat_final,m
+
+
+//moca 
+rename moca_catags_b moca_cat_b
+rename moca_catags_fu1 moca_cat_fu1
+rename moca_catags_fu2 moca_cat_fu2
+
+* MoCA category aligned to the visit where JHU was collected
+gen moca_cat_final = .
+
+replace moca_cat_final = moca_cat_b   if jhu_source=="baseline" & moca_cat_b   <.
+replace moca_cat_final = moca_cat_fu1 if jhu_source=="fu1"      & moca_cat_fu1 <.
+replace moca_cat_final = moca_cat_fu2 if jhu_source=="fu2"      & moca_cat_fu2 <.
+replace moca_cat_final = moca_cat_p   if jhu_source=="pilot"    & moca_cat_p   <.
+
+replace moca_cat_final = moca_cat_p   if missing(moca_cat_final) & moca_cat_p   <.
+replace moca_cat_final = moca_cat_b   if missing(moca_cat_final) & moca_cat_b   <.
+replace moca_cat_final = moca_cat_fu1 if missing(moca_cat_final) & moca_cat_fu1 <.
+replace moca_cat_final = moca_cat_fu2 if missing(moca_cat_final) & moca_cat_fu2 <.
+tab moca_cat_final,m
+
+//fesi score 
+gen fesi_cat_final = .
+
+replace fesi_cat_final = fesi_cat_b   if jhu_source=="baseline" & fesi_cat_b   <.
+replace fesi_cat_final = fesi_cat_fu1 if jhu_source=="fu1"      & fesi_cat_fu1 <.
+replace fesi_cat_final = fesi_cat_fu2 if jhu_source=="fu2"      & fesi_cat_fu2 <.
+replace fesi_cat_final = fesi_cat_p   if jhu_source=="pilot"    & fesi_cat_p   <.
+
+replace fesi_cat_final = fesi_cat_p   if missing(fesi_cat_final) & fesi_cat_p   <.
+replace fesi_cat_final = fesi_cat_b   if missing(fesi_cat_final) & fesi_cat_b   <.
+replace fesi_cat_final = fesi_cat_fu1 if missing(fesi_cat_final) & fesi_cat_fu1 <.
+replace fesi_cat_final = fesi_cat_fu2 if missing(fesi_cat_final) & fesi_cat_fu2 <.
+tab fesi_cat_final,m
+
+gen fesi_total_final = .
+
+replace fesi_total_final = fesi_total_b   if jhu_source=="baseline" & fesi_total_b   <.
+replace fesi_total_final = fesi_total_fu1 if jhu_source=="fu1"      & fesi_total_fu1 <.
+replace fesi_total_final = fesi_total_fu2 if jhu_source=="fu2"      & fesi_total_fu2 <.
+replace fesi_total_final = fesi_total  if jhu_source=="pilot"    & fesi_total   <.
+
+replace fesi_total_final = fesi_total   if missing(fesi_total_final) & fesi_total   <.
+replace fesi_total_final = fesi_total_b   if missing(fesi_total_final) & fesi_total_b   <.
+replace fesi_total_final = fesi_total_fu1 if missing(fesi_total_final) & fesi_total_fu1 <.
+replace fesi_total_final = fesi_total_fu2 if missing(fesi_total_final) & fesi_total_fu2 <.
+
+tab fesi_total_final, m
+
+
+//fall risk 
+gen fall_risk_final = .
+
+replace fall_risk_final = fall_risk_b   if jhu_source=="baseline" & fall_risk_b   <.
+replace fall_risk_final = fall_risk_fu2 if jhu_source=="fu2"      & fall_risk_fu2 <.
+replace fall_risk_final = fall_risk_p   if jhu_source=="pilot"    & fall_risk_p   <.
+
+replace fall_risk_final = fall_risk_p   if missing(fall_risk_final) & fall_risk_p   <.
+replace fall_risk_final = fall_risk_b   if missing(fall_risk_final) & fall_risk_b   <.
+replace fall_risk_final = fall_risk_fu2 if missing(fall_risk_final) & fall_risk_fu2 <.
+
+tab fall_risk_final,m
+
+gen falls_year_final = .
+
+replace falls_year_final = falls_year_b   if jhu_source=="baseline" & falls_year_b   < .
+replace falls_year_final = falls_year_fu2 if jhu_source=="fu2"      & falls_year_fu2 < .
+replace falls_year_final = falls_year  if jhu_source=="pilot"    & falls_year   < .
+
+replace falls_year_final = falls_year   if missing(falls_year_final) & falls_year   < .
+replace falls_year_final = falls_year_b   if missing(falls_year_final) & falls_year_b   < .
+replace falls_year_final = falls_year_fu2 if missing(falls_year_final) & falls_year_fu2 < .
+
+tab falls_year_final, m
+
+gen falls_year_mult_final = .
+
+replace falls_year_mult_final = falls_year_mult_b   if jhu_source=="baseline" & falls_year_mult_b   < .
+replace falls_year_mult_final = falls_year_mult_fu2 if jhu_source=="fu2"      & falls_year_mult_fu2 < .
+replace falls_year_mult_final = falls_year_mult_p   if jhu_source=="pilot"    & falls_year_mult_p   < .
+
+replace falls_year_mult_final = falls_year_mult_p   if missing(falls_year_mult_final) & falls_year_mult_p   < .
+replace falls_year_mult_final = falls_year_mult_b   if missing(falls_year_mult_final) & falls_year_mult_b   < .
+replace falls_year_mult_final = falls_year_mult_fu2 if missing(falls_year_mult_final) & falls_year_mult_fu2 < .
+
+tab falls_year_mult_final, m
+
+gen falls_afraid_final = .
+
+replace falls_afraid_final = falls_afraid_b   if jhu_source=="baseline" & falls_afraid_b   < .
+replace falls_afraid_final = falls_afraid_fu2 if jhu_source=="fu2"      & falls_afraid_fu2 < .
+replace falls_afraid_final = falls_afraid   if jhu_source=="pilot"    & falls_afraid   < .
+
+replace falls_afraid_final = falls_afraid   if missing(falls_afraid_final) & falls_afraid  < .
+replace falls_afraid_final = falls_afraid_b   if missing(falls_afraid_final) & falls_afraid_b   < .
+replace falls_afraid_final = falls_afraid_fu2 if missing(falls_afraid_final) & falls_afraid_fu2 < .
+
+tab falls_afraid_final, m
+
+//ER
+* ER stay aligned to the visit where JHU was collected
+capture drop er_stay_final
+gen er_stay_final = .
+
+replace er_stay_final = er_stay_b   if jhu_source=="baseline" & er_stay_b   <.
+replace er_stay_final = er_stay_fu1 if jhu_source=="fu1"      & er_stay_fu1 <.
+replace er_stay_final = er_stay_fu2 if jhu_source=="fu2"      & er_stay_fu2 <.
+replace er_stay_final = er_stay_p   if jhu_source=="pilot"    & er_stay_p   <.
+
+replace er_stay_final = er_stay_p   if missing(er_stay_final) & er_stay_p   <.
+replace er_stay_final = er_stay_b   if missing(er_stay_final) & er_stay_b   <.
+replace er_stay_final = er_stay_fu1 if missing(er_stay_final) & er_stay_fu1 <.
+replace er_stay_final = er_stay_fu2 if missing(er_stay_final) & er_stay_fu2 <.
+tab er_stay_final,m 
+
+* ER stay (6-month) from the same visit where JHU was collected
+gen er_stay_6month_final = .
+
+replace er_stay_6month_final = er_stay_6month_b   if jhu_source=="baseline" & er_stay_6month_b   <.
+replace er_stay_6month_final = er_stay_6month_fu1 if jhu_source=="fu1"      & er_stay_6month_fu1 <.
+replace er_stay_6month_final = er_stay_6month_fu2 if jhu_source=="fu2"      & er_stay_6month_fu2 <.
+replace er_stay_6month_final = er_stay_6month_p   if jhu_source=="pilot"    & er_stay_6month_p   <.
+
+replace er_stay_6month_final = er_stay_6month_p   if missing(er_stay_6month_final) & er_stay_6month_p   <.
+replace er_stay_6month_final = er_stay_6month_b   if missing(er_stay_6month_final) & er_stay_6month_b   <.
+replace er_stay_6month_final = er_stay_6month_fu1 if missing(er_stay_6month_final) & er_stay_6month_fu1 <.
+replace er_stay_6month_final = er_stay_6month_fu2 if missing(er_stay_6month_final) & er_stay_6month_fu2 <.
+replace er_stay_6month_final = . if er_stay_final != 1 
+tab er_stay_6month_final,m
+
+//hospital stay 
+* Hospital stay from the same visit where JHU was collected
+gen hospital_stay_final = .
+
+replace hospital_stay_final = hospital_stay_b   if jhu_source=="baseline" & hospital_stay_b   <.
+replace hospital_stay_final = hospital_stay_fu1 if jhu_source=="fu1"      & hospital_stay_fu1 <.
+replace hospital_stay_final = hospital_stay_fu2 if jhu_source=="fu2"      & hospital_stay_fu2 <.
+replace hospital_stay_final = hospital_stay_p   if jhu_source=="pilot"    & hospital_stay_p   <.
+
+replace hospital_stay_final = hospital_stay_p   if missing(hospital_stay_final) & hospital_stay_p   <.
+replace hospital_stay_final = hospital_stay_b   if missing(hospital_stay_final) & hospital_stay_b   <.
+replace hospital_stay_final = hospital_stay_fu1 if missing(hospital_stay_final) & hospital_stay_fu1 <.
+replace hospital_stay_final = hospital_stay_fu2 if missing(hospital_stay_final) & hospital_stay_fu2 <.
+tab hospital_stay_final,m
+
+gen hospital_stay_6month_final = .
+
+replace hospital_stay_6month_final = hospital_stay_6month_b   if jhu_source=="baseline" & hospital_stay_6month_b   <.
+replace hospital_stay_6month_final = hospital_stay_6month_fu1 if jhu_source=="fu1"      & hospital_stay_6month_fu1 <.
+replace hospital_stay_6month_final = hospital_stay_6month_fu2 if jhu_source=="fu2"      & hospital_stay_6month_fu2 <.
+replace hospital_stay_6month_final = hospital_stay_6month_p   if jhu_source=="pilot"    & hospital_stay_6month_p   <.
+
+replace hospital_stay_6month_final = hospital_stay_6month_p   if missing(hospital_stay_6month_final) & hospital_stay_6month_p   <.
+replace hospital_stay_6month_final = hospital_stay_6month_b   if missing(hospital_stay_6month_final) & hospital_stay_6month_b   <.
+replace hospital_stay_6month_final = hospital_stay_6month_fu1 if missing(hospital_stay_6month_final) & hospital_stay_6month_fu1 <.
+replace hospital_stay_6month_final = hospital_stay_6month_fu2 if missing(hospital_stay_6month_final) & hospital_stay_6month_fu2 <.
+
+replace hospital_stay_6month_final = . if hospital_stay_final != 1
+tab hospital_stay_6month_final,m
+
+
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\geri done 0902 Jan 2026.dta",replace
+
+
+H="certification done"
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\geri done 0902 Jan 2026.dta", clear
+
+* --- Categories to finalize ---
+local cats ANX Cancer DEP EXT GERD ILD OAD PTSD SA SP SRC URD
+
+* --- _final = 1 if either _main or _pilot is 1 (treat missings as 0)
+foreach c of local cats {
+    capture confirm variable has_cert`c'_main
+    if _rc gen byte has_cert`c'_main = 0
+    replace has_cert`c'_main = 0 if missing(has_cert`c'_main)
+
+    capture confirm variable has_cert`c'_pilot
+    if _rc gen byte has_cert`c'_pilot = 0
+    replace has_cert`c'_pilot = 0 if missing(has_cert`c'_pilot)
+
+    gen byte has_cert`c'_final = (has_cert`c'_main==1 | has_cert`c'_pilot==1)
+}
+
+* --- Any & count from the _final set
+egen has_any_cert_final = rowmax( ///
+    has_certANX_final has_certCancer_final has_certDEP_final has_certEXT_final has_certGERD_final ///
+    has_certILD_final has_certOAD_final has_certPTSD_final has_certSA_final has_certSP_final ///
+    has_certSRC_final has_certURD_final)
+
+egen n_certs_final = rowtotal( ///
+    has_certANX_final has_certCancer_final has_certDEP_final has_certEXT_final has_certGERD_final ///
+    has_certILD_final has_certOAD_final has_certPTSD_final has_certSA_final has_certSP_final ///
+    has_certSRC_final has_certURD_final)
+
+	
+* Tabulate each _final flag + any + count
+ds has_cert*_final has_any_cert_final n_certs_final
+foreach v of varlist `r(varlist)' {
+    di "=============================="
+    di "Tabulation of `v'"
+    tab `v', missing
+}
+
+drop _merge 
+drop record_id
+
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\all done 0919 Jan 2026.dta", replace
+
+
+H="Hannah paper revision"
+
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\all done 0919 Jan 2026.dta",clear
+
+drop if jhu_source==""
+
+preserve
+contract n_certs_final
+
+* Total sample size
+egen total = total(_freq)
+
+* Percentage
+gen pct = 100 * _freq / total
+
+* Label
+gen lab = string(_freq) + " (" + string(pct,"%4.1f") + "%)"
+
+* Graph
+twoway ///
+    (bar _freq n_certs_final, ///
+        barwidth(0.8) ///
+        fcolor(black) ///
+        lcolor(black)) ///
+    (scatter _freq n_certs_final, ///
+        mlabel(lab) ///
+        msymbol(none) ///
+        mlabposition(12) ///
+        mlabcolor(black)), ///
+    legend(off) ///
+    xtitle("Number of Certifications") ///
+    ytitle("Number of Participants") ///
+    title("Distribution of Certifications") ///
+    ylabel(0(10)100)
+
+restore
+
+H="**************"
+
+
+H="descriptives for 5 waves "
+log using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\output\output 011626.smcl",replace 
+
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\all done 0919 Jan 2026.dta",clear 
+
+keep if !missing(jhu_source)
+
+foreach var in survey_date_pilot survey_date_baseline survey_date_firstfp survey_date_secondfp survey_date_thirdfp {
+	di "`var': " _c
+    count if !missing(`var')
+}
+
+*==================== PILOT ====================*
+preserve
+keep if !missing(survey_date_pilot)
+
+tab1 jhu_cat_final frail_cat_final gender_final age_group race_final ///
+     smoking_status_final bmi_Group_final soc_4_categories_final ///
+     education_final exposure_final ///
+     adl_cat_final callahan_cat_final moca_cat_final fesi_cat_final ///
+     fall_risk_final er_stay_6month_final er_stay_final ///
+     hospital_stay_6month_final hospital_stay_final, missing
+
+capture unab HASVARS : has_*_final
+if !_rc tab1 `HASVARS', missing
+
+tab frail_cat_final jhu_cat_final, chi2 missing
+tab gender_final jhu_cat_final, chi2 missing
+tab age_group jhu_cat_final, chi2 missing
+tab race_final jhu_cat_final, chi2 missing
+tab smoking_status_final jhu_cat_final, chi2 missing
+tab bmi_Group_final jhu_cat_final, chi2 missing
+tab soc_4_categories_final jhu_cat_final, chi2 missing
+tab education_final jhu_cat_final, chi2 missing
+tab exposure_final jhu_cat_final, chi2 missing
+tab adl_cat_final jhu_cat_final, chi2 missing
+tab callahan_cat_final jhu_cat_final, chi2 missing
+tab moca_cat_final jhu_cat_final, chi2 missing
+tab fesi_cat_final jhu_cat_final, chi2 missing
+tab fall_risk_final jhu_cat_final, chi2 missing
+tab er_stay_6month_final jhu_cat_final, chi2 missing
+tab er_stay_final jhu_cat_final, chi2 missing
+tab hospital_stay_6month_final jhu_cat_final, chi2 missing
+tab hospital_stay_final jhu_cat_final, chi2 missing
+
+capture unab HASVARS : has_*_final
+if !_rc {
+    foreach v in `HASVARS' {
+        tab `v' jhu_cat_final, chi2 missing
+    }
+}
+restore
+
+
+*==================== BASELINE ====================*
+preserve
+keep if !missing(survey_date_baseline)
+
+tab1 jhu_cat_final frail_cat_final gender_final age_group race_final ///
+     smoking_status_final bmi_Group_final soc_4_categories_final ///
+     education_final exposure_final ///
+     adl_cat_final callahan_cat_final moca_cat_final fesi_cat_final ///
+     fall_risk_final er_stay_6month_final er_stay_final ///
+     hospital_stay_6month_final hospital_stay_final, missing
+
+capture unab HASVARS : has_*_final
+if !_rc tab1 `HASVARS', missing
+
+tab frail_cat_final jhu_cat_final, chi2 missing
+tab gender_final jhu_cat_final, chi2 missing
+tab age_group jhu_cat_final, chi2 missing
+tab race_final jhu_cat_final, chi2 missing
+tab smoking_status_final jhu_cat_final, chi2 missing
+tab bmi_Group_final jhu_cat_final, chi2 missing
+tab soc_4_categories_final jhu_cat_final, chi2 missing
+tab education_final jhu_cat_final, chi2 missing
+tab exposure_final jhu_cat_final, chi2 missing
+tab adl_cat_final jhu_cat_final, chi2 missing
+tab callahan_cat_final jhu_cat_final, chi2 missing
+tab moca_cat_final jhu_cat_final, chi2 missing
+tab fesi_cat_final jhu_cat_final, chi2 missing
+tab fall_risk_final jhu_cat_final, chi2 missing
+tab er_stay_6month_final jhu_cat_final, chi2 missing
+tab er_stay_final jhu_cat_final, chi2 missing
+tab hospital_stay_6month_final jhu_cat_final, chi2 missing
+tab hospital_stay_final jhu_cat_final, chi2 missing
+
+capture unab HASVARS : has_*_final
+if !_rc {
+    foreach v in `HASVARS' {
+        tab `v' jhu_cat_final, chi2 missing
+    }
+}
+restore
+
+
+*==================== FIRST FOLLOW-UP ====================*
+preserve
+keep if !missing(survey_date_firstfp)
+
+tab1 jhu_cat_final frail_cat_final gender_final age_group race_final ///
+     smoking_status_final bmi_Group_final soc_4_categories_final ///
+     education_final exposure_final ///
+     adl_cat_final callahan_cat_final moca_cat_final fesi_cat_final ///
+     fall_risk_final er_stay_6month_final er_stay_final ///
+     hospital_stay_6month_final hospital_stay_final, missing
+
+capture unab HASVARS : has_*_final
+if !_rc tab1 `HASVARS', missing
+
+tab frail_cat_final jhu_cat_final, chi2 missing
+tab gender_final jhu_cat_final, chi2 missing
+tab age_group jhu_cat_final, chi2 missing
+tab race_final jhu_cat_final, chi2 missing
+tab smoking_status_final jhu_cat_final, chi2 missing
+tab bmi_Group_final jhu_cat_final, chi2 missing
+tab soc_4_categories_final jhu_cat_final, chi2 missing
+tab education_final jhu_cat_final, chi2 missing
+tab exposure_final jhu_cat_final, chi2 missing
+tab adl_cat_final jhu_cat_final, chi2 missing
+tab callahan_cat_final jhu_cat_final, chi2 missing
+tab moca_cat_final jhu_cat_final, chi2 missing
+tab fesi_cat_final jhu_cat_final, chi2 missing
+tab fall_risk_final jhu_cat_final, chi2 missing
+tab er_stay_6month_final jhu_cat_final, chi2 missing
+tab er_stay_final jhu_cat_final, chi2 missing
+tab hospital_stay_6month_final jhu_cat_final, chi2 missing
+tab hospital_stay_final jhu_cat_final, chi2 missing
+
+capture unab HASVARS : has_*_final
+if !_rc {
+    foreach v in `HASVARS' {
+        tab `v' jhu_cat_final, chi2 missing
+    }
+}
+restore
+
+
+*==================== SECOND FOLLOW-UP ====================*
+preserve
+keep if !missing(survey_date_secondfp)
+
+tab1 jhu_cat_final frail_cat_final gender_final age_group race_final ///
+     smoking_status_final bmi_Group_final soc_4_categories_final ///
+     education_final exposure_final ///
+     adl_cat_final callahan_cat_final moca_cat_final fesi_cat_final ///
+     fall_risk_final er_stay_6month_final er_stay_final ///
+     hospital_stay_6month_final hospital_stay_final, missing
+
+capture unab HASVARS : has_*_final
+if !_rc tab1 `HASVARS', missing
+
+tab frail_cat_final jhu_cat_final, chi2 missing
+tab gender_final jhu_cat_final, chi2 missing
+tab age_group jhu_cat_final, chi2 missing
+tab race_final jhu_cat_final, chi2 missing
+tab smoking_status_final jhu_cat_final, chi2 missing
+tab bmi_Group_final jhu_cat_final, chi2 missing
+tab soc_4_categories_final jhu_cat_final, chi2 missing
+tab education_final jhu_cat_final, chi2 missing
+tab exposure_final jhu_cat_final, chi2 missing
+tab adl_cat_final jhu_cat_final, chi2 missing
+tab callahan_cat_final jhu_cat_final, chi2 missing
+tab moca_cat_final jhu_cat_final, chi2 missing
+tab fesi_cat_final jhu_cat_final, chi2 missing
+tab fall_risk_final jhu_cat_final, chi2 missing
+tab er_stay_6month_final jhu_cat_final, chi2 missing
+tab er_stay_final jhu_cat_final, chi2 missing
+tab hospital_stay_6month_final jhu_cat_final, chi2 missing
+tab hospital_stay_final jhu_cat_final, chi2 missing
+
+capture unab HASVARS : has_*_final
+if !_rc {
+    foreach v in `HASVARS' {
+        tab `v' jhu_cat_final, chi2 missing
+    }
+}
+restore
+
+
+*==================== THIRD FOLLOW-UP ====================*
+preserve
+keep if !missing(survey_date_thirdfp)
+
+tab1 jhu_cat_final frail_cat_final gender_final age_group race_final ///
+     smoking_status_final bmi_Group_final soc_4_categories_final ///
+     education_final exposure_final ///
+     adl_cat_final callahan_cat_final moca_cat_final fesi_cat_final ///
+     fall_risk_final er_stay_6month_final er_stay_final ///
+     hospital_stay_6month_final hospital_stay_final, missing
+
+capture unab HASVARS : has_*_final
+if !_rc tab1 `HASVARS', missing
+
+tab frail_cat_final jhu_cat_final, chi2 missing
+tab gender_final jhu_cat_final, chi2 missing
+tab age_group jhu_cat_final, chi2 missing
+tab race_final jhu_cat_final, chi2 missing
+tab smoking_status_final jhu_cat_final, chi2 missing
+tab bmi_Group_final jhu_cat_final, chi2 missing
+tab soc_4_categories_final jhu_cat_final, chi2 missing
+tab education_final jhu_cat_final, chi2 missing
+tab exposure_final jhu_cat_final, chi2 missing
+tab adl_cat_final jhu_cat_final, chi2 missing
+tab callahan_cat_final jhu_cat_final, chi2 missing
+tab moca_cat_final jhu_cat_final, chi2 missing
+tab fesi_cat_final jhu_cat_final, chi2 missing
+tab fall_risk_final jhu_cat_final, chi2 missing
+tab er_stay_6month_final jhu_cat_final, chi2 missing
+tab er_stay_final jhu_cat_final, chi2 missing
+tab hospital_stay_6month_final jhu_cat_final, chi2 missing
+tab hospital_stay_final jhu_cat_final, chi2 missing
+
+capture unab HASVARS : has_*_final
+if !_rc {
+    foreach v in `HASVARS' {
+        tab `v' jhu_cat_final, chi2 missing
+    }
+}
+restore
+
+translate "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\output\output 011626.smcl" "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\output\output 011626.pdf"
+
+log close 
+
+H="graph"
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\all done 0919 Jan 2026.dta",clear 
+
+gen miss_fesi_b = missing(fesi_total_b)
+gen miss_fesi   = missing(fesi_total)
+
+tab miss_fesi_b miss_fesi, m
+
+rename fesi_total fesi_total_p
+
+tab fesi_total_p
+
+rename falls_afraid falls_afraid_p
+
+tab falls_afraid_p,m
+
+
+tab fesi_total_p
+
+egen fesi_ord = group(fesi_total_p), label
+sort fesi_total_p
+graph bar (count), over(fesi_ord) ytitle(Count) ///
+title("FES-I Score Distribution - Pilot")
+
+tab fesi_total_b
+egen fesi_ord1 = group(fesi_total_b), label
+sort fesi_total_b
+graph bar (count), over(fesi_ord1) ytitle(Count) ///
+title("FES-I Score Distribution - Baseline")
+
+tab fesi_total_fu1
+egen fesi_ord2 = group(fesi_total_fu1), label
+sort fesi_total_fu1
+graph bar (count), over(fesi_ord2) ytitle(Count) ///
+title("FES-I Score Distribution - FirstFP")
+
+tab fesi_total_fu2
+egen fesi_ord3 = group(fesi_total_fu2), label
+sort fesi_total_fu2
+graph bar (count), over(fesi_ord3) ytitle(Count) ///
+title("FES-I Score Distribution - SecondFP")
+
+H="ADL each wave"
+log using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\output\adl 020926.smcl",replace 
+
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\all done 0919 Jan 2026.dta",clear 
+
+keep if !missing(jhu_source)
+
+foreach var in survey_date_pilot survey_date_baseline survey_date_firstfp survey_date_secondfp survey_date_thirdfp {
+	di "`var': " _c
+    count if !missing(`var')
+}
+
+*==================== PILOT ====================*
+preserve
+keep if !missing(survey_date_pilot)
+
+foreach var in adl_phone adl_move adl_shop adl_meal adl_house adl_med adl_money adl_wash adl_dress adl_eat adl_walk adl_clean adl_score {
+	tab `var',m
+}
+
+sum adl_score
+
+
+foreach var in adl_phone adl_move adl_shop adl_meal adl_house adl_med adl_money adl_wash adl_dress adl_eat adl_walk adl_clean adl_score {
+	replace `var' = . if `var' < 0
+	tab `var',m
+}
+
+sum adl_score
+
+restore
+
+*==================== BASELINE ====================*
+preserve
+keep if !missing(survey_date_baseline)
+
+foreach var in adl_phone_b adl_move_b adl_shop_b adl_meal_b adl_house_b adl_med_b adl_money_b adl_wash_b adl_dress_b adl_eat_b adl_walk_b adl_clean_b adl_score_b {
+	tab `var',m
+}
+
+sum adl_score_b
+
+foreach var in adl_phone_b adl_move_b adl_shop_b adl_meal_b adl_house_b adl_med_b adl_money_b adl_wash_b adl_dress_b adl_eat_b adl_walk_b adl_clean_b adl_score_b {
+	replace `var' = . if `var' < 0
+	tab `var',m
+}
+
+sum adl_score_b
+
+restore
+
+*==================== FIRST FOLLOW-UP ====================*
+preserve
+keep if !missing(survey_date_firstfp)
+
+foreach var in adl_phone_fu1 adl_move_fu1 adl_shop_fu1 adl_meal_fu1 adl_house_fu1 adl_med_fu1 adl_money_fu1 adl_wash_fu1 adl_dress_fu1 adl_eat_fu1 adl_walk_fu1 adl_clean_fu1 adl_score_fu1 {
+	tab `var',m
+}
+
+sum adl_score_fu1
+
+foreach var in adl_phone_fu1 adl_move_fu1 adl_shop_fu1 adl_meal_fu1 adl_house_fu1 adl_med_fu1 adl_money_fu1 adl_wash_fu1 adl_dress_fu1 adl_eat_fu1 adl_walk_fu1 adl_clean_fu1 adl_score_fu1 {
+	replace `var' = . if `var' < 0
+	tab `var',m
+}
+
+sum adl_score_fu1
+
+restore
+
+*==================== SECOND FOLLOW-UP ====================*
+preserve
+keep if !missing(survey_date_secondfp)
+
+foreach var in adl_phone_fu2 adl_move_fu2 adl_shop_fu2 adl_meal_fu2 adl_house_fu2 adl_med_fu2 adl_money_fu2 adl_wash_fu2 adl_dress_fu2 adl_eat_fu2 adl_walk_fu2 adl_clean_fu2 adl_score_fu2 {
+	tab `var',m
+}
+
+sum adl_score_fu2
+
+foreach var in adl_phone_fu2 adl_move_fu2 adl_shop_fu2 adl_meal_fu2 adl_house_fu2 adl_med_fu2 adl_money_fu2 adl_wash_fu2 adl_dress_fu2 adl_eat_fu2 adl_walk_fu2 adl_clean_fu2 adl_score_fu2 {
+	replace `var' = . if `var' < 0
+	tab `var',m
+}
+
+sum adl_score_fu2
+
+restore 
+
+translate "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\output\adl 020926.smcl" "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\output\adl 020926.pdf"
+
+log close 
+
+H="fall risk compare"
+log using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\output\fall risk compare 020926.smcl",replace 
+
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\all done 0919 Jan 2026.dta",clear 
+
+keep if !missing(jhu_source)
+
+foreach var in survey_date_pilot survey_date_baseline survey_date_firstfp survey_date_secondfp survey_date_thirdfp {
+	di "`var': " _c
+    count if !missing(`var')
+}
+
+*==================== PILOT ====================*
+preserve
+keep if !missing(survey_date_pilot)
+
+
+gen falls_test = (falls_afraid == 1 | falls_year == 1)
+tab falls_test fall_risk_final
+
+list record_id_main record_id_pilot if falls_test==1 & fall_risk_final!=1 
+
+restore
+
+
+*==================== BASELINE ====================*
+preserve
+keep if !missing(survey_date_baseline)
+
+
+gen falls_test_b = (falls_afraid_b == 1 | falls_year_b == 1)
+tab falls_test_b fall_risk_b
+
+list record_id_main record_id_pilot if falls_test_b==1 & fall_risk_b!=1 
+
+restore
+
+
+*==================== FIRST FOLLOW-UP ====================*
+preserve
+keep if !missing(survey_date_firstfp)
+
+
+gen falls_test_fu1 = (falls_afraid_fu1 == 1 | falls_year_fu1 == 1)
+tab falls_test_fu1 fall_risk_fu1
+
+list record_id_main record_id_pilot if falls_test_fu1==1 & fall_risk_fu1!=1 
+list record_id_main record_id_pilot if falls_test_fu1!=1 & fall_risk_fu1==1 
+
+
+restore
+
+
+*==================== SECOND FOLLOW-UP ====================*
+preserve
+keep if !missing(survey_date_secondfp)
+
+
+gen falls_test_fu2 = (falls_afraid_fu2 == 1 | falls_year_fu2 == 1)
+tab falls_test_fu2 fall_risk_fu2
+
+list record_id_main record_id_pilot if falls_test_fu2==1 & fall_risk_fu2!=1 
+
+restore
+
+
+
+translate "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\output\fall risk compare 020926.smcl" "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\output\fall risk compare 020926.pdf"
+
+log close 
+
+H="**************"
+
+
+H="polypharmacy analyses"
+log using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\output\Polypharmacy 03.03.smcl",replace 
+
+*---------------------------------------
+* Polypharmacy data 
+*---------------------------------------
+
+clear all
+set more off
+
+* 1. Load data
+import delimited "\\researchsan02a\Shr3\PM\DC_FK Frailty assessment\RDR FK250129 Frailty\FK250129_IAMQ_self_rep_meds(1).csv", clear stringcols(_all)
+
+* 2. Basic checks
+count
+egen tag_id = tag(extractid)
+count if tag_id
+drop tag_id
+
+* 3. Rename variables
+rename iamq_med_01 currently_taking
+rename iamq_med_02 brand_name
+rename iamq_med_03 generic_name
+rename iamq_med_04 form_of_med
+rename iamq_med_05 other_form
+rename iamq_med_06 quantity_or_strength
+rename iamq_med_07 dose_measure
+rename iamq_med_08 dose_measure_other
+rename iamq_med_09 frequency_of_use
+rename iamq_med_09a frequency_other
+rename iamq_med_10 reason_code1
+rename iamq_med_11 reason_code2
+rename iamq_med_12 reason_other
+rename iamq_med_13 when_start_taking
+rename iamq_med_14 start_taking_range 
+rename iamq_med_15 end_taking_range
+rename iamq_med_16 time_units
+
+* 4. Frequency tables
+tab currently_taking, missing
+tab comment currently_taking
+
+* 5. Check duplicates within visit
+* Brand name duplicates
+gen brand_trim = trim(brand_name)
+duplicates report extractid visit_number brand_trim
+*duplicates list extractid visit_number brand_trim
+
+* Generic name duplicates
+gen generic_clean = lower(generic_name)
+replace generic_clean = subinstr(generic_clean,"*","",.)
+replace generic_clean = subinstr(generic_clean,"prn","",.)
+replace generic_clean = trim(generic_clean)
+duplicates report extractid visit_number generic_clean
+*duplicates list extractid visit_number generic_clean
+
+* 6. Length summaries
+gen len_brand = length(brand_name)
+gen len_generic = length(generic_name)
+summ len_brand if currently_taking=="Yes"
+summ len_generic if currently_taking=="Yes"
+
+* 7. Create ID-visit variable
+gen id_visit = extractid + "_" + visit_number
+
+* 8. Keep visits with meds
+preserve
+keep if currently_taking=="Yes"
+
+* 9. Compute rx counts per visit
+gen taking = currently_taking == "Yes"
+collapse (count) rxcount=taking, by(id_visit)
+tempfile rxcounts
+save `rxcounts'
+restore
+
+* 10. Merge rxcounts back
+bysort id_visit: keep if _n==1
+merge 1:1 id_visit using `rxcounts', nogen
+
+* 11. Convert visit dates
+gen visit_date2 = date(when_start_taking,"MDY")
+format visit_date2 %td
+gen visit_year = year(visit_date2)
+
+* 12. Set rxcount=0 when no meds
+replace rxcount = 0 if comment=="No IAMQ self-reported medications data available for this visit"
+
+
+* 13. Longitudinal summaries
+bys extractid: gen nvisits = _N
+tab nvisits
+tab visit_year
+
+* 14. Distribution of rxcount
+summ rxcount, detail
+*histogram rxcount, bin(50) percent
+
+* 15. Extreme cases
+tab rxcount if rxcount>50
+list extractid visit_number rxcount if rxcount==52
+list extractid visit_number rxcount if rxcount==57
+
+* 16. Rxcount by year
+graph box rxcount, over(visit_year)
+
+* Most recent visit 
+
+* 18. Cross-sectional subset 2019+
+keep if visit_year>=2019
+sum rxcount
+histogram rxcount, percent
+tab rxcount
+
+
+translate "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\output\Polypharmacy 03.03.smcl" "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\output\Polypharmacy 03.03.pdf"
+
+log close 
+
+H="clean clean clean "
+*further cleaning steps 
+
+*==============================
+* CLEAN GENERIC NAME (ONE CHUNK)
+*==============================
+
+gen generic_std = upper(trim(generic_name))
+
+* Remove dosage / units
+replace generic_std = regexr(generic_std, "[0-9]+(\.[0-9]+)?\s*(MG|ML|MCG|G|%|IU)", "")
+
+* Remove forms
+replace generic_std = regexr(generic_std, ///
+"(TABLET|TAB|CAPSULE|CAP|INHALER|SPRAY|SOLUTION|PATCH|CREAM|OINTMENT|GEL|DROP|NEB|NEBULIZER|INJECTION|SYRUP)", "")
+
+* Remove frequency / instructions
+replace generic_std = regexr(generic_std, ///
+"(PRN|QD|QID|BID|TID|DAILY|NIGHTLY|ONCE|TWICE|EVERY.*|AS NEEDED)", "")
+
+* Remove symbols / punctuation
+replace generic_std = regexr(generic_std, "[^A-Z ]", "")
+replace generic_std = trim(regexr(generic_std, " +", " "))
+
+* Drop garbage
+replace generic_std = "" if length(generic_std)<=2
+replace generic_std = "" if regexm(generic_std, ///
+"UNKNOWN|CANNOT|NOT SURE|MEDICATION|SUPPLEMENT|VITAMIN|BLOOD PRESSURE|ANTIBIOTIC|EYE DROPS|CREAM")
+
+* Fix common misspellings / unify categories
+replace generic_std = "ALBUTEROL" if regexm(generic_std, "ALBUTER")
+replace generic_std = "AMLODIPINE" if regexm(generic_std, "AMLOD")
+replace generic_std = "ATORVASTATIN" if regexm(generic_std, "ATORV")
+replace generic_std = "ASPIRIN" if regexm(generic_std, "ASPIR|ASA")
+replace generic_std = "ACETAMINOPHEN" if regexm(generic_std, "ACETAM")
+replace generic_std = "CETIRIZINE" if regexm(generic_std, "CETIRI")
+replace generic_std = "ALLOPURINOL" if regexm(generic_std, "ALLOP")
+replace generic_std = "ALPRAZOLAM" if regexm(generic_std, "ALPRAZ")
+replace generic_std = "BUDESONIDE" if regexm(generic_std, "BUDESO")
+replace generic_std = "AZELASTINE" if regexm(generic_std, "AZELAS")
+replace generic_std = "CLOPIDOGREL" if regexm(generic_std, "CLOPID")
+replace generic_std = "ESCITALOPRAM" if regexm(generic_std, "ESCIT")
+replace generic_std = "ESOMEPRAZOLE" if regexm(generic_std, "ESOMEP")
+replace generic_std = "FAMOTIDINE" if regexm(generic_std, "FAMOT")
+
+* Keep first drug if combination
+replace generic_std = word(generic_std,1)
+
+* Final clean list
+drop if generic_std==""
+
+*==============================
+* VERY CLEAN GENERIC NAME LIST
+*==============================
+
+capture drop generic_std
+gen generic_std = upper(trim(generic_name))
+
+* fill from brand if generic missing
+replace generic_std = upper(trim(brand_name)) if missing(generic_std) | generic_std==""
+
+* remove leading/trailing junk and normalize spaces
+replace generic_std = subinstr(generic_std, char(9), " ", .)
+replace generic_std = regexr(generic_std, "^[^A-Z0-9]+", "")
+replace generic_std = regexr(generic_std, "[^A-Z0-9]+$", "")
+replace generic_std = regexr(generic_std, "[ ]+", " ")
+
+* collapse obvious vitamins / supplements first
+replace generic_std = "VITAMIN" if regexm(generic_std, ///
+"VIT|VITAMIN|MULTIVIT|CENTRUM|BIOTIN|CYANOCOBALAMIN|CHOLECALCIFEROL|ERGOCALCIFEROL|ASCORBIC|B12|B 12|B-12|B COMPLEX|D3|COQ10|CO Q10|CQ 10|C0Q10|COENZYME Q10|FISH OIL|OMEGA ?3|COLLAGEN|CRANBERRY|APPLE CIDER|CINNAMON|GLUCOSAMINE|CHONDROITIN|PROBIOTIC|ALIGN|ACIDOPH|AMINO ACID|AMINO ACIDS|5HTP|FERROUS SULFATE|CALCIUM|MAGNESIUM")
+
+* common brand to generic
+replace generic_std = "IBUPROFEN" if regexm(generic_std, "ADVIL|ALEVE") & !regexm(generic_std, "TYLENOL")
+replace generic_std = "ACETAMINOPHEN" if regexm(generic_std, "TYLENOL")
+replace generic_std = "ARIPIPRAZOLE" if regexm(generic_std, "ABILIFY")
+replace generic_std = "FLUTICASONE SALMETEROL" if regexm(generic_std, "ADVAIR")
+replace generic_std = "SPIRONOLACTONE" if regexm(generic_std, "ALDACTONE")
+replace generic_std = "PIOGLITAZONE" if regexm(generic_std, "ACTOS")
+replace generic_std = "ASPIRIN" if regexm(generic_std, "ECOTRIN|BAYER|BABY ASPIRIN|ASA|ASPRIN|AASPRIN|ACARD")
+replace generic_std = "LORAZEPAM" if regexm(generic_std, "ATIVAN")
+replace generic_std = "APIXABAN" if regexm(generic_std, "ELIQUIS|ELOQUIS")
+replace generic_std = "ROSUVASTATIN" if regexm(generic_std, "CRESTOR")
+replace generic_std = "CELECOXIB" if regexm(generic_std, "CELEBREX")
+replace generic_std = "FEXOFENADINE" if regexm(generic_std, "ALLEGRA")
+replace generic_std = "LORATADINE" if regexm(generic_std, "CLARITIN|CLARITAN")
+replace generic_std = "AZELASTINE" if regexm(generic_std, "ASTELIN|ASTEPRO")
+replace generic_std = "LOSARTAN" if regexm(generic_std, "COZAAR")
+replace generic_std = "IRBESARTAN" if regexm(generic_std, "AVAPRO")
+replace generic_std = "NEBIVOLOL" if regexm(generic_std, "BYSTOLIC")
+replace generic_std = "MESALAMINE" if regexm(generic_std, "CANASA")
+replace generic_std = "TICAGRELOR" if regexm(generic_std, "BRILINTA")
+replace generic_std = "DULOXETINE" if regexm(generic_std, "CYMBALTA")
+replace generic_std = "BUDESONIDE FORMOTEROL" if regexm(generic_std, "SYMBICORT")
+replace generic_std = "BREXPIPRAZOLE" if regexm(generic_std, "REXULTI")
+
+* remove strength, units, forms, route, and frequency
+replace generic_std = regexr(generic_std, "[0-9]+([.][0-9]+)?[ ]*(MG|MCG|G|GM|ML|L|IU|MEQ|MMOL|%)", " ")
+replace generic_std = regexr(generic_std, "[0-9]+/[0-9]+", " ")
+replace generic_std = regexr(generic_std, "(TABLET|TABLETS|TAB|TABS|CAPSULE|CAPSULES|CAP|CAPS|INHALER|INH|SPRAY|SPRAYS|SOLUTION|SOLUTIONS|SOLN|PATCH|PATCHES|CREAM|OINTMENT|OINT|GEL|GELS|DROP|DROPS|NEB|NEBS|NEBULIZER|NEBULIZERS|INJECTION|INJECTOR|SYRUP|AUTOINJECTOR|AUTO INJECTOR|PEN|ORAL|TOPICAL|NASAL|OPHTHALMIC|EYE|GTT|GTTS|HFA|MDI|DR|ER|XR|SR|EC)", " ")
+replace generic_std = regexr(generic_std, "(PRN|QD|QOD|BID|TID|QID|HS|QHS|PO|DAILY|NIGHTLY|ONCE|TWICE|THREE TIMES A WEEK|TWICE DAILY|EVERY OTHER DAY|AT BEDTIME|RARELY|SOMETIMES)", " ")
+
+* remove salt names / chemistry tails that clutter generic
+replace generic_std = regexr(generic_std, "(HYDROCHLORIDE|HCL|SODIUM|CALCIUM|BESYLATE|BISULFATE|FUMARATE|MALEATE|OXALATE|SUCCINATE|MONOHYDRATE|HYDRATE|TARTRATE|POTASSIUM|ACETATE|PHOSPHATE|MESYLATE|CILEXETIL|MEDOXOMIL|TRIHYDRATE|STRONTIUM)", " ")
+
+* remove punctuation / weird marks after above steps
+replace generic_std = regexr(generic_std, "[^A-Z ]", " ")
+replace generic_std = regexr(generic_std, "[ ]+", " ")
+replace generic_std = trim(generic_std)
+
+* fix common misspellings / noisy variants
+replace generic_std = "ALBUTEROL" if regexm(generic_std, "ALBUTER|ALUTEROL")
+replace generic_std = "ALFUZOSIN" if regexm(generic_std, "AFLUZOSIN")
+replace generic_std = "ALPRAZOLAM" if regexm(generic_std, "ALPRAZ")
+replace generic_std = "AMITRIPTYLINE" if regexm(generic_std, "AMITR")
+replace generic_std = "AMLODIPINE" if regexm(generic_std, "AMLOD|AMOLOD|AMLODOP|AMLODP|AMOLOD|AMODOL")
+replace generic_std = "AMOXICILLIN" if regexm(generic_std, "AMOXICIL")
+replace generic_std = "ANASTROZOLE" if regexm(generic_std, "ANASTR")
+replace generic_std = "ATORVASTATIN" if regexm(generic_std, "ATORV|ATROV|AORV|AVORSTAT")
+replace generic_std = "AZELASTINE" if regexm(generic_std, "AZELAS")
+replace generic_std = "BUDESONIDE" if regexm(generic_std, "BUDESO")
+replace generic_std = "BUPROPION" if regexm(generic_std, "BUPROP")
+replace generic_std = "CANDESARTAN" if regexm(generic_std, "CANDES|CANDIS")
+replace generic_std = "CETIRIZINE" if regexm(generic_std, "CETIR|CETERI|CETRIZ|CITRIZ")
+replace generic_std = "CHLORTHALIDONE" if regexm(generic_std, "CHLORTH")
+replace generic_std = "CLONAZEPAM" if regexm(generic_std, "CLONAZ")
+replace generic_std = "CLOPIDOGREL" if regexm(generic_std, "CLOPID")
+replace generic_std = "COLCHICINE" if regexm(generic_std, "COLCH|COLDICINE")
+replace generic_std = "DICLOFENAC" if regexm(generic_std, "DICLOF|DECLOF")
+replace generic_std = "DESLORATADINE" if regexm(generic_std, "DESLORAT")
+replace generic_std = "DIPHENHYDRAMINE" if regexm(generic_std, "DIPHENHYD|DYPHENHYD|DIFENHID")
+replace generic_std = "DONEPEZIL" if regexm(generic_std, "DONEPEZ|DONAZEP")
+replace generic_std = "DULOXETINE" if regexm(generic_std, "DULOXET")
+replace generic_std = "EMPAGLIFLOZIN" if regexm(generic_std, "EMPAGLI")
+replace generic_std = "ENALAPRIL" if regexm(generic_std, "ENALAPR|ENALIPR")
+replace generic_std = "ESCITALOPRAM" if regexm(generic_std, "ESCITAL|ESCALOP|ESCITSL|ESCITS|ESCITALIP")
+replace generic_std = "ESOMEPRAZOLE" if regexm(generic_std, "ESOMEP|ESMOP")
+replace generic_std = "EZETIMIBE" if regexm(generic_std, "EZETI|EZETM")
+replace generic_std = "FAMOTIDINE" if regexm(generic_std, "FAMOT|FAMAT")
+replace generic_std = "FENOFIBRATE" if regexm(generic_std, "FENOFIB|FENOFEB")
+replace generic_std = "FEXOFENADINE" if regexm(generic_std, "FEXOFEN")
+replace generic_std = "MONTELUKAST" if regexm(generic_std, "MONTELUK")
+replace generic_std = "CYCLOSPORINE" if regexm(generic_std, "CYCLOSPOR")
+replace generic_std = "ACETAMINOPHEN" if regexm(generic_std, "ACETAMIN")
+replace generic_std = "ASPIRIN" if regexm(generic_std, "ASPIRIN|ASA|ASPRIN|AASPRIN")
+replace generic_std = "IBUPROFEN" if regexm(generic_std, "IBUPROFEN|ADVIL")
+replace generic_std = "LORATADINE" if regexm(generic_std, "LORATADINE|CLARITIN|CLARITAN")
+replace generic_std = "FEXOFENADINE" if regexm(generic_std, "ALLEGRA")
+replace generic_std = "DICLOFENAC" if regexm(generic_std, "DUEXIS")==0 & regexm(generic_std, "DICLOF")
+
+* common combos: keep standardized combo names
+replace generic_std = "AMLODIPINE BENAZEPRIL" if regexm(generic_std, "AMLODIPINE.*BENAZEPRIL|BENAZEPRIL.*AMLODIPINE|BENZAPRIL")
+replace generic_std = "AMLODIPINE OLMESARTAN" if regexm(generic_std, "AMLODIPINE.*OLMESARTAN|OLMESARTAN.*AMLODIPINE")
+replace generic_std = "AMLODIPINE VALSARTAN" if regexm(generic_std, "AMLODIPINE.*VALSARTAN|VALSARTAN.*AMLODIPINE")
+replace generic_std = "AMOXICILLIN CLAVULANATE" if regexm(generic_std, "AMOX.*CLAV|CLAVULANATE")
+replace generic_std = "AZELASTINE FLUTICASONE" if regexm(generic_std, "AZELASTINE.*FLUTICASONE|FLUTICASONE.*AZELASTINE|DYMISTA")
+replace generic_std = "BUDESONIDE FORMOTEROL" if regexm(generic_std, "BUDESONIDE.*FORMOTEROL|FORMOTEROL.*BUDESONIDE")
+replace generic_std = "CARBIDOPA LEVODOPA" if regexm(generic_std, "CARBIDOPA.*LEVODOPA|LEVODOPA.*CARBIDOPA")
+replace generic_std = "DUTASTERIDE TAMSULOSIN" if regexm(generic_std, "DUTASTERIDE.*TAMSULOSIN|TAMSULOSIN.*DUTASTERIDE")
+replace generic_std = "EMPAGLIFLOZIN METFORMIN" if regexm(generic_std, "EMPAGLIFLOZIN.*METFORMIN|METFORMIN.*EMPAGLIFLOZIN")
+replace generic_std = "DAPAGLIFLOZIN METFORMIN" if regexm(generic_std, "DAPAGLIFLOZIN.*METFORMIN|METFORMIN.*DAPAGLIFLOZIN")
+replace generic_std = "EZETIMIBE SIMVASTATIN" if regexm(generic_std, "EZETIMIBE.*SIMVAST|SIMVAST.*EZETIMIBE")
+replace generic_std = "FEXOFENADINE PSEUDOEPHEDRINE" if regexm(generic_std, "FEXOFENADINE.*PSEUDOEPHEDRINE|PSEUDOEPHEDRINE.*FEXOFENADINE")
+replace generic_std = "CETIRIZINE PSEUDOEPHEDRINE" if regexm(generic_std, "CETIRIZINE.*PSEUDOEPHEDRINE|PSEUDOEPHEDRINE.*CETIRIZINE")
+replace generic_std = "BUPRENORPHINE NALOXONE" if regexm(generic_std, "BUPRENORPHINE.*NALOXONE|NALOXONE.*BUPRENORPHINE")
+replace generic_std = "BUTALBITAL ACETAMINOPHEN CAFFEINE" if regexm(generic_std, "BUTALBITAL.*ACETAMINOPHEN.*CAFFEINE|ACETAMINOPHEN.*CAFFEINE")
+replace generic_std = "DORZOLAMIDE TIMOLOL" if regexm(generic_std, "DORZOLAMIDE.*TIMOLOL|TIMOLOL.*DORZOLAMIDE")
+
+* drop vague / unusable items
+replace generic_std = "" if regexm(generic_std, ///
+"UNKNOWN|NOT SURE|CANNOT|DOES NOT REMEMBER|CANT REMEMBER|FORGOT NAME|MEDICATION|MEDS|PILL|BLOOD PRESSURE|CHOLESTEROL|ALLERGY|ANTIBIOTIC|ANTIFUNGAL|BLOOD THINNER|EYE DROPS|EYE GTTS|EAR DROPS|DRY EYE|SALINE|MIST|OXYGEN|DIALYSIS|BIRTH CONTROL|BACK PAIN|REFLUX|CREAM FOR|GEL|PATCH|SHOT|INHALER")
+replace generic_std = "" if length(generic_std)<=1
+replace generic_std = "" if inlist(generic_std,"AIR","CBD")
+replace generic_std = trim(generic_std)
+
+* optional: if after cleaning only one meaningless short token remains, drop it
+replace generic_std = "" if length(generic_std)<=2
+
+* final drop missing cleaned values
+drop if generic_std==""
+
+* review very clean list
+sort generic_std
+tab generic_std
+
+*========================================
+* FURTHER STEP: KEEP ONLY CORE DRUG WORD
+*========================================
+
+replace generic_std = upper(trim(generic_std))
+
+* delete all numbers first
+replace generic_std = regexr(generic_std, "[0-9]+", " ")
+
+* remove leftover filler words
+replace generic_std = regexr(generic_std, ///
+"(MG|MCG|ML|G|GM|IU|MEQ|MMOL|PERCENT|TABLET|TABLETS|TAB|TABS|CAPSULE|CAPSULES|CAP|CAPS|INHALER|INH|SPRAY|SPRAYS|SOLUTION|SOLN|PATCH|PATCHES|CREAM|OINTMENT|OINT|GEL|GELS|DROP|DROPS|NEB|NEBS|NEBULIZER|NEBULIZERS|INJECTION|INJECTOR|PEN|SYRUP|AUTOINJECTOR|AUTO INJECTOR|ORAL|TOPICAL|NASAL|OPHTHALMIC|EYE|GTT|GTTS|HFA|MDI|DR|ER|XR|SR|EC|PRN|QD|QOD|BID|TID|QID|HS|QHS|PO|DAILY|NIGHTLY|ONCE|TWICE|SOMETIMES|RARELY|BEDTIME|ACTUATION|CHEWABLE|DELAYED RELEASE|EXTENDED RELEASE|RELEASE)", " ")
+
+replace generic_std = regexr(generic_std, ///
+"(HYDROCHLORIDE|HCL|SODIUM|CALCIUM|BESYLATE|BISULFATE|FUMARATE|MALEATE|OXALATE|SUCCINATE|MONOHYDRATE|HYDRATE|TARTRATE|POTASSIUM|ACETATE|PHOSPHATE|MESYLATE|CILEXETIL|MEDOXOMIL|TRIHYDRATE|STRONTIUM)", " ")
+
+replace generic_std = regexr(generic_std, "[^A-Z ]", " ")
+replace generic_std = regexr(generic_std, "[ ]+", " ")
+replace generic_std = trim(generic_std)
+
+* if contains the same drug word, keep only that word / combo
+replace generic_std = "VITAMIN" if regexm(generic_std, ///
+"VIT|MULTIVIT|BIOTIN|CYANOCOBALAMIN|CHOLECALCIFEROL|ERGOCALCIFEROL|ASCORBIC|B COMPLEX|B |B12|COQ|COENZYME|FISH OIL|OMEGA|GLUCOSAMINE|CHONDROITIN|PROBIOTIC|ALIGN|ACIDOPH|AMINO ACID|CALCIUM|MAGNESIUM|COLLAGEN|CRANBERRY|APPLE CIDER|CINNAMON")
+
+replace generic_std = "ASPIRIN" if regexm(generic_std, "ASPIRIN|ASA|ASPRIN|AASPRIN|BABY ASPIRIN|ECOTRIN|BAYER|ACARD")
+replace generic_std = "ACETAMINOPHEN" if regexm(generic_std, "ACETAMINOPHEN|TYLENOL")
+replace generic_std = "IBUPROFEN" if regexm(generic_std, "IBUPROFEN|ADVIL")
+replace generic_std = "NAPROXEN" if regexm(generic_std, "NAPROXEN|ALEVE")
+
+replace generic_std = "ALBUTEROL" if regexm(generic_std, "ALBUTER|ALUTEROL")
+replace generic_std = "ALFUZOSIN" if regexm(generic_std, "ALFUZOSIN|AFLUZOSIN")
+replace generic_std = "ALLOPURINOL" if regexm(generic_std, "ALLOPURINOL")
+replace generic_std = "ALPRAZOLAM" if regexm(generic_std, "ALPRAZ")
+replace generic_std = "AMIODARONE" if regexm(generic_std, "AMIODARONE")
+replace generic_std = "AMITRIPTYLINE" if regexm(generic_std, "AMITR")
+replace generic_std = "AMLODIPINE" if regexm(generic_std, "AMLOD|AMOLOD|AMLODOP|AMLODP|AMODOL")
+replace generic_std = "AMOXICILLIN" if regexm(generic_std, "AMOXICIL")
+replace generic_std = "ANASTROZOLE" if regexm(generic_std, "ANASTR")
+replace generic_std = "APIXABAN" if regexm(generic_std, "APIXABAN|ELIQUIS|ELOQUIS")
+replace generic_std = "ARIPIPRAZOLE" if regexm(generic_std, "ARIPIPRAZOLE|ABILIFY")
+replace generic_std = "ATENOLOL" if regexm(generic_std, "ATENOLOL")
+replace generic_std = "ATORVASTATIN" if regexm(generic_std, "ATORV|ATROV|AORV|AVORSTAT|LIPITOR")
+replace generic_std = "AZELASTINE" if regexm(generic_std, "AZELAS|ASTELIN|ASTEPRO")
+replace generic_std = "AZITHROMYCIN" if regexm(generic_std, "AZITHROMYCIN")
+replace generic_std = "BACLOFEN" if regexm(generic_std, "BACLOFEN")
+replace generic_std = "BENAZEPRIL" if regexm(generic_std, "BENAZEPRIL|BENAZAPRIL")
+replace generic_std = "BENZONATATE" if regexm(generic_std, "BENZONATATE|BENZONATE|BENZOANATATE")
+replace generic_std = "BISOPROLOL" if regexm(generic_std, "BISOPROLOL")
+replace generic_std = "BUDESONIDE" if regexm(generic_std, "BUDESO")
+replace generic_std = "BUPROPION" if regexm(generic_std, "BUPROP")
+replace generic_std = "BUSPIRONE" if regexm(generic_std, "BUSPIRONE")
+replace generic_std = "CANDESARTAN" if regexm(generic_std, "CANDES|CANDIS")
+replace generic_std = "CARVEDILOL" if regexm(generic_std, "CARVEDILOL")
+replace generic_std = "CELECOXIB" if regexm(generic_std, "CELECOXIB|CELEBREX")
+replace generic_std = "CETIRIZINE" if regexm(generic_std, "CETIR|CETERI|CETRIZ|CITRIZ|ZYRTEC")
+replace generic_std = "CHLORTHALIDONE" if regexm(generic_std, "CHLORTH")
+replace generic_std = "CITALOPRAM" if regexm(generic_std, "CITALOPRAM|CELEXA")
+replace generic_std = "CLONAZEPAM" if regexm(generic_std, "CLONAZ")
+replace generic_std = "CLOPIDOGREL" if regexm(generic_std, "CLOPID")
+replace generic_std = "COLCHICINE" if regexm(generic_std, "COLCH|COLDICINE")
+replace generic_std = "CYCLOBENZAPRINE" if regexm(generic_std, "CYCLOBENZAPRINE")
+replace generic_std = "CYCLOSPORINE" if regexm(generic_std, "CYCLOSPOR")
+replace generic_std = "DAPAGLIFLOZIN" if regexm(generic_std, "DAPAGLI|FARXIGA")
+replace generic_std = "DESLORATADINE" if regexm(generic_std, "DESLORAT")
+replace generic_std = "DEXLANSOPRAZOLE" if regexm(generic_std, "DEXLANSOPRAZOLE")
+replace generic_std = "DIAZEPAM" if regexm(generic_std, "DIAZEPAM")
+replace generic_std = "DICLOFENAC" if regexm(generic_std, "DICLOF|DECLOF")
+replace generic_std = "DICYCLOMINE" if regexm(generic_std, "DICYCLOMINE")
+replace generic_std = "DILTIAZEM" if regexm(generic_std, "DILTIAZEM")
+replace generic_std = "DIPHENHYDRAMINE" if regexm(generic_std, "DIPHENHYD|DYPHENHYD|DIFENHID|BENADRYL")
+replace generic_std = "DIVALPROEX" if regexm(generic_std, "DIVALPROEX")
+replace generic_std = "DOCUSATE" if regexm(generic_std, "DOCUSATE|COLACE")
+replace generic_std = "DONEPEZIL" if regexm(generic_std, "DONEPEZ|DONAZEP")
+replace generic_std = "DORZOLAMIDE" if regexm(generic_std, "DORZOLAMIDE")
+replace generic_std = "DOXAZOSIN" if regexm(generic_std, "DOXAZOSIN")
+replace generic_std = "DOXYCYCLINE" if regexm(generic_std, "DOXYCYCLINE")
+replace generic_std = "DRONEDARONE" if regexm(generic_std, "DRONEDARONE")
+replace generic_std = "DULAGLUTIDE" if regexm(generic_std, "DULAGLUTIDE")
+replace generic_std = "DULOXETINE" if regexm(generic_std, "DULOXET|CYMBALTA")
+replace generic_std = "DUTASTERIDE" if regexm(generic_std, "DUTASTERIDE")
+replace generic_std = "EMPAGLIFLOZIN" if regexm(generic_std, "EMPAGLI")
+replace generic_std = "ENALAPRIL" if regexm(generic_std, "ENALAPR|ENALIPR")
+replace generic_std = "EPINEPHRINE" if regexm(generic_std, "EPINEPHRINE")
+replace generic_std = "EPLERENONE" if regexm(generic_std, "EPLERENONE")
+replace generic_std = "ESCITALOPRAM" if regexm(generic_std, "ESCITAL|ESCALOP|ESCITSL|ESCITS|ESCITALIP")
+replace generic_std = "ESOMEPRAZOLE" if regexm(generic_std, "ESOMEP|ESMOP")
+replace generic_std = "EZETIMIBE" if regexm(generic_std, "EZETI|EZETM")
+replace generic_std = "FAMOTIDINE" if regexm(generic_std, "FAMOT|FAMAT")
+replace generic_std = "FENOFIBRATE" if regexm(generic_std, "FENOFIB|FENOFEB")
+replace generic_std = "FEXOFENADINE" if regexm(generic_std, "FEXOFEN|ALLEGRA")
+replace generic_std = "LORATADINE" if regexm(generic_std, "LORATADINE|CLARITIN|CLARITAN")
+replace generic_std = "MONTELUKAST" if regexm(generic_std, "MONTELUK")
+replace generic_std = "ROSUVASTATIN" if regexm(generic_std, "ROSUVASTATIN|CRESTOR")
+replace generic_std = "PIOGLITAZONE" if regexm(generic_std, "PIOGLITAZONE|ACTOS")
+replace generic_std = "SPIRONOLACTONE" if regexm(generic_std, "SPIRONOLACTONE|ALDACTONE")
+replace generic_std = "LORAZEPAM" if regexm(generic_std, "LORAZEPAM|ATIVAN")
+replace generic_std = "LOSARTAN" if regexm(generic_std, "LOSARTAN|COZAAR")
+replace generic_std = "IRBESARTAN" if regexm(generic_std, "IRBESARTAN|AVAPRO")
+replace generic_std = "MESALAMINE" if regexm(generic_std, "MESALAMINE|CANASA")
+replace generic_std = "TICAGRELOR" if regexm(generic_std, "TICAGRELOR|BRILINTA")
+
+* combos: if both words present, keep combo only
+replace generic_std = "AMLODIPINE BENAZEPRIL" if regexm(generic_std, "AMLODIPINE") & regexm(generic_std, "BENAZEPRIL")
+replace generic_std = "AMLODIPINE OLMESARTAN" if regexm(generic_std, "AMLODIPINE") & regexm(generic_std, "OLMESARTAN")
+replace generic_std = "AMLODIPINE VALSARTAN" if regexm(generic_std, "AMLODIPINE") & regexm(generic_std, "VALSARTAN")
+replace generic_std = "AMOXICILLIN CLAVULANATE" if regexm(generic_std, "AMOXICILLIN") & regexm(generic_std, "CLAV")
+replace generic_std = "AZELASTINE FLUTICASONE" if regexm(generic_std, "AZELASTINE") & regexm(generic_std, "FLUTICASONE")
+replace generic_std = "BUDESONIDE FORMOTEROL" if regexm(generic_std, "BUDESONIDE") & regexm(generic_std, "FORMOTEROL")
+replace generic_std = "CARBIDOPA LEVODOPA" if regexm(generic_std, "CARBIDOPA") & regexm(generic_std, "LEVODOPA")
+replace generic_std = "DORZOLAMIDE TIMOLOL" if regexm(generic_std, "DORZOLAMIDE") & regexm(generic_std, "TIMOLOL")
+replace generic_std = "DUTASTERIDE TAMSULOSIN" if regexm(generic_std, "DUTASTERIDE") & regexm(generic_std, "TAMSULOSIN")
+replace generic_std = "EMPAGLIFLOZIN METFORMIN" if regexm(generic_std, "EMPAGLIFLOZIN") & regexm(generic_std, "METFORMIN")
+replace generic_std = "DAPAGLIFLOZIN METFORMIN" if regexm(generic_std, "DAPAGLIFLOZIN") & regexm(generic_std, "METFORMIN")
+replace generic_std = "EZETIMIBE SIMVASTATIN" if regexm(generic_std, "EZETIMIBE") & regexm(generic_std, "SIMVASTATIN")
+replace generic_std = "CETIRIZINE PSEUDOEPHEDRINE" if regexm(generic_std, "CETIRIZINE") & regexm(generic_std, "PSEUDOEPHEDRINE")
+replace generic_std = "FEXOFENADINE PSEUDOEPHEDRINE" if regexm(generic_std, "FEXOFENADINE") & regexm(generic_std, "PSEUDOEPHEDRINE")
+replace generic_std = "BUPRENORPHINE NALOXONE" if regexm(generic_std, "BUPRENORPHINE") & regexm(generic_std, "NALOXONE")
+replace generic_std = "BUTALBITAL ACETAMINOPHEN CAFFEINE" if regexm(generic_std, "BUTALBITAL") & regexm(generic_std, "ACETAMINOPHEN") & regexm(generic_std, "CAFFEINE")
+
+* final cleanup
+replace generic_std = regexr(generic_std, "[ ]+", " ")
+replace generic_std = trim(generic_std)
+
+* drop vague leftovers
+replace generic_std = "" if regexm(generic_std, ///
+"UNKNOWN|NOT SURE|CANNOT|REMEMBER|FORGOT|MEDICATION|MEDS|PILL|ALLERGY|BLOOD PRESSURE|CHOLESTEROL|BLOOD THINNER|ANTIBIOTIC|ANTIFUNGAL|REFLUX|SHOT|OXYGEN|DIALYSIS|EYE|EAR|DROP|DROPS|GTT|GTTS|SALINE|MIST")
+replace generic_std = "" if length(generic_std)<=1
+drop if generic_std==""
+
+sort generic_std
+tab generic_std
+
+*========================================================*
+* AGGRESSIVE SMART COLLAPSE TO CORE DRUG CATEGORY ONLY   *
+*========================================================*
+
+replace generic_std = upper(trim(generic_std))
+replace generic_std = regexr(generic_std, "[0-9]+", "")
+replace generic_std = regexr(generic_std, "[^A-Z ]", " ")
+replace generic_std = regexr(generic_std, " +", " ")
+replace generic_std = trim(generic_std)
+
+* drop obvious junk / vague non-drug entries
+replace generic_std = "" if regexm(generic_std, ///
+"^AND$|UNKNOWN|UNSURE|DONT KNOW|DOES NOT|NOT RECALL|CANNOT|LIST TO BE SCANNED|SEE NOTE|SEE MAIL|RESPIRATORY ALLERG|PAIN MED|PAIN KILL|MUSCLE RELAXANTS|OTC|SUPPLIM|SUPPLEMENT|VITAMIN|MVI|SINUS RINSE|NETI|NEILMED|SALINE|BLOOD THINN|BP MED|STATIN$|NSAID$|THYROID$|CONSTIPATION|COUGH MEDICINE|FOR PSORIASIS|FOR TOE|HAS RUN OUT|STOPPED ABOUT|NEW INFUSION|RADIATION CHEMO|IVI INFUSION|FAST ACTIN INSULIN|MEDICAL MARIJUANA|MARIJUANA|H BAL|FROM DOMINICAN REPUBLIC|STARTED APPROX|PRESCRIBED FOR BITE|TO ELBOW|S EV WEEKS|AIR$|SPARY|OTH$")
+drop if generic_std==""
+
+* core single-drug categories: if string contains same drug idea, keep only core word
+replace generic_std = "AMLODIPINE"        if regexm(generic_std, "AMLOD|A ODIPINE|A OPDIPINE|NORVASC")
+replace generic_std = "GABAPENTIN"        if regexm(generic_std, "ABA TIN|NEURONTIN")
+replace generic_std = "ABIRATERONE"       if regexm(generic_std, "ABIRAT")
+replace generic_std = "ACETAMINOPHEN"     if regexm(generic_std, "ACETAMINOPHEN|TYLENOL")
+replace generic_std = "ACETAZOLAMIDE"     if regexm(generic_std, "ACETAZOLAMIDE")
+replace generic_std = "ASPIRIN" if ///
+    regexm(generic_std, "ASPIRIN|ACETYLCYLIC|ASA|ASPRIN|AASPRIN|BABY ASPIRIN|ECOTRIN|BAYER")
+
+replace generic_std = "CLOPIDOGREL" if ///
+    regexm(generic_std, "PLAVIX")
+replace generic_std = "ASPIRIN"           if regexm(generic_std, "ACETYLCYLIC|ASA|ASPRIN|AASPRIN|BABY ASPIRIN|ECOTRIN|BAYER|ASPIRIN")
+replace generic_std = "ACYCLOVIR"         if regexm(generic_std, "ACYCLOVIR")
+replace generic_std = "ADALIMUMAB"        if regexm(generic_std, "ADALIMUMAB|HUMIRA")
+replace generic_std = "AMPHETAMINE-DEXTROAMPHETAMINE" if regexm(generic_std, "ADD ALL|ADDERALL|AMPHETAMINE DEXTROAMPHETAMINE|DEXTROAMPHETAMINE SACCHARATE")
+replace generic_std = "ALBUTEROL"         if regexm(generic_std, "ALBUT|PROAIR|PRO AIR|PROVENTIL|VENTOLIN|AIRSUPRA")
+replace generic_std = "ALENDRONATE"       if regexm(generic_std, "ALEN ONATE|ALENDRONATE")
+replace generic_std = "ALFUZOSIN"         if regexm(generic_std, "ALFUZOSIN")
+replace generic_std = "ALIROCUMAB"        if regexm(generic_std, "ALIROCUMAB")
+replace generic_std = "ALLOPURINOL"       if regexm(generic_std, "ALLOPURINOL")
+replace generic_std = "ALOGLIPTIN"        if regexm(generic_std, "ALO LIPTIN")
+replace generic_std = "ALPRAZOLAM"        if regexm(generic_std, "ALPRAZOLAM")
+replace generic_std = "AMANTADINE"        if regexm(generic_std, "AMANTADINE")
+replace generic_std = "ZOLPIDEM"          if regexm(generic_std, "AMBIEN")
+replace generic_std = "AMIODARONE"        if regexm(generic_std, "AMIODARONE|ONEDARONE")
+replace generic_std = "AMITRIPTYLINE"     if regexm(generic_std, "AMITRIPTYLINE")
+replace generic_std = "AMOXICILLIN"       if regexm(generic_std, "AMOXICILLIN")
+replace generic_std = "ANASTROZOLE"       if regexm(generic_std, "ANASTROZOLE")
+replace generic_std = "APIXABAN"          if regexm(generic_std, "APIXABAN|ELIQUIS|ELOQUIS")
+replace generic_std = "ARIPIPRAZOLE"      if regexm(generic_std, "ARIPIPRAZOLE")
+replace generic_std = "ARMODAFINIL"       if regexm(generic_std, "ARMODAFINIL")
+replace generic_std = "ATENOLOL"          if regexm(generic_std, "ATENOLOL")
+replace generic_std = "ATOMOXETINE"       if regexm(generic_std, "ATOMOXETINE")
+replace generic_std = "ATORVASTATIN"      if regexm(generic_std, "ATORVASTATIN|ATOVASTATIN|LIPITOR")
+replace generic_std = "AZELAIC ACID"      if regexm(generic_std, "AZELAIC ACID")
+replace generic_std = "AZELASTINE"        if regexm(generic_std, "AZELASTINE|ASTELIN|ASTEPRO")
+replace generic_std = "AZILSARTAN"        if regexm(generic_std, "AZILSARTAN")
+replace generic_std = "AZITHROMYCIN"      if regexm(generic_std, "AZITHROMYCIN")
+replace generic_std = "BACITRACIN"        if regexm(generic_std, "BACITRACIN")
+replace generic_std = "BACLOFEN"          if regexm(generic_std, "BACLOFEN")
+replace generic_std = "SODIUM BICARBONATE" if regexm(generic_std, "BAKI SODA|BICARBONATE")
+replace generic_std = "DIPHENHYDRAMINE"   if regexm(generic_std, "BENA YL|BENADRYL|DIPHENHY AMINE|DYPHENHY AMINE|DIFENHI AMINA")
+replace generic_std = "BENAZEPRIL"        if regexm(generic_std, "BENAZEPRIL")
+replace generic_std = "OLMESARTAN"        if regexm(generic_std, "BENICAR|OIMESARTAN|OLMARTAN|OLMESARTAN|OLMSARTAN|OMELSARTAN")
+replace generic_std = "BENZONATATE"       if regexm(generic_std, "BENZONATATE")
+replace generic_std = "BETAMETHASONE"     if regexm(generic_std, "BETAMETHASONE")
+replace generic_std = "BICALUTAMIDE"      if regexm(generic_std, "BICALUTAMIDE")
+replace generic_std = "BIMATOPROST"       if regexm(generic_std, "BIMATOPROST|BIONATOPROST")
+replace generic_std = "BISACODYL"         if regexm(generic_std, "BISACODYL|DULCOLAX")
+replace generic_std = "BISMUTH SUBSALICYLATE" if regexm(generic_std, "BISMUTH SUBSALICYLATE|PEPTO BISM")
+replace generic_std = "BISOPROLOL"        if regexm(generic_std, "BISOPROLOL")
+replace generic_std = "BREO ELLIPTA"      if regexm(generic_std, "BREO|BRIO ELLIPTA")
+replace generic_std = "BREZTRI"           if regexm(generic_std, "BREZTRI|BRESTREE")
+replace generic_std = "BRIMONIDINE"       if regexm(generic_std, "BRIMONIDINE")
+replace generic_std = "BROMFENAC"         if regexm(generic_std, "BROMFENAC")
+replace generic_std = "BUDESONIDE"        if regexm(generic_std, "BUDESONIDE|BUDESINIDE|PULMICORT|RHINOCORT|RHINACORT")
+replace generic_std = "BUMETANIDE"        if regexm(generic_std, "BUMETANIDE")
+replace generic_std = "BUPRENORPHINE-NALOXONE" if regexm(generic_std, "BUPRENORPHINE NALOXONE")
+replace generic_std = "BUPROPION"         if regexm(generic_std, "BUPROPION")
+replace generic_std = "BUSPIRONE"         if regexm(generic_std, "BUSPIRONE")
+replace generic_std = "CANAGLIFLOZIN"     if regexm(generic_std, "CANA LIFLOZIN")
+replace generic_std = "CANDESARTAN"       if regexm(generic_std, "CANDESARTAN")
+replace generic_std = "CARBIDOPA-LEVODOPA" if regexm(generic_std, "CAR OPA AND LEVODOPA")
+replace generic_std = "CARBAMAZEPINE"     if regexm(generic_std, "CARBAMAZEPINE")
+replace generic_std = "CARBOXYMETHYLCELLULOSE" if regexm(generic_std, "CARBOXYMETHYLCELLULOSE")
+replace generic_std = "DILTIAZEM"         if regexm(generic_std, "CARDIZEM|CARDIA|DILTIAZEM")
+replace generic_std = "CARIPRAZINE"       if regexm(generic_std, "CARIPRAZINE")
+replace generic_std = "CARVEDILOL"        if regexm(generic_std, "CARVEDILOL|CORE")
+replace generic_std = "CEFDINIR"          if regexm(generic_std, "CEFDINIR|OMNICEF")
+replace generic_std = "CEFUROXIME"        if regexm(generic_std, "CEFUROXIME")
+replace generic_std = "CELECOXIB"         if regexm(generic_std, "CEL OXIB|CELECOXIB|CELEBREX")
+replace generic_std = "CEPHALEXIN"        if regexm(generic_std, "CEPHALEXIN")
+replace generic_std = "CETIRIZINE"        if regexm(generic_std, "CETIRIZINE|CET IZINE|CET AZINE|ZYRTEC")
+replace generic_std = "CHLORDIAZEPOXIDE"  if regexm(generic_std, "CHLORDIAZE")
+replace generic_std = "CHLORHEXIDINE"     if regexm(generic_std, "CHLORHEXIDINE")
+replace generic_std = "CHLORTHALIDONE"    if regexm(generic_std, "CHLORTHALIDONE")
+replace generic_std = "CHOLESTYRAMINE"    if regexm(generic_std, "CHOLESTYRAMINE")
+replace generic_std = "TADALAFIL"         if regexm(generic_std, "CIALIS|TADALAFIL|TADAFIL")
+replace generic_std = "CICLOPIROX"        if regexm(generic_std, "CICLOPIROX")
+replace generic_std = "CILOSTAZOL"        if regexm(generic_std, "CILOSTAZOL")
+replace generic_std = "CIMETIDINE"        if regexm(generic_std, "CIME INE")
+replace generic_std = "CITALOPRAM"        if regexm(generic_std, "CITALOPRAM|CELEXA")
+replace generic_std = "CLINDAMYCIN"       if regexm(generic_std, "CLINDAMYCIN")
+replace generic_std = "CLOBETASOL"        if regexm(generic_std, "CLOBETASOL|TOPICORT")
+replace generic_std = "CLOCORTOLONE"      if regexm(generic_std, "CLOCORTOLONE")
+replace generic_std = "CLOMIPHENE"        if regexm(generic_std, "CLOMIPHENE")
+replace generic_std = "CLONAZEPAM"        if regexm(generic_std, "CLONAZEPAM|KLONOPIN|KLONIPIN")
+replace generic_std = "CLONIDINE"         if regexm(generic_std, "CLONIDINE")
+replace generic_std = "CLOPIDOGREL"       if regexm(generic_std, "CLOPIDOGREL|CLOPI O IL|PLAVIX")
+replace generic_std = "CLOTRIMAZOLE"      if regexm(generic_std, "CLOTRIMAZOLE|MYCELEX")
+replace generic_std = "CLOZAPINE"         if regexm(generic_std, "CLOZAPINE")
+replace generic_std = "COENZYME Q10"      if regexm(generic_std, "CO Q|COENZTME Q")
+replace generic_std = "COLCHICINE"        if regexm(generic_std, "COLCHICINE")
+replace generic_std = "COLESEVELAM"       if regexm(generic_std, "COLESEVELAM")
+replace generic_std = "COMBIVENT"         if regexm(generic_std, "COMBIVENT")
+replace generic_std = "METHYLPHENIDATE"   if regexm(generic_std, "CONC TA")
+replace generic_std = "CRISABOROLE"       if regexm(generic_std, "CRISABOROLE")
+replace generic_std = "CYCLOBENZAPRINE"   if regexm(generic_std, "CYCLOBENZAPRINE|FLEXARIL|FLEX IL")
+replace generic_std = "CYCLOSPORINE"      if regexm(generic_std, "CYCLOS RINE")
+replace generic_std = "DABIGATRAN"        if regexm(generic_std, "DABI ATRAN")
+replace generic_std = "DAPAGLIFLOZIN"     if regexm(generic_std, "DAPA LIFLOZIN|FARXI A|FORXI A")
+replace generic_std = "DAPAGLIFLOZIN-METFORMIN" if regexm(generic_std, "DAPA LIFLOZIN METFORMIN")
+replace generic_std = "DARATUMUMAB"       if regexm(generic_std, "DARATUMUMAB")
+replace generic_std = "DARIFENACIN"       if regexm(generic_std, "DARIFENACIN")
+replace generic_std = "DIVALPROEX"        if regexm(generic_std, "DEPAKOTE|DEVALPROEX|DIVALPROEX")
+replace generic_std = "DESLORATADINE"     if regexm(generic_std, "DESLORA INE")
+replace generic_std = "DESONIDE"          if regexm(generic_std, "DESONIDE")
+replace generic_std = "DESVENLAFAXINE"    if regexm(generic_std, "DESVENLAFAXINE")
+replace generic_std = "DEXAMETHASONE"     if regexm(generic_std, "DEXAMETHASONE|DECADRON")
+replace generic_std = "DEXLANSOPRAZOLE"   if regexm(generic_std, "DEXLANSOPRAZOLE")
+replace generic_std = "DIAZEPAM"          if regexm(generic_std, "DIAZEPAM")
+replace generic_std = "DICLOFENAC"        if regexm(generic_std, "DICLOFENAC|DICOFENAC")
+replace generic_std = "DICYCLOMINE"       if regexm(generic_std, "DICYCLOMINE")
+replace generic_std = "DIPHENOXYLATE"     if regexm(generic_std, "DIPHENOXYLATE")
+replace generic_std = "OXYBUTYNIN"        if regexm(generic_std, "DITROPAN|OXYBUTYNIN")
+replace generic_std = "DOCOSANOL"         if regexm(generic_std, "DOCOSANOL")
+replace generic_std = "DOCUSATE"          if regexm(generic_std, "DOCUSATE|STOOL SOFTEN")
+replace generic_std = "DONEPEZIL"         if regexm(generic_std, "DONEPEZIL")
+replace generic_std = "DORZOLAMIDE"       if regexm(generic_std, "DORZOLAMIDE")
+replace generic_std = "DOXAZOSIN"         if regexm(generic_std, "DOXAZOSIN")
+replace generic_std = "DOXEPIN"           if regexm(generic_std, "DOXEPIN")
+replace generic_std = "DOXYCYCLINE"       if regexm(generic_std, "DOXYCYCLINE")
+replace generic_std = "DULAGLUTIDE"       if regexm(generic_std, "DULA LU E|DUL A")
+replace generic_std = "DULOXETINE"        if regexm(generic_std, "DULOXETINE|CYMBALTA")
+replace generic_std = "DUPILUMAB"         if regexm(generic_std, "DUPILUMAB")
+replace generic_std = "DUTASTERIDE"       if regexm(generic_std, "DUTAST IDE|AVODART")
+replace generic_std = "EPOETIN ALFA"      if regexm(generic_std, "E ETIN ALFA")
+replace generic_std = "VENLAFAXINE"       if regexm(generic_std, "EFFEXOR")
+replace generic_std = "ELETRIPTAN"        if regexm(generic_std, "ELETRIPTAN")
+replace generic_std = "ELTROMBOPAG"       if regexm(generic_std, "ELTROMBOPA")
+replace generic_std = "OMEPRAZOLE"        if regexm(generic_std, "EMEPRAZOLE|NEX M|PRILOS|PRILOSEC|OMEPRAZOLE|OMEPRZOLE|OMEPTRAZOLE|OMP ZOLE")
+replace generic_std = "GEMFIBROZIL"       if regexm(generic_std, "EMFIBROZIL")
+replace generic_std = "EMPAGLIFLOZIN"     if regexm(generic_std, "EMPA LIFLOZIN|JARDIANCE")
+replace generic_std = "ENALAPRIL"         if regexm(generic_std, "ENALAPRIL")
+replace generic_std = "EPINEPHRINE"       if regexm(generic_std, "EPINEPHRINE")
+replace generic_std = "EPLERENONE"        if regexm(generic_std, "EPL ENONE")
+replace generic_std = "ESLICARBAZEPINE"   if regexm(generic_std, "ESLICARBAZEPINE")
+replace generic_std = "ESOMEPRAZOLE"      if regexm(generic_std, "ESOMEPRAZOLE")
+replace generic_std = "ESTRADIOL"         if regexm(generic_std, "ESTRADIOL")
+replace generic_std = "ESZOPICLONE"       if regexm(generic_std, "ESZOPICLONE|LUNESTA")
+replace generic_std = "ETANERCEPT"        if regexm(generic_std, "ETAN CEPT|ENBREL")
+replace generic_std = "ETODOLAC"          if regexm(generic_std, "ETODOLAC")
+replace generic_std = "EVOLOCUMAB"        if regexm(generic_std, "EVOLOCUMAB")
+replace generic_std = "EXEMESTANE"        if regexm(generic_std, "EXEMESTANE")
+replace generic_std = "EXENATIDE"         if regexm(generic_std, "EXENA E")
+replace generic_std = "EZETIMIBE"         if regexm(generic_std, "EZETIMIBE|EZETEMIBE")
+replace generic_std = "FAMCICLOVIR"       if regexm(generic_std, "FAMCICLOVIR")
+replace generic_std = "FAMOTIDINE"        if regexm(generic_std, "FAMO INE|PEPCID|PEPSID")
+replace generic_std = "FEBUXOSTAT"        if regexm(generic_std, "FEBUXOSTAT")
+replace generic_std = "FELODIPINE"        if regexm(generic_std, "FELODIPINE")
+replace generic_std = "FENOFIBRATE"       if regexm(generic_std, "FENOFIBRATE")
+replace generic_std = "FENTANYL"          if regexm(generic_std, "FENTANYL")
+replace generic_std = "FEXOFENADINE"      if regexm(generic_std, "FEXOFENADINE|FEXOFEDIPINE|ALLEGRA")
+replace generic_std = "FINASTERIDE"       if regexm(generic_std, "FINAST IDE|FINASTRIDE|FENESTIRIDE|PROSCAR")
+replace generic_std = "FLECAINIDE"        if regexm(generic_std, "FL AINIDE")
+replace generic_std = "FLUTICASONE"       if regexm(generic_std, "FLUTICASONE|FLONASE|FLUTICISONE|FLUTISACONE")
+replace generic_std = "FOLIC ACID"       if regexm(generic_std, "FOLIC ACID|FOLBEE")
+replace generic_std = "FUROSEMIDE"        if regexm(generic_std, "FUROSEMIDE")
+replace generic_std = "HALOPERIDOL"       if regexm(generic_std, "HALDOL")
+replace generic_std = "HALOBETASOL"       if regexm(generic_std, "HALOBETASOL")
+replace generic_std = "HYDROCHLOROTHIAZIDE" if regexm(generic_std, "HCTZ|HTZ|HY OCHLOROTHIAZIDE|HYDORCHLOROTHIAZIDE")
+replace generic_std = "HYDRALAZINE"       if regexm(generic_std, "HY ALAZINE")
+replace generic_std = "HYDROCODONE"       if regexm(generic_std, "HY OCODONE")
+replace generic_std = "HYDROCORTISONE"    if regexm(generic_std, "HY OCORTISONE")
+replace generic_std = "HYDROMORPHONE"     if regexm(generic_std, "HY OMORPHONE|DILAUDID")
+replace generic_std = "HYDROXYCHLOROQUINE" if regexm(generic_std, "HY OXYCHLOROQUINE")
+replace generic_std = "HYDROXYUREA"       if regexm(generic_std, "HY OXYUREA")
+replace generic_std = "HYDROXYZINE"       if regexm(generic_std, "HY OXYZINE|HYDOXYZINE")
+replace generic_std = "HYOSCYAMINE"       if regexm(generic_std, "HYOSCYAMINE")
+replace generic_std = "IBRUTINIB"         if regexm(generic_std, "IBRUTINIB")
+replace generic_std = "IBUPROFEN"         if regexm(generic_std, "IBUPROFEN|IBUPFROFEN|MOTRIN|IBU$")
+replace generic_std = "ICOSAPENT ETHYL"   if regexm(generic_std, "ICOSA T ETHYL|VASCEPA")
+replace generic_std = "INSULIN" if ///
+regexm(generic_std, "INSULIN|HUMALO INSULIN|HUMOLO INSULIN|LANTUS|NOVOLO") == 0 & ///
+regexm(generic_std, "INSUL")
+replace generic_std = "INFLIXIMAB"        if regexm(generic_std, "INFLIXIMAB|RENFLEXIS")
+replace generic_std = "IPRATROPIUM"       if regexm(generic_std, "IPRATROP M")
+replace generic_std = "IRBESARTAN"        if regexm(generic_std, "IRBESARTAN")
+replace generic_std = "ISOSORBIDE MONONITRATE" if regexm(generic_std, "ISOSOR E MONONITRATE|ISOSORBLDE MONONITRATE")
+replace generic_std = "IVABRADINE"        if regexm(generic_std, "IVABRADINE")
+replace generic_std = "JANUVIA"           if regexm(generic_std, "JANUVIA")
+replace generic_std = "KETOCONAZOLE"      if regexm(generic_std, "KETOCONAZOLE")
+replace generic_std = "KETOTIFEN"         if regexm(generic_std, "KETOTIFEN")
+replace generic_std = "LABETALOL"         if regexm(generic_std, "LABETALOL")
+replace generic_std = "LACTULOSE"         if regexm(generic_std, "LACTULOSE")
+replace generic_std = "LAMOTRIGINE"       if regexm(generic_std, "LAMOTRI INE")
+replace generic_std = "LANSOPRAZOLE"      if regexm(generic_std, "LANSOPRAZOLE|LANSPRAZOLE|PREVACID")
+replace generic_std = "LATANOPROST"       if regexm(generic_std, "LATANOPROST|LATANAPROST|LATONOPROST|LANTANOPROST")
+replace generic_std = "LEFLUNOMIDE"       if regexm(generic_std, "LEFLUNOMIDE")
+replace generic_std = "LENALIDOMIDE"      if regexm(generic_std, "LENALIDOMIDE")
+replace generic_std = "LETROZOLE"         if regexm(generic_std, "LETROZOLE")
+replace generic_std = "LEUPROLIDE"        if regexm(generic_std, "LEUPROLIDE")
+replace generic_std = "LEVALBUTEROL"      if regexm(generic_std, "LEVALBUT OL")
+replace generic_std = "LEVETIRACETAM"     if regexm(generic_std, "LEVETIRACETAM")
+replace generic_std = "LEVOCETIRIZINE"    if regexm(generic_std, "LEVOCET IZINE|LEVOCETIZINE|LEVOCENTRIZINE")
+replace generic_std = "LEVOFLOXACIN"      if regexm(generic_std, "LEVOFLOXACIN")
+replace generic_std = "LEVOTHYROXINE"     if regexm(generic_std, "LEVOTHYROXINE|LEVOTHYROXIN|LEVOYTHYROXINE|LLEVOTHYROXINE|SYNTHROID|L THYROXINE")
+replace generic_std = "GLIMEPIRIDE"       if regexm(generic_std, "LIMEPIRIDE")
+replace generic_std = "LINAGLIPTIN"       if regexm(generic_std, "LINA LIPTIN")
+replace generic_std = "LINACLOTIDE"       if regexm(generic_std, "LINACLO E|LIN CLO E")
+replace generic_std = "GLIPIZIDE"         if regexm(generic_std, "LIPIZIDE")
+replace generic_std = "LIRAGLUTIDE"       if regexm(generic_std, "LIRA LU E")
+replace generic_std = "LISDEXAMFETAMINE"  if regexm(generic_std, "LISDEXAMFETAMINE")
+replace generic_std = "LISINOPRIL"        if regexm(generic_std, "LISINOPRIL")
+replace generic_std = "LOPERAMIDE"        if regexm(generic_std, "LOP AMIDE")
+replace generic_std = "LORATADINE"        if regexm(generic_std, "LORATADINE|LORA INE|LORAD INE")
+replace generic_std = "LORAZEPAM"         if regexm(generic_std, "LORAZEPAM|LORAZEOPAM")
+replace generic_std = "LOSARTAN"          if regexm(generic_std, "LOSARTAN|LOSARATAN|LOSATAN")
+replace generic_std = "LOVASTATIN"        if regexm(generic_std, "LOVASTATIN")
+replace generic_std = "LUTEIN"            if regexm(generic_std, "LUTEIN")
+replace generic_std = "POLYETHYLENE GLYCOL" if regexm(generic_std, "LYETHYLENE LYCOL|MIRALAX")
+replace generic_std = "PREGABALIN"        if regexm(generic_std, "LYRICA|PRE ABALIN")
+replace generic_std = "MECLIZINE"         if regexm(generic_std, "M LIZINE")
+replace generic_std = "MIRTAZAPINE"       if regexm(generic_std, "M TAZAPINE|MIRTAZAPINE")
+replace generic_std = "MAGIC MOUTHWASH"   if regexm(generic_std, "MA IC MOUTHWASH")
+replace generic_std = "ALUMINUM HYDROXIDE MAGNESIUM HYDROXIDE" if regexm(generic_std, "MAALOX|MYLANTA|ROLAIDS")
+replace generic_std = "MACITENTAN"        if regexm(generic_std, "MACITENTAN")
+replace generic_std = "MELATONIN"         if regexm(generic_std, "MELATONIN")
+replace generic_std = "MELOXICAM"         if regexm(generic_std, "MELOXICAM")
+replace generic_std = "MEMANTINE"         if regexm(generic_std, "MEMANTINE|MEMATINE")
+replace generic_std = "MESALAMINE"        if regexm(generic_std, "MESALAMINE")
+replace generic_std = "METAXALONE"        if regexm(generic_std, "METAXALONE")
+replace generic_std = "METFORMIN"         if regexm(generic_std, "METFORMIN")
+replace generic_std = "METHIMAZOLE"       if regexm(generic_std, "METHIMAZOLE")
+replace generic_std = "METHOCARBAMOL"     if regexm(generic_std, "METHOCARBAMOL")
+replace generic_std = "METHOTREXATE"      if regexm(generic_std, "METHOTREXATE")
+replace generic_std = "METHYLPHENIDATE"   if regexm(generic_std, "METHYLPHENIDATE")
+replace generic_std = "METHYLPREDNISOLONE" if regexm(generic_std, "METHYLPREDNISOLE|METHYLPREDNISOLONE|METHYLPREDNISONE")
+replace generic_std = "METOCLOPRAMIDE"    if regexm(generic_std, "METOCLOPRAMIDE")
+replace generic_std = "METOLAZONE"        if regexm(generic_std, "METOLAZONE")
+replace generic_std = "METOPROLOL"        if regexm(generic_std, "METOPROLOL|METOPRLOL|METOROPROLOL|METRO LOL|LOPRESSOR")
+replace generic_std = "METRONIDAZOLE"     if regexm(generic_std, "METRONIDAZOLE|METRONISAZOLE")
+replace generic_std = "MEXILETINE"        if regexm(generic_std, "MEXILETINE")
+replace generic_std = "MINOCYCLINE"       if regexm(generic_std, "MINOCYCLINE")
+replace generic_std = "MINOXIDIL"         if regexm(generic_std, "MINOXIDIL|MONOXIDIL")
+replace generic_std = "MIRABEGRON"        if regexm(generic_std, "MIRABE RON|MYRBETRIQ")
+replace generic_std = "MODAFINIL"         if regexm(generic_std, "MODAFINIL")
+replace generic_std = "MOMETASONE"        if regexm(generic_std, "MOMETASONE|MOMETHASONE|NASONEX")
+replace generic_std = "MONTELUKAST"       if regexm(generic_std, "MONTELUKAST|SIN ULAIR")
+replace generic_std = "MORPHINE"          if regexm(generic_std, "MORPHINE|MORHIN")
+replace generic_std = "GUAIFENESIN"       if regexm(generic_std, "MUCINEX")
+replace generic_std = "MUPIROCIN"         if regexm(generic_std, "MUPIROCIN")
+replace generic_std = "MULTIVITAMIN"      if regexm(generic_std, "^MVI$|NC MVI")
+replace generic_std = "MYCOPHENOLATE"     if regexm(generic_std, "MYCOPHENOLATE")
+replace generic_std = "NABUMETONE"        if regexm(generic_std, "NABUMETONE")
+replace generic_std = "NADOLOL"           if regexm(generic_std, "NADOLOL")
+replace generic_std = "NALTREXONE"        if regexm(generic_std, "NALTREXONE")
+replace generic_std = "NAPROXEN"          if regexm(generic_std, "NAPROXEN|NAPROXYN|FLANAX")
+replace generic_std = "NIACIN"            if regexm(generic_std, "NIACIN")
+replace generic_std = "NICOTINE"          if regexm(generic_std, "NICORETTE|NICOTINE|NICOTROL")
+replace generic_std = "NIFEDIPINE"        if regexm(generic_std, "NIFEDIPINE")
+replace generic_std = "NINTEDANIB"        if regexm(generic_std, "NINTEDANIB")
+replace generic_std = "NITROGLYCERIN"     if regexm(generic_std, "NITRO LYC IN")
+replace generic_std = "NITROFURANTOIN"    if regexm(generic_std, "NITROFURANTION")
+replace generic_std = "NORTRIPTYLINE"     if regexm(generic_std, "NORTRIPTYLINE")
+replace generic_std = "NYSTATIN"          if regexm(generic_std, "NYSTATIN")
+replace generic_std = "OCRELIZUMAB"       if regexm(generic_std, "OCRELIZUMAB")
+replace generic_std = "ONDANSETRON"       if regexm(generic_std, "ONDANSETRON|ODANSETRON")
+replace generic_std = "OFLOXACIN"         if regexm(generic_std, "OFLOXACIN|OFLOXAXIN")
+replace generic_std = "OLANZAPINE"        if regexm(generic_std, "OLANZAPINE")
+replace generic_std = "OLOPATADINE"       if regexm(generic_std, "OLOPATADINE")
+replace generic_std = "OMALIZUMAB"        if regexm(generic_std, "OMALIZUMAB")
+replace generic_std = "OMEGA-3"           if regexm(generic_std, "OME A")
+replace generic_std = "ONABOTULINUMTOXINA" if regexm(generic_std, "ONABOTULINUMTOXINA")
+replace generic_std = "OXYBUTYNIN"        if regexm(generic_std, "OXYBUTYNIN")
+replace generic_std = "OXYCARBAZEPINE"    if regexm(generic_std, "OXYCARBAZEPINE")
+replace generic_std = "OXYCODONE"         if regexm(generic_std, "OXYCODONE|OXYCONDIN|P COCET")
+replace generic_std = "OXYMETAZOLINE"     if regexm(generic_std, "OXYMETAZOLINE")
+replace generic_std = "SEMAGLUTIDE"       if regexm(generic_std, "OZEMPIC|SEMA LU E")
+replace generic_std = "PANCRELIPASE"      if regexm(generic_std, "PANCRELIPASE")
+replace generic_std = "PANTOPRAZOLE"      if regexm(generic_std, "PANTOPRAZOLE|PANTOOPRAZOLE|PANTOPRAZOEL|PANTAPROZOLE|PANTOPRAMOZOLE|PANTOPRAMZOLE|PANTROPAZOLE|PROTONIX")
+replace generic_std = "PAROXETINE"        if regexm(generic_std, "PAROXETINE|PAXIL")
+replace generic_std = "PHENAZOPYRIDINE"   if regexm(generic_std, "PHENAZOPYRIDINE")
+replace generic_std = "PHENTERMINE"       if regexm(generic_std, "PHENT MINE|PHENTH MINE")
+replace generic_std = "PIMECROLIMUS"      if regexm(generic_std, "PIM ROLIMUS")
+replace generic_std = "PIOGLITAZONE"      if regexm(generic_std, "PIO LITAZONE")
+replace generic_std = "PITAVASTATIN"      if regexm(generic_std, "PITAVASTATIN")
+replace generic_std = "PRAMIPEXOLE"       if regexm(generic_std, "PRAMIPEXOLE")
+replace generic_std = "PRASUGREL"         if regexm(generic_std, "PRASU REL")
+replace generic_std = "PRAVASTATIN"       if regexm(generic_std, "PRAVASTATIN|PRAVASTAIN")
+replace generic_std = "PRAZOSIN"          if regexm(generic_std, "PRAZOSIN|T AZOSIN")
+replace generic_std = "PREDNISOLONE"      if regexm(generic_std, "PREDNISOLONE")
+replace generic_std = "PREDNISONE"        if regexm(generic_std, "PREDNISONE")
+replace generic_std = "PRIMIDONE"         if regexm(generic_std, "PRIMIDONE")
+replace generic_std = "PROMETHAZINE"      if regexm(generic_std, "PROMETHAZINE")
+replace generic_std = "PROPAFENONE"       if regexm(generic_std, "PROPAFENONE|PROPAFANONE")
+replace generic_std = "PROPRANOLOL"       if regexm(generic_std, "PROPANOLOL|PROPRANOLOL|PROPANALOL")
+replace generic_std = "PSEUDOEPHEDRINE"   if regexm(generic_std, "PSEUDOEPHE INE|SUDAFED")
+replace generic_std = "PSYLLIUM"          if regexm(generic_std, "PSYLL M HUSK|METAMUCIL")
+replace generic_std = "QUETIAPINE"        if regexm(generic_std, "QUETIAPINE")
+replace generic_std = "QUINAPRIL"         if regexm(generic_std, "QUINAPRIL")
+replace generic_std = "RABEPRAZOLE"       if regexm(generic_std, "RABEPRAZOLE")
+replace generic_std = "RAMELTEON"         if regexm(generic_std, "RAMELTEON")
+replace generic_std = "RAMIPRIL"          if regexm(generic_std, "RAMIPRIL")
+replace generic_std = "RANITIDINE"        if regexm(generic_std, "RANI INE|RANITDINE|RINTANIDINE")
+replace generic_std = "RANOLAZINE"        if regexm(generic_std, "RANOLAZINE")
+replace generic_std = "RISPERIDONE"       if regexm(generic_std, "RESP IDONE|RESPIRADONE|RISP IDONE")
+replace generic_std = "RIFAMPIN"          if regexm(generic_std, "RIFAMPIN")
+replace generic_std = "RIFAXIMIN"         if regexm(generic_std, "RIFAXIMIN")
+replace generic_std = "RIVAROXABAN"       if regexm(generic_std, "RIVAROXABAN")
+replace generic_std = "RIZATRIPTAN"       if regexm(generic_std, "RIZATRIPTAN")
+replace generic_std = "ROPINIROLE"        if regexm(generic_std, "ROPINIROLE|REQUIP")
+replace generic_std = "ROSUVASTATIN"      if regexm(generic_std, "ROSUVASTATIN|ROSUVASTATN|ROUSUVASTATIN|ROUVASTATIN|ROVASTATION|CRESTOR")
+replace generic_std = "SERTRALINE"        if regexm(generic_std, "S TRALINE")
+replace generic_std = "SECUKINUMAB"       if regexm(generic_std, "S UKINUMAB")
+replace generic_std = "SACUBITRIL-VALSARTAN" if regexm(generic_std, "SACUBITRIL AND VALSARTAN")
+replace generic_std = "SEMAGLUTIDE"       if regexm(generic_std, "SEMA LU E|OZEMPIC")
+replace generic_std = "SENNOSIDES"        if regexm(generic_std, "SENNOSIDES|SENEKOT")
+replace generic_std = "SILDENAFIL"        if regexm(generic_std, "SILDENAFIL|SILDANEFIL|REVATIO")
+replace generic_std = "SILODOSIN"         if regexm(generic_std, "SILODOSIN|SILODDSEN")
+replace generic_std = "SIMETHICONE"       if regexm(generic_std, "SIMETHICONE")
+replace generic_std = "SIMVASTATIN"       if regexm(generic_std, "SIMVASTATIN|SIMVASTIN|SIMVASTSTIN|SIMVISTATIN")
+replace generic_std = "SITAGLIPTIN"       if regexm(generic_std, "SITA LIPTIN|JANUVIA")
+replace generic_std = "SOTALOL"           if regexm(generic_std, "SOTALOL|SO NETA")
+replace generic_std = "SPIRONOLACTONE"    if regexm(generic_std, "SPIRONOLACTONE")
+replace generic_std = "SUCRALFATE"        if regexm(generic_std, "SUCRALFATE|CARAFATE")
+replace generic_std = "SUMATRIPTAN"       if regexm(generic_std, "SUMATRIPTAN|SUMATRIPTIN|IMITREX")
+replace generic_std = "TACROLIMUS"        if regexm(generic_std, "TACROLIMUS")
+replace generic_std = "TAMSULOSIN"        if regexm(generic_std, "TAMSULOSIN|TAMUSLOSIN|FLOMAX|TASS M")
+replace generic_std = "TELMISARTAN"       if regexm(generic_std, "TELMISARTAN")
+replace generic_std = "TEMAZEPAM"         if regexm(generic_std, "TEMAZEPAM|TEMAZEPAN|RESTORIL")
+replace generic_std = "TESTOSTERONE"      if regexm(generic_std, "TESTOST ONE")
+replace generic_std = "THEOPHYLLINE"      if regexm(generic_std, "THEOPHYLLINE")
+replace generic_std = "TICAGRELOR"        if regexm(generic_std, "TICA RELOR")
+replace generic_std = "TIMOLOL"           if regexm(generic_std, "TIMOLOL")
+replace generic_std = "TIOTROPIUM"        if regexm(generic_std, "TIOTROP M|SPIRIVA")
+replace generic_std = "TIRZEPATIDE"       if regexm(generic_std, "TIRZEPA E|MOUNJARO|MAUENJARO|MONJOURO")
+replace generic_std = "TIZANIDINE"        if regexm(generic_std, "TIZANIDINE|TIZANADINE")
+replace generic_std = "TOBRAMYCIN"        if regexm(generic_std, "TOBRAMYCIN")
+replace generic_std = "TOCILIZUMAB"       if regexm(generic_std, "TOCILIZUMAB")
+replace generic_std = "TOFACITINIB"       if regexm(generic_std, "TOFACITINIB")
+replace generic_std = "TOLTERODINE"       if regexm(generic_std, "TOLT ODINE")
+replace generic_std = "TOPIRAMATE"        if regexm(generic_std, "TOPAMAX")
+replace generic_std = "TERBINAFINE"       if regexm(generic_std, "T BINAFINE")
+replace generic_std = "LEVOTHYROXINE"     if regexm(generic_std, "THYROID RCINE|NP THYROID|NATURETHROID|SYNTHROID")
+replace generic_std = "THIAMINE"          if regexm(generic_std, "THIAMINE")
+replace generic_std = "MULTIVITAMIN"      if regexm(generic_std, "PRES VISION|PREVENTATIVE SUPPLIMTS|KRILL OIL|RED RICE YEAST|SWISS KRIS|SAW PALMETTO|SESAME OIL|PUMPKIN SEED OIL|FLAX ?SEED|IRON$|IRON S|NICOTINAMIDE|FOLIC ACID|COENZYME Q10|LUTEIN|MILKTHISTLE|THIAMINE|METHYLCOBALAMIN")
+
+* combo categories: keep only one standardized combo label
+replace generic_std = "ALOGLIPTIN-METFORMIN"        if regexm(generic_std, "ALO LIPTIN") & regexm(generic_std, "METFORMIN")
+replace generic_std = "AMLODIPINE-OLMESARTAN"       if regexm(generic_std, "AMLOD") & regexm(generic_std, "OLMESARTAN")
+replace generic_std = "BUDESONIDE-FORMOTEROL"       if regexm(generic_std, "BUDESONIDE") & regexm(generic_std, "FORMOT")
+replace generic_std = "CETIRIZINE-PSEUDOEPHEDRINE"  if regexm(generic_std, "CETIR") & regexm(generic_std, "PSE")
+replace generic_std = "DAPAGLIFLOZIN-METFORMIN"     if regexm(generic_std, "DAPA") & regexm(generic_std, "METFORMIN")
+replace generic_std = "EMPAGLIFLOZIN-METFORMIN"     if regexm(generic_std, "EMPA") & regexm(generic_std, "METFORMIN")
+replace generic_std = "FLUTICASONE-SALMETEROL"      if regexm(generic_std, "FLUTICASONE") & regexm(generic_std, "SALMET")
+replace generic_std = "FLUTICASONE-VILANTEROL"      if regexm(generic_std, "FLUTICASONE") & regexm(generic_std, "VILANT")
+replace generic_std = "IPRATROPIUM-ALBUTEROL"       if regexm(generic_std, "IPRATROP") & regexm(generic_std, "ALBUT")
+replace generic_std = "LINAGLIPTIN-METFORMIN"       if regexm(generic_std, "LINA LIPTIN") & regexm(generic_std, "METFORMIN")
+replace generic_std = "LISINOPRIL-HYDROCHLOROTHIAZIDE" if regexm(generic_std, "LISINOPRIL") & regexm(generic_std, "HY OCHLOROTHIAZIDE|HCTZ")
+replace generic_std = "OLMESARTAN-HYDROCHLOROTHIAZIDE" if regexm(generic_std, "OLMESARTAN") & regexm(generic_std, "HY OCHLOROTHIAZIDE|HCTZ")
+replace generic_std = "PROMETHAZINE-CODEINE"        if regexm(generic_std, "PROMETHAZINE") & regexm(generic_std, "CODEINE")
+replace generic_std = "SAXAGLIPTIN-METFORMIN"       if regexm(generic_std, "SAXA LIPTIN") & regexm(generic_std, "METFORMIN")
+replace generic_std = "SITAGLIPTIN-METFORMIN"       if regexm(generic_std, "SITA LIPTIN") & regexm(generic_std, "METFORMIN")
+replace generic_std = "TELMISARTAN-HYDROCHLOROTHIAZIDE" if regexm(generic_std, "TELMISARTAN") & regexm(generic_std, "HY OCHLOROTHIAZIDE|HTCZ")
+replace generic_std = "TIOTROPIUM-OLODATEROL"       if regexm(generic_std, "TIOTROP") & regexm(generic_std, "OLODAT")
+replace generic_std = "NYSTATIN-TRIAMCINOLONE"      if regexm(generic_std, "NYSTATIN") & regexm(generic_std, "TRIAM")
+replace generic_std = "SULFAMETHOXAZOLE-TRIMETHOPRIM" if regexm(generic_std, "SULFAMETHOXAZOLE") & regexm(generic_std, "TRIMETHOPRIM")
+
+* drop any leftovers that still look non-drug / broken
+replace generic_std = "" if regexm(generic_std, ///
+"^AND$|^OTH$|^AIR$|^CORE$|^CHLORIDE$|^CHLORIDE A OSOL$|^API ENIN$|^ARLIC$|^BIOXYL S$|^CONSTIPATION$|^DON T KNOW$|^PAIN MED$|^BLOOD THINN$|^NSAID$|^STATIN$|^THYROID$|^INSULIN$|^NITRO$|^SPARY$|^SO NETA$|^NSI$|^NASO$")
+drop if generic_std==""
+
+replace generic_std = trim(regexr(generic_std, " +", " "))
+tab generic_std
+
+*=====================================================*
+* FINAL AGGRESSIVE CLEAN + CORE CATEGORY COLLAPSE     *
+*=====================================================*
+
+replace generic_std = upper(trim(generic_std))
+replace generic_std = regexr(generic_std, "[ ]+", " ")
+replace generic_std = trim(generic_std)
+
+* ----------------------------
+* brand -> generic / core word
+* ----------------------------
+replace generic_std = "NAPROXEN"         if inlist(generic_std, "ALLEVE")
+replace generic_std = "SULFAMETHOXAZOLE-TRIMETHOPRIM" if inlist(generic_std, "BACTRIM")
+replace generic_std = "EZETIMIBE"        if inlist(generic_std, "ZETIA")
+replace generic_std = "SERTRALINE"       if inlist(generic_std, "ZOLOFT")
+replace generic_std = "RANITIDINE"       if inlist(generic_std, "ZANTAC")
+replace generic_std = "ALLOPURINOL"      if inlist(generic_std, "ZYLOPRIM")
+replace generic_std = "ALPRAZOLAM"       if inlist(generic_std, "XANAX")
+replace generic_std = "RIVAROXABAN"      if inlist(generic_std, "XARELTO")
+replace generic_std = "BUPROPION"        if inlist(generic_std, "WELLBUTRIN")
+replace generic_std = "FLUTICASONE-SALMETEROL" if regexm(generic_std, "^WIXELA")
+replace generic_std = "LEVOCETIRIZINE"   if inlist(generic_std, "ZXYZAL")
+replace generic_std = "TESTOSTERONE"     if inlist(generic_std, "XYOSTED")
+replace generic_std = "METOPROLOL"       if inlist(generic_std, "TOPROL XL")
+replace generic_std = "RIVAROXABAN"      if inlist(generic_std, "XARELTO")
+replace generic_std = "AZITHROMYCIN"     if regexm(generic_std, "^Z PAK")
+replace generic_std = "RANITIDINE"       if inlist(generic_std, "ZANTAC")
+replace generic_std = "EZETIMIBE"        if inlist(generic_std, "ZETIA")
+replace generic_std = "ACYCLOVIR"        if inlist(generic_std, "VALTREX")==0 & regexm(generic_std, "VALTREX")
+replace generic_std = "VALACYCLOVIR"     if regexm(generic_std, "VALTREX")
+replace generic_std = "SEMAGLUTIDE"      if regexm(generic_std, "WE OVY")
+replace generic_std = "LEVOCETIRIZINE"   if inlist(generic_std, "ZXYZAL")
+replace generic_std = "CETIRIZINE"       if inlist(generic_std, "ZYRT", "ZYTR")
+replace generic_std = "DULOXETINE"       if inlist(generic_std, "CYMBALTA")
+replace generic_std = "PANTOPRAZOLE"     if inlist(generic_std, "PROTONIX")
+replace generic_std = "OMEPRAZOLE"       if inlist(generic_std, "PRILOSEC")
+replace generic_std = "ROSUVASTATIN"     if inlist(generic_std, "CRESTOR")
+replace generic_std = "ATORVASTATIN"     if inlist(generic_std, "LIPITOR")
+replace generic_std = "LEVOTHYROXINE"    if inlist(generic_std, "SYNTHROID")
+replace generic_std = "MONTELUKAST"      if inlist(generic_std, "SINGULAIR", "SIN ULAIR")
+replace generic_std = "ALBUTEROL"        if inlist(generic_std, "PROAIR", "PRO AIR", "PROVENTIL")
+replace generic_std = "TAMSULOSIN"       if inlist(generic_std, "FLOMAX")
+replace generic_std = "TADALAFIL"        if inlist(generic_std, "CIALIS")
+replace generic_std = "SILDENAFIL"       if inlist(generic_std, "VIA RA")
+replace generic_std = "ESOMEPRAZOLE"     if inlist(generic_std, "NEX M")
+replace generic_std = "DILTIAZEM"        if inlist(generic_std, "DIOVAN")==0 & inlist(generic_std, "CARDIZEM")
+replace generic_std = "VALSARTAN"        if inlist(generic_std, "DIOVAN")
+replace generic_std = "AMLODIPINE"       if inlist(generic_std, "NORVASC")
+replace generic_std = "LATANOPROST"      if inlist(generic_std, "ZIOPTIN")==0 & inlist(generic_std, "XALATAN")
+replace generic_std = "LATANOPROST"      if inlist(generic_std, "ZIOPTIN")==0 & regexm(generic_std, "LATAN")
+replace generic_std = "TAFLUPROST"       if inlist(generic_std, "ZIOPTIN")
+replace generic_std = "MELOXICAM"        if inlist(generic_std, "MOBIC")
+replace generic_std = "MINOCYCLINE"      if inlist(generic_std, "SOLODYN")
+replace generic_std = "GABAPENTIN"       if inlist(generic_std, "NEURONTIN")
+replace generic_std = "VENLAFAXINE"      if inlist(generic_std, "EFFEXOR")
+replace generic_std = "RISPERIDONE"      if inlist(generic_std, "RISPERDAL")
+replace generic_std = "TOPIRAMATE"       if inlist(generic_std, "TRILEPTAL")==0 & inlist(generic_std, "TOPAMAX")
+replace generic_std = "OXCARBAZEPINE"    if inlist(generic_std, "TRILEPTAL")
+replace generic_std = "USTEKINUMAB"      if inlist(generic_std, "STELARA")
+replace generic_std = "RUXOLITINIB"      if inlist(generic_std, "JAKAFI")
+replace generic_std = "TRAZODONE"        if inlist(generic_std, "TRAZADONE")
+replace generic_std = "BUPROPION"        if regexm(generic_std, "^WELLBUTRIN$")
+replace generic_std = "DULOXETINE"       if regexm(generic_std, "^CYMBALTA$")
+replace generic_std = "LEVOCETIRIZINE"   if regexm(generic_std, "^XYZAL$|^ZXYZAL$")
+replace generic_std = "ICOSAPENT ETHYL"  if regexm(generic_std, "^VESCEPA$")
+
+* ----------------------------
+* aggressive typo fixes
+* ----------------------------
+replace generic_std = "ALECTINIB"        if inlist(generic_std, "AL TINIB")
+replace generic_std = "ALBUTEROL"        if inlist(generic_std, "ALUT OL SULFATE")
+replace generic_std = "HYDROCHLOROTHIAZIDE" if inlist(generic_std, "HY OCHLOROTHIAZADE", "HY OCHLOROTHIAZE")
+replace generic_std = "LEVOTHYROXINE"    if inlist(generic_std, "LEVOTHYROXIDE")
+replace generic_std = "FESOTERODINE"     if inlist(generic_std, "FESOT ODINE")
+replace generic_std = "FINERENONE"       if inlist(generic_std, "FIN ENONE")
+replace generic_std = "FLUTICASONE"      if inlist(generic_std, "FLONYX")
+replace generic_std = "FLUDROCORTISONE"  if inlist(generic_std, "FLU OCORTISONE")
+replace generic_std = "FORMOTEROL"       if inlist(generic_std, "FOMA INE")
+replace generic_std = "DIGOXIN"          if inlist(generic_std, "DI OXIN")
+replace generic_std = "DEPO-TESTOSTERONE" if inlist(generic_std, "DE TEST ONE")
+replace generic_std = "INSULIN ASPART"   if inlist(generic_std, "NOVALO INSULIN SCALE", "NOVOLO")
+replace generic_std = "ISOSORBIDE"       if inlist(generic_std, "ISOSOR E", "ISOSOR E MN")
+replace generic_std = "IVERMECTIN"       if inlist(generic_std, "IV M TIN")
+replace generic_std = "NEBIVOLOL"        if inlist(generic_std, "IVOLOL")
+replace generic_std = "LARSANTIN"        if inlist(generic_std, "LARSANTIN")
+replace generic_std = "LIFITEGRAST"      if inlist(generic_std, "LIFITE RAST")
+replace generic_std = "MEGESTROL"        if inlist(generic_std, "ME A RED")
+replace generic_std = "METHYLPREDNISOLONE" if inlist(generic_std, "ME OL DOSE PACK")
+replace generic_std = "MEDROXYPROGESTERONE" if inlist(generic_std, "ME OXYPRO ESTERONE")
+replace generic_std = "METOPROLOL"       if inlist(generic_std, "METOPRO LOL")
+replace generic_std = "MIDODRINE"        if inlist(generic_std, "MIDO INE")
+replace generic_std = "MOMETASONE FUROATE" if inlist(generic_std, "MOMENTASONE FOVOTE")
+replace generic_std = "MORPHINE"         if inlist(generic_std, "MORIN A")
+replace generic_std = "NAPHAZOLINE-PHENIRAMINE" if regexm(generic_std, "^NAPHAZOLINE")
+replace generic_std = "OCTREOTIDE"       if inlist(generic_std, "OCTREO E")
+replace generic_std = "ONDANSETRON"      if inlist(generic_std, "ODANSETRON")
+replace generic_std = "PERINDOPRIL-ARGININE" if inlist(generic_std, "P INDOPRIL BUMINE")
+replace generic_std = "PANCRELIPASE"     if inlist(generic_std, "PANOTPRAZOLE")==0 & regexm(generic_std, "^PANCRELIPASE$")
+replace generic_std = "PANTOPRAZOLE"     if inlist(generic_std, "PANOTPRAZOLE", "PANTANOL S", "PANTONOL S", "PANTOPRAZOL", "PANTOPROMAZOLE")
+replace generic_std = "PROGESTERONE"     if inlist(generic_std, "PRO EST ONE INJECTION")
+replace generic_std = "PROBIOTIC"        if inlist(generic_std, "PROOBIOTIC")
+replace generic_std = "PROPOFOL"         if inlist(generic_std, "PROP IA")
+replace generic_std = "GREEN TEA EXTRACT" if inlist(generic_std, "REEN TEA AND WHITE TEA EXTRACT")
+replace generic_std = "GRISEOFULVIN"     if inlist(generic_std, "RISEOFULVIN")
+replace generic_std = "RIVASTIGMINE"     if inlist(generic_std, "RIVASTI MINE")
+replace generic_std = "ROSUVASTATIN"     if inlist(generic_std, "ROSUVASTATIN")
+replace generic_std = "SALINE"           if inlist(generic_std, "SAILINE")
+replace generic_std = "SAXAGLIPTIN"      if inlist(generic_std, "SAXA LIPTIN")
+replace generic_std = "SIMETHICONE"      if inlist(generic_std, "SIM NI")==0 & regexm(generic_std, "^SIMETH")
+replace generic_std = "SPIRONOLACTONE-HYDROCHLOROTHIAZIDE" if inlist(generic_std, "SPIRONOLACTON HY OCHLOROTHIAZE")
+replace generic_std = "STEROIDS"         if inlist(generic_std, "ST OID NS")
+replace generic_std = "PROBIOTIC"        if inlist(generic_std, "SU AR FREE PROBIOIC")
+replace generic_std = "TEMAZEPAM"        if inlist(generic_std, "TEMAZAPAM FOR SLEEP")
+replace generic_std = "TOPIRAMATE"       if inlist(generic_std, "TOPIRAMATE SPRINKLE")
+replace generic_std = "CAPTOPRIL"        if inlist(generic_std, "TOPRIL")
+replace generic_std = "TOPROL XL"        if inlist(generic_std, "TOPROL XL")
+replace generic_std = "TOBRAMYCIN"       if inlist(generic_std, "T MIC")
+replace generic_std = "TICAGRELOR"       if inlist(generic_std, "TRICA RELOR")
+replace generic_std = "TRELEGY ELLIPTA"  if inlist(generic_std, "TRELE Y", "TRELI Y")
+replace generic_std = "INSULIN DEGLUDEC" if inlist(generic_std, "TRESEBA", "TRESIBA FLEXTOUCH U")
+replace generic_std = "TRIAMCINOLONE"    if inlist(generic_std, "TRIANCNOLONE")
+replace generic_std = "TROSPIUM CHLORIDE" if inlist(generic_std, "TROSP M CHLORIDE")
+replace generic_std = "TUMS"             if inlist(generic_std, "TUM IC")
+replace generic_std = "TURMERIC"         if inlist(generic_std, "TURM IC")
+replace generic_std = "UBROGEPANT"       if inlist(generic_std, "UBRO EPANT")
+replace generic_std = "UMECLIDINIUM"     if inlist(generic_std, "UM LIDIN M")
+replace generic_std = "VERAPAMIL"        if inlist(generic_std, "V APAMIL", "V APAMIL CR")
+replace generic_std = "VALGANCICLOVIR"   if inlist(generic_std, "VAL ANCICLOVIR HY OCHLORIDE")
+replace generic_std = "VALERIAN ROOT"    if inlist(generic_std, "VAL IAN ROOT")
+replace generic_std = "VESCEPA"          if inlist(generic_std, "VESCEPA")
+replace generic_std = "VIAGRA"           if inlist(generic_std, "VIA RA")
+replace generic_std = "VIBERZI"          if inlist(generic_std, "VIBE ROTON")
+replace generic_std = "DICLOFENAC"       if inlist(generic_std, "VOLTAREN", "VOLTARIN TOP")
+replace generic_std = "WEGOVY"           if inlist(generic_std, "WE OVY SQ EV Y DAYS")
+replace generic_std = "GUAIFENESIN"      if inlist(generic_std, "XO EX", "XO EX SOLUTION")
+replace generic_std = "AZITHROMYCIN"     if inlist(generic_std, "Z PAK DAY")
+replace generic_std = "MULTIVITAMIN"     if inlist(generic_std, "ZINC", "ZINC LUCONATE")
+
+* ----------------------------
+* combine existing categories more aggressively
+* ----------------------------
+replace generic_std = "ALUMINUM HYDROXIDE-MAGNESIUM HYDROXIDE-SIMETHICONE" if ///
+    regexm(generic_std, "ALUM") | regexm(generic_std, "ALUMINUM HYDROXIDE MAGNESIUM HYDROXIDE")
+
+replace generic_std = "ANTACID" if inlist(generic_std, "ANTACID AND ANTI AS", "ANTACIDS")
+
+replace generic_std = "ESTROGEN/PROGESTIN" if ///
+    regexm(generic_std, "CONJU ATED ESTROGENS") | regexm(generic_std, "PREMPRO")
+
+replace generic_std = "DEXTROMETHORPHAN-GUAIFENESIN" if ///
+    regexm(generic_std, "DEXTROMETHORPHAN") & regexm(generic_std, "UAIFENESIN|GUAIFENESIN")
+
+replace generic_std = "INSULIN" if ///
+    regexm(generic_std, "^HUMALO INSULIN$|^HUMOLO INSULIN$|^INSULIN HUMAN$|^FAST ACTIN INSULIN$")
+
+replace generic_std = "INSULIN DEGLUDEC" if regexm(generic_std, "INSULIN DE LUD")
+replace generic_std = "INSULIN GLARGINE" if regexm(generic_std, "INSULIN LARGIN|INSULIN LARGINE|^LANTUS$")
+replace generic_std = "INSULIN LISPRO"   if regexm(generic_std, "INSULIN LISPRO")
+replace generic_std = "INSULIN ASPART"   if regexm(generic_std, "INSULIN ASPART|^NOVOLO$|^NOVALO INSULIN SCALE$")
+replace generic_std = "INSULIN DETEMIR"  if regexm(generic_std, "INSULIN DETEMIR")
+
+replace generic_std = "MILK OF MAGNESIA" if inlist(generic_std, "MILK OF MA NESIA")
+replace generic_std = "MOMETASONE"       if inlist(generic_std, "MOMETASONE", "MOMETASONE FUROATE")
+replace generic_std = "OMEGA-3"          if inlist(generic_std, "LOVAZA", "VESCEPA", "OMEGA-3")
+replace generic_std = "SALINE RINSE"     if regexm(generic_std, "NETTI T|NETTIE T|NETTY T|NEIL MED")
+replace generic_std = "SIMETHICONE"      if inlist(generic_std, "SIMETHICONE")
+replace generic_std = "TRAZODONE"        if regexm(generic_std, "^TRAZODONE")
+replace generic_std = "TRIAMCINOLONE"    if regexm(generic_std, "^TRIAMCINOLONE")
+replace generic_std = "UMECLIDINIUM-VILANTEROL" if regexm(generic_std, "UM LIDIN M BROMIDE AND VILANTEROL TRI|UM LIDINUM VILANT OL")
+replace generic_std = "VILAZODONE"       if regexm(generic_std, "^VILAZODONE")
+replace generic_std = "VENLAFAXINE"      if regexm(generic_std, "^VENLAFAXINE")
+replace generic_std = "FLUOXETINE"       if regexm(generic_std, "^FLUOXETINE")
+replace generic_std = "FLUOCINOLONE"     if regexm(generic_std, "^FLUOCINOLONE")
+replace generic_std = "FLUOCINONIDE"     if regexm(generic_std, "^FLUOCINONIDE")
+replace generic_std = "FLUTICASONE-VILANTEROL" if regexm(generic_std, "FLUT VILANT OL")
+replace generic_std = "BUDESONIDE-FORMOTEROL" if regexm(generic_std, "BUDESONIDE") & regexm(generic_std, "FORMOT")
+replace generic_std = "FLUTICASONE-SALMETEROL" if regexm(generic_std, "WIXELA|FLUTICASONE-SALMETEROL")
+
+* ----------------------------
+* drop absolute junk / non-workable
+* ----------------------------
+replace generic_std = "" if inlist(generic_std, ///
+"ABX FOR SINUS INF", "ACCU CHEK AVIVA PLUS", "AETHUSA CYNAP M ALLIUM SATIVUM BAPT", ///
+"AND HY OCHLORIDE", "ARLIC MG OXIDE MG BID IRON M W F", "ARNUITY")
+
+replace generic_std = "" if inlist(generic_std, ///
+"BE AN IN ALL GY", "BENZETHON M CHLORIDE", "BIOFLEX", ///
+"BUTCH S BROOM", "CARBAMIDE P OXIDE OTIC", "CATARACT TTS")
+
+replace generic_std = "" if inlist(generic_std, ///
+"CHELIDON M CURCUMA", "CHLORIDE ALOE V A", "CHLORIDE ALOE V A NON AEROSOL", ///
+"CHOL CALCIF OL", "CHOLEST OL", "CILANTRO FOR ROSACEA")
+
+replace generic_std = "" if inlist(generic_std, ///
+"COMBI AN", "CONIVAPTAN HY OCHLORIDE", "COU H MEDICINE", ///
+"D A ON", "D RETIC", "DEXTRAN")
+
+replace generic_std = "" if inlist(generic_std, ///
+"DHEA HINACEA OLDEN SEAL", "EDARBI CHLOR", "ELESTAT", ///
+"EMTESA", "ENTAMICIN SULFATE", "ENTAMYACIN")
+
+replace generic_std = "" if inlist(generic_std, ///
+"EXCE IN", "FIB", "FLORASTAR", ///
+"FOR TREATMENT OF PSORIASIS", "HUMAN IMMUNO LOBULIN G", "HYALURONATE SYRINGE")
+
+replace generic_std = "" if inlist(generic_std, ///
+"ICOSA T", "IMMUNE LOBULIN HUMAN", "INCRUSE", ///
+"INQOVI", "INSENG", "ITABINE")
+
+replace generic_std = "" if inlist(generic_std, ///
+"LARSANTIN", "LEVENOR ET ESTR", "LIDAX", ///
+"LIDEX", "LIPASE PROTEASE AMYLASE ,000 180", "LISH NEDICATION")
+
+replace generic_std = "" if inlist(generic_std, ///
+"LUCENTIS OPTHO", "LYC IN HYPROMELLOSES AND LYETHYLEN", "LYVINYL ALCOHOL", ///
+"LYYXIN SULFATE", "M LAZINE", "M LICINE")
+
+replace generic_std = "" if inlist(generic_std, ///
+"MAN OSTEIN", "MARAJUANA", "MAXIDE", ///
+"MED FOR RESPIRATORY ALL IES", "MENTHOL CAMPHOR", "METHADONE HY OCHLORIDE")
+
+replace generic_std = "" if inlist(generic_std, ///
+"METRAKART", "MICONAZOLE NITRATE", "MILNACIPRAN HY OCHLORIDE", ///
+"MINIPRESS", "NACL NAHCO HYALURON SOD ALOE", "NEUBREVA")
+
+replace generic_std = "" if inlist(generic_std, ///
+"NOSTRELLA", "NYQUIL", "OCTREO E", ///
+"ONAZOLE", "P INDOPRIL BUMINE", "PAIN PUMP WANTS IT TAKEN OUT IP")
+
+replace generic_std = "" if inlist(generic_std, ///
+"PANTANOL S", "PANTONOL S", "PHOSPHA NEUTRAL", ///
+"PL ANA E", "PROSTA ENIX", "PROTON PUMP IBITOR")
+
+replace generic_std = "" if inlist(generic_std, ///
+"PYRANTAL PAMOATE", "REEN TEA AND WHITE TEA EXTRACT", "RESCUE DOESNT KNOW NAME", ///
+"RLYIC ACID", "ROBITUSSIN", "ROBITUSSIN CF")
+
+replace generic_std = "" if inlist(generic_std, ///
+"S EV WEEKS FOR OPTIC NEUROPATHY", "S OVENT", "SAICIN", ///
+"SAILINE", "SIM NI", "SOME CHOLEST OL MED")
+
+replace generic_std = "" if inlist(generic_std, ///
+"ST OID NS", "STANDARDIZED SENNA C NTRATE", "SU AR FREE PROBIOIC", ///
+"SUCROF RIC OXYHY OXIDE", "TREATMENT", "TRIFLEX")
+
+replace generic_std = "" if inlist(generic_std, ///
+"TRIPLIXAM MG", "TTS", "ULIZ", ///
+"ULIZ TREATMENTS", "ULIZ USES VERY RARELY", "UND YLENIC ACID")
+
+replace generic_std = "" if inlist(generic_std, ///
+"UR HOLINE", "UROXETROL", "USE AS NEEDED", ///
+"USED", "VAL IAN ROOT", "VARIOUS NC SUPPS FOR SLEEP")
+
+replace generic_std = "" if inlist(generic_std, ///
+"WART PEEL REMED M FU", "WHEAT RASS", "WHEY PROTEIN", ///
+"WHEY PROTEIN WD", "X DOSE EACH NO REPEAT RX")
+
+drop if generic_std==""
+
+* ----------------------------
+* tidy final
+* ----------------------------
+replace generic_std = regexr(generic_std, " +", " ")
+replace generic_std = trim(generic_std)
+
+tab generic_std
+
+*====================================================*
+* FINAL FILLER-WORD STRIP + CORE NAME RE-COLLAPSE    *
+*====================================================*
+
+replace generic_std = upper(trim(generic_std))
+
+* remove numbers
+replace generic_std = regexr(generic_std, "[0-9]+", " ")
+
+* remove common filler / route / form / timing words
+replace generic_std = regexr(generic_std, ///
+"\b(ONE|DAY|DAYS|WEEK|WEEKLY|MONTH|MONTHLY|DAILY|NIGHTLY|TWICE|THREE|TIMES|AS|DIR|DIRECTED|NEEDED|USE|USED|VERY|RARELY|PRN|TAB|TABS|TABLET|TABLETS|CAP|CAPS|CAPSULE|CAPSULES|SOLUTION|SOLN|SUSPENSION|SYRUP|INJECTION|INJ|SPRAY|AEROSOL|DOSE|DOSES|POWDER|POWD|CREAM|OINTMENT|OINT|PATCH|GEL|DROPS|DROP|SUPP|SUPPS|EXTENDED|RELEASE|XR|ER|DR|EC|OTC|NON|AEROSOL|SUBLINGUAL|FLEXTOUCH|WD)\b", " ")
+
+* remove leftover chemical salt words / noise words
+replace generic_std = regexr(generic_std, ///
+"\b(HYDROCHLORIDE|CHLORIDE|BROMIDE|SULFATE|SODIUM|CALCIUM|MAGNESIUM|ACETATE|FUROATE|PROPIONATE|ACETONIDE|MONOHYDRATE|HBR|USP)\b", " ")
+
+* normalize spaces again
+replace generic_std = regexr(generic_std, "[^A-Z\- ]", " ")
+replace generic_std = regexr(generic_std, " +", " ")
+replace generic_std = trim(generic_std)
+
+* re-collapse to core categories after filler removal
+replace generic_std = "DEXTROMETHORPHAN-GUAIFENESIN" if regexm(generic_std, "DEXTROMETHORPHAN") & regexm(generic_std, "GUAIFENESIN|UAIFENESIN")
+replace generic_std = "WARFARIN" if regexm(generic_std, "^WARFARIN")
+replace generic_std = "TRAMADOL" if regexm(generic_std, "^TRAMADOL")
+replace generic_std = "VORTIOXETINE" if regexm(generic_std, "^VORTIOXETINE")
+replace generic_std = "UMECLIDINIUM-VILANTEROL" if regexm(generic_std, "UM LIDINUM") & regexm(generic_std, "VILANT")
+replace generic_std = "UMECLIDINIUM" if regexm(generic_std, "^UM LIDIN")
+replace generic_std = "GUAIFENESIN" if regexm(generic_std, "^UAIFENESIN|^XO EX")
+replace generic_std = "INSULIN ASPART" if regexm(generic_std, "^NOVOLO")
+replace generic_std = "LEVOTHYROXINE" if regexm(generic_std, "^LEVOTHYROX")
+replace generic_std = "VALSARTAN" if regexm(generic_std, "^VALSARTAN AND SACUBITRIL$")==0 & regexm(generic_std, "^VALSARTAN")
+replace generic_std = "SACUBITRIL-VALSARTAN" if regexm(generic_std, "SACUBITRIL") | regexm(generic_std, "VALSARTAN AND SACUBITRIL")
+replace generic_std = "TRIAMCINOLONE" if regexm(generic_std, "^TRIAMCINOLONE")
+replace generic_std = "VENLAFAXINE" if regexm(generic_std, "^VENLAFAXINE")
+replace generic_std = "TOPIRAMATE" if regexm(generic_std, "^TOPIRAMATE")
+replace generic_std = "TAMSULOSIN" if regexm(generic_std, "^TAMSULOSIN")
+replace generic_std = "TICAGRELOR" if regexm(generic_std, "^TICAGRELOR")
+replace generic_std = "VARDENAFIL" if regexm(generic_std, "^VARDENAFIL")
+replace generic_std = "ZOLPIDEM" if regexm(generic_std, "^ZOLPIDEM")
+replace generic_std = "FLUOXETINE" if regexm(generic_std, "^FLUOXETINE|^FULOXETINE")
+replace generic_std = "OMEPRAZOLE" if regexm(generic_std, "^OMEPRAZOLE")
+replace generic_std = "PANTOPRAZOLE" if regexm(generic_std, "^PANTOPRAZOLE")
+replace generic_std = "ALBUTEROL" if regexm(generic_std, "^ALBUTEROL")
+replace generic_std = "CETIRIZINE" if regexm(generic_std, "^CETIRIZINE")
+replace generic_std = "ASPIRIN" if regexm(generic_std, "^ASPIRIN")
+replace generic_std = "AMLODIPINE" if regexm(generic_std, "^AMLODIPINE")
+replace generic_std = "FLUTICASONE-SALMETEROL" if regexm(generic_std, "FLUTICASONE") & regexm(generic_std, "SALMETEROL")
+replace generic_std = "FLUTICASONE-VILANTEROL" if regexm(generic_std, "FLUTICASONE") & regexm(generic_std, "VILANTEROL|VILANT")
+replace generic_std = "FLUTICASONE" if regexm(generic_std, "^FLUTICASONE")
+replace generic_std = "MOMETASONE" if regexm(generic_std, "^MOMETASONE")
+replace generic_std = "METOPROLOL" if regexm(generic_std, "^METOPROLOL")
+replace generic_std = "LOSARTAN" if regexm(generic_std, "^LOSARTAN")
+replace generic_std = "FAMOTIDINE" if regexm(generic_std, "^FAMOTIDINE")
+replace generic_std = "LORATADINE" if regexm(generic_std, "^LORATADINE")
+replace generic_std = "ROSUVASTATIN" if regexm(generic_std, "^ROSUVASTATIN")
+replace generic_std = "RIVAROXABAN" if regexm(generic_std, "^RIVAROXABAN")
+replace generic_std = "SERTRALINE" if regexm(generic_std, "^SERTRALINE")
+
+* drop still-unworkable leftovers
+replace generic_std = "" if inlist(generic_std, ///
+"AETHUSA CYNAP M ALLIUM SATIVUM BAPT", ///
+"ARLIC MG OXIDE IRON M W F", ///
+"BE AN IN ALL GY", ///
+"CHLORIDE ALOE V A", ///
+"DHEA HINACEA OLDEN SEAL", ///
+"FAST ACTIN INSULIN", ///
+"IMMUNE LOBULIN HUMAN", ///
+"INDOMETHACIN FOR OUT ATTACKS")
+
+replace generic_std = "" if inlist(generic_std, ///
+"LIPASE PROTEASE AMYLASE", ///
+"LYC IN HYPROMELLOSES LYETHYLEN", ///
+"MED FOR RESPIRATORY ALL IES", ///
+"NACL NAHCO HYALURON SOD ALOE", ///
+"P INDOPRIL BUMINE", ///
+"PAIN PUMP WANTS IT TAKEN OUT IP", ///
+"PROTON PUMP IBITOR", ///
+"S EV WEEKS FOR OPTIC NEUROPATHY")
+
+replace generic_std = "" if inlist(generic_std, ///
+"TOSAN LYSULFATE", ///
+"U ARENONUM", ///
+"WART PEEL REMED M FU", ///
+"WHEY PROTEIN", ///
+"VALERIAN ROOT", ///
+"SALINE", ///
+"ANTACID")
+
+drop if generic_std==""
+
+replace generic_std = regexr(generic_std, " +", " ")
+replace generic_std = trim(generic_std)
+
+tab generic_std
+
+
+
+
+
+H="**********************"
+
+
+H="data pull Yongji bivariate"
+log using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\output\youngji 0320.smcl",replace 
+
+
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\all done 0919 Jan 2026.dta",clear 
+
+keep if !missing(jhu_source)
+
+
+gen has_any_mental_condition_final = has_certPTSD_final == 1 | has_certANX_final == 1 | has_certDEP_final == 1 | has_certSA_final
+rename has_any_mental_condition_final has_any_ment_cond
+
+gen has_any_BUT_mentalhealth = has_any_cert_final == 1 & has_any_ment_cond == 0
+
+
+gen bmi_Group_combined = bmi_Group_final
+replace bmi_Group_combined = "Normal/Underweight" if inlist(bmi_Group_final, "Normal", "Underweight")
+drop bmi_Group_final
+rename bmi_Group_combined bmi_Group_final
+
+gen exposure_combined = exposure_final
+replace exposure_combined = "High/Very High" if inlist(exposure_final, "High", "Very High")
+drop exposure_final
+rename exposure_combined exposure_final
+
+gen education_recode = education_final
+
+replace education_recode = "<=High school" if inlist(education_final, "<HS Grad", "HS Grad")
+replace education_recode = "Some college"  if education_final == "<BA/BS"
+replace education_recode = "College"       if inlist(education_final, "BA/BS", "Grad Sch")
+replace education_recode = ""               if education_final == "Unknown"
+
+drop education_final
+rename education_recode education_final
+
+replace race_final = "" if race_final == "Unknown"
+
+gen income_cat_final = .
+
+replace income_cat_final = 1 if inlist(income_category,"$0-$10K",">$10-20K",">$20-30K",">$30-40K")
+replace income_cat_final = 2 if inlist(income_category,">$40-50K",">$50-60K",">$60-70K",">$70-80K")
+replace income_cat_final = 3 if inlist(income_category,">$80-90K",">$90-100K",">$100-110K",">$110-120K",">$120-130K",">$130-140K",">$140")
+
+replace income_cat_final = . if income_category=="M"
+
+label define income_cat_lbl 1 "Low (<40K)" 2 "Middle (40–80K)" 3 "High (>80K)"
+label values income_cat_final income_cat_lbl
+
+tab income_category
+tab income_cat_final
+
+
+*label define adl_cat 0 "Not fully independent" 1 "Independent" 2 "Unknown"
+tab adl_cat_final
+
+gen adl_cat_final2 = adl_cat_final
+replace adl_cat_final2 = . if adl_cat_final2 == 2
+tab adl_cat_final2,m
+
+keep if adl_cat_final2!=.
+
+local vars jhu_cat_final fesi_cat_final fall_risk_final falls_year_final ///
+           moca_cat_final callahan_cat_final soc_4_categories_final ///
+           exposure_final age_group gender_final race_final ///
+           bmi_Group_final education_final smoking_status_final ///
+           income_cat_final has_any_ment_cond has_any_BUT_mentalhealth ///
+		   has_certURD_final has_certPTSD_final has_certCancer_final has_certGERD_final has_any_cert_final
+
+foreach v of local vars {
+    di "=============================="
+    di "Chi-square test: adl_cat_final2 vs `v'"
+    tab adl_cat_final2 `v', chi2 m
+}
+
+ttest n_certs_final,by(adl_cat_final2)
+ttest age_at_jhu,by(adl_cat_final2)
+
+translate "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\output\youngji 0320.smcl" "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\output\youngji 0320.pdf"
+
+log close 
+
+H="Youngji logistic model"
+log using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\output\youngji 0430.smcl",replace 
+
+
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\all done 0919 Jan 2026.dta",clear 
+
+keep if !missing(jhu_source)
+
+
+gen has_any_mental_condition_final = has_certPTSD_final == 1 | has_certANX_final == 1 | has_certDEP_final == 1 | has_certSA_final
+rename has_any_mental_condition_final has_any_ment_cond
+
+gen has_any_BUT_mentalhealth = has_any_cert_final == 1 & has_any_ment_cond == 0
+
+
+gen bmi_Group_combined = bmi_Group_final
+replace bmi_Group_combined = "Normal/Underweight" if inlist(bmi_Group_final, "Normal", "Underweight")
+drop bmi_Group_final
+rename bmi_Group_combined bmi_Group_final
+
+gen exposure_combined = exposure_final
+replace exposure_combined = "High/Very High" if inlist(exposure_final, "High", "Very High")
+drop exposure_final
+rename exposure_combined exposure_final
+
+gen education_recode = education_final
+
+replace education_recode = "<=High school" if inlist(education_final, "<HS Grad", "HS Grad")
+replace education_recode = "Some college"  if education_final == "<BA/BS"
+replace education_recode = "College"       if inlist(education_final, "BA/BS", "Grad Sch")
+replace education_recode = ""               if education_final == "Unknown"
+
+drop education_final
+rename education_recode education_final
+
+replace race_final = "" if race_final == "Unknown"
+
+recode moca_cat_final (2 = 1)
+label define moca_cat_final 0 "Normal" 1 "Cognitively impaired"
+label values moca_cat_final moca_cat_final
+tab moca_cat_final
+
+gen income_cat_final = .
+
+replace income_cat_final = 1 if inlist(income_category,"$0-$10K",">$10-20K",">$20-30K",">$30-40K")
+replace income_cat_final = 2 if inlist(income_category,">$40-50K",">$50-60K",">$60-70K",">$70-80K",">$80-90K") | inlist(income_category, ">$90-100K",">$100-110K",">$110-120K",">$120-130K",">$130-140K",">$140")
+replace income_cat_final = . if income_category=="M"
+
+label define income_cat_final 1 "Low (<40K)" 2 "Non-Low (>40K)" 
+label values income_cat_final income_cat_final
+
+tab income_category
+tab income_cat_final
+
+
+*label define adl_cat 0 "Independent" 1 "Disabled" 2 "Unknown"
+replace adl_cat_final = . if adl_cat_final == 2   // drop unknown
+replace adl_cat_final = 2 if adl_cat_final == 0   // temp swap
+replace adl_cat_final = 0 if adl_cat_final == 1
+replace adl_cat_final = 1 if adl_cat_final == 2
+
+label define adl_cat_final 0 "Independent" 1 "Disabled", replace
+label values adl_cat_final adl_cat_final
+tab adl_cat_final
+
+
+
+local vars jhu_cat_final fesi_cat_final fall_risk_final falls_year_final ///
+           moca_cat_final callahan_cat_final soc_4_categories_final ///
+           exposure_final age_group gender_final race_final ///
+           bmi_Group_final education_final smoking_status_final ///
+           income_cat_final has_any_ment_cond has_any_BUT_mentalhealth ///
+		   has_certURD_final has_certPTSD_final has_certCancer_final has_certGERD_final has_any_cert_final
+
+foreach v of local vars {
+    di "=============================="
+    di "Chi-square test: adl_cat_final vs `v'"
+    tab adl_cat_final `v' if adl_cat_final!=., chi2 m
+}
+
+ttest n_certs_final,by(adl_cat_final)
+ttest age_at_jhu,by(adl_cat_final)
+
+*********************************//logistic modeling**********************************
+keep if adl_cat_final!=.
+
+foreach var of varlist age_at_jhu_int income_cat_final has_any_BUT_mentalhealth has_any_ment_cond jhu_cat_final fesi_cat_final falls_year_final moca_cat_final {
+	tab `var',m
+}
+
+mi set wide 
+
+mi register imputed income_cat_final moca_cat_final age_at_jhu_int
+mi register regular has_any_BUT_mentalhealth has_any_ment_cond jhu_cat_final fesi_cat_final falls_year_final
+
+mi impute chained ///
+    (regress) age_at_jhu_int ///
+    (mlogit, augment) moca_cat_final ///
+	(ologit, augment) income_cat_final ///
+    = has_any_BUT_mentalhealth has_any_ment_cond jhu_cat_final fesi_cat_final, ///
+    add(20) rseed(12345)
+
+mi fvset base 2 income_cat_final
+mi fvset base 0 adl_cat_final
+
+//full sample cohort 
+
+mi estimate, or esampvaryok: logistic adl_cat_final age_at_jhu_int i.income_cat_final i.has_any_BUT_mentalhealth i.has_any_ment_cond 
+
+mi estimate, or esampvaryok: logistic adl_cat_final age_at_jhu_int i.income_cat_final i.has_any_BUT_mentalhealth i.has_any_ment_cond i.jhu_cat_final i.fesi_cat_final i.falls_year_final i.moca_cat_final
+
+//male only conhort 
+
+tab gender_final if adl_cat_final!=.
+
+mi estimate, or esampvaryok: logistic adl_cat_final age_at_jhu_int i.income_cat_final i.has_any_BUT_mentalhealth i.has_any_ment_cond if gender_final=="Male"
+
+mi estimate, or esampvaryok: logistic adl_cat_final age_at_jhu_int i.income_cat_final i.has_any_BUT_mentalhealth i.has_any_ment_cond i.jhu_cat_final i.fesi_cat_final i.falls_year_final i.moca_cat_final if gender_final=="Male"
+
+//Female only conhort 
+
+tab gender_final if adl_cat_final!=.
+
+mi estimate, or esampvaryok: logistic adl_cat_final age_at_jhu_int i.income_cat_final i.has_any_BUT_mentalhealth i.has_any_ment_cond if gender_final=="Female"
+
+mi estimate, or esampvaryok: logistic adl_cat_final age_at_jhu_int i.income_cat_final i.has_any_BUT_mentalhealth i.has_any_ment_cond i.jhu_cat_final i.fesi_cat_final i.falls_year_final i.moca_cat_final if gender_final=="Female"
+
+
+
+
+
+translate "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\output\youngji 0430.smcl" "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\output\youngji 0430.pdf"
+
+log close 
+
+H="YoungJi paper descriptive by gender "
+log using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\output\youngji 0505 gender.smcl",replace 
+
+
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\all done 0919 Jan 2026.dta",clear 
+
+keep if !missing(jhu_source)
+
+keep if adl_cat_final!=.
+
+gen has_any_mental_condition_final = has_certPTSD_final == 1 | has_certANX_final == 1 | has_certDEP_final == 1 | has_certSA_final
+rename has_any_mental_condition_final has_any_ment_cond
+
+gen has_any_BUT_mentalhealth = has_any_cert_final == 1 & has_any_ment_cond == 0
+
+
+gen bmi_Group_combined = bmi_Group_final
+replace bmi_Group_combined = "Normal/Underweight" if inlist(bmi_Group_final, "Normal", "Underweight")
+drop bmi_Group_final
+rename bmi_Group_combined bmi_Group_final
+
+gen exposure_combined = exposure_final
+replace exposure_combined = "High/Very High" if inlist(exposure_final, "High", "Very High")
+drop exposure_final
+rename exposure_combined exposure_final
+
+gen education_recode = education_final
+
+replace education_recode = "<=High school" if inlist(education_final, "<HS Grad", "HS Grad")
+replace education_recode = "Some college"  if education_final == "<BA/BS"
+replace education_recode = "College"       if inlist(education_final, "BA/BS", "Grad Sch")
+replace education_recode = ""               if education_final == "Unknown"
+
+drop education_final
+rename education_recode education_final
+
+replace race_final = "" if race_final == "Unknown"
+
+recode moca_cat_final (2 = 1)
+label define moca_cat_final 0 "Normal" 1 "Cognitively impaired"
+label values moca_cat_final moca_cat_final
+tab moca_cat_final
+
+gen income_cat_final = .
+
+replace income_cat_final = 1 if inlist(income_category,"$0-$10K",">$10-20K",">$20-30K",">$30-40K")
+replace income_cat_final = 2 if inlist(income_category,">$40-50K",">$50-60K",">$60-70K",">$70-80K",">$80-90K") | inlist(income_category, ">$90-100K",">$100-110K",">$110-120K",">$120-130K",">$130-140K",">$140")
+replace income_cat_final = . if income_category=="M"
+
+label define income_cat_final 1 "Low (<40K)" 2 "Non-Low (>40K)" 
+label values income_cat_final income_cat_final
+
+tab income_category
+tab income_cat_final
+
+
+*label define adl_cat 0 "Independent" 1 "Disabled" 2 "Unknown"
+replace adl_cat_final = . if adl_cat_final == 2   // drop unknown
+replace adl_cat_final = 2 if adl_cat_final == 0   // temp swap
+replace adl_cat_final = 0 if adl_cat_final == 1
+replace adl_cat_final = 1 if adl_cat_final == 2
+
+label define adl_cat_final 0 "Independent" 1 "Disabled", replace
+label values adl_cat_final adl_cat_final
+tab adl_cat_final
+
+
+
+local vars jhu_cat_final fesi_cat_final fall_risk_final falls_year_final ///
+           moca_cat_final callahan_cat_final soc_4_categories_final ///
+           exposure_final age_group gender_final race_final ///
+           bmi_Group_final education_final smoking_status_final ///
+           income_cat_final has_any_ment_cond has_any_BUT_mentalhealth ///
+		   has_certURD_final has_certPTSD_final has_certCancer_final has_certGERD_final has_any_cert_final
+
+foreach v of local vars {
+    di "=============================="
+    di "Chi-square test: adl_cat_final vs `v'"
+    tab adl_cat_final `v' if adl_cat_final!=. & gender_final=="Female", chi2 m
+}
+
+ttest n_certs_final if gender_final=="Female",by(adl_cat_final)
+ttest age_at_jhu if gender_final=="Female",by(adl_cat_final)
+
+foreach v of local vars {
+    di "=============================="
+    di "Chi-square test: adl_cat_final vs `v'"
+    tab adl_cat_final `v' if adl_cat_final!=. & gender_final=="Male", chi2 m
+}
+
+ttest n_certs_final if gender_final=="Male",by(adl_cat_final)
+ttest age_at_jhu if gender_final=="Male",by(adl_cat_final)
+
+
+
+translate "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\output\youngji 0505 gender.smcl" "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\output\youngji 0505 gender.pdf"
+
+log close 

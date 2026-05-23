@@ -1,0 +1,775 @@
+= V4 Outline MultiLine NoSorting TabWidth=30
+
+H="get data ready "
+import  excel "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\WTCII_REPORT_4.24.2025.xlsx",clear firstrow
+rename RecordID record_id
+drop if record_id=="88"
+replace record_id="16" if record_id=="16 (withdrawn)"
+replace record_id="50" if record_id=="50 (withdrawn)"
+replace record_id="86" if record_id=="86 (withdrawn)"
+replace record_id="88" if record_id=="88 (Withdrawn)"
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\WTCII_REPORT_4.24.2025.dta",replace 
+
+import excel "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\WTCIISubjectTracking_4.24.2025.xlsx",clear firstrow
+rename PatientID record_id
+rename DateofBirth dob
+rename Gender gender 
+tostring record_id,replace 
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\WTCIISubjectTracking_4.24.2025.dta",replace 
+
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\WTCII_REPORT_4.24.2025.dta"
+merge 1:1 record_id using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\WTCIISubjectTracking_4.24.2025.dta"
+drop _merge
+
+
+//drop who did not complete JHU questionnaire 
+drop if JHUScore==.
+tab JHUScore
+
+//fill those missing Callahan score on Redcap 
+**#88; #1175; #1577; #4855 has actual missing scores 
+replace CallahanScore=6 if record_id=="3"
+replace CallahanScore=6 if record_id=="26"
+replace CallahanScore=6 if record_id=="28"
+replace CallahanScore=6 if record_id=="36"
+replace CallahanScore=6 if record_id=="45"
+replace CallahanScore=6 if record_id=="46"
+
+//rename a bunch of variables 
+rename JHUScore jhu_score
+rename FESITotalmax64 fesi_total
+rename MOCATotalMax30 moca_total
+rename ADLscore adl_score
+rename CallahanScore callahan_score
+
+//create JHU frail flag & frail scale flag 
+**VALUE JHU
+**0 = 'Not Frail/Robust Health'
+**1-2 = 'Pre-Frail'
+**3-5 = 'Frail'
+**. = 'Missing' ;
+
+
+gen jhu_cat=.
+replace jhu_cat=0 if jhu_score==0 
+replace jhu_cat=1 if jhu_score==1 | jhu_score==2 
+replace jhu_cat=2 if jhu_score==3 | jhu_score==4 | jhu_score==5
+
+label define jhu_cat 0 "Not Frail/Robust Health" 1 "Pre-Frail" 2 "Frail"
+label values jhu_cat jhu_cat
+tab jhu_cat,m
+
+gen jhu_frail_flag=.
+replace jhu_frail_flag=0 if jhu_cat==0
+replace jhu_frail_flag=1 if jhu_cat==1 | jhu_cat==2 
+
+label define jhu_frail_flag 0 "Not Frail/Robust Health" 1 "Pre-Frail/Frail"
+label values jhu_frail_flag jhu_frail_flag 
+
+tab jhu_frail_flag
+
+
+//create frail scale 
+gen frail_cat=.
+replace frail_cat=0 if FRAILScaleScore==0
+replace frail_cat=1 if FRAILScaleScore==1 | FRAILScaleScore==2
+replace frail_cat=2 if FRAILScaleScore>=3
+tab frail_cat
+
+label define frail_cat 0 "Not Frail" 1 "Pre-Frial" 2 "Frail"
+label values frail_cat frail_cat
+tab frail_cat,m
+
+gen frail_flag=.
+replace frail_flag=0 if frail_cat==0 
+replace frail_flag=1 if frail_cat==1 | frail_cat==2
+
+label define frail_flag 0 "Not Frail" 1 "Pre-Frail/Frail"
+label values frail_flag frail_flag
+tab frail_flag,m
+
+//recode clinical scales 
+gen fesi_cat=.
+replace fesi_cat=0 if fesi_total>=16 & fesi_total<=19
+replace fesi_cat=1 if fesi_total>=20 & fesi_total<=27
+replace fesi_cat=2 if fesi_total>=28 & fesi_total<64 
+label define fesi_cat 0 "Low Concern" 1 "Moderate Concern" 2 "High Concern"
+label values fesi_cat fesi_cat
+tab fesi_cat,m
+
+gen moca_catags=.
+replace moca_catags=0 if moca_total>=26 & moca_total<=31
+replace moca_catags=1 if moca_total>=18 & moca_total<=25
+replace moca_catags=2 if moca_total>=10 & moca_total<=17
+replace moca_catags=3 if moca_total>=0 & moca_total<=9
+label define moca_catags 0 "Normal" 1 "Mild cognitive impairment" 2 "Moderate cognitive impairment" 3 "Severe cognitive impairment"
+label values moca_catags moca_catags
+tab moca_catags,m
+
+gen adl_cat=.
+replace adl_cat=0 if adl_score<24
+replace adl_cat=1 if adl_score>=24
+replace adl_cat=2 if adl_score<0
+label define adl_cat 0 "Not fully independent" 1 "Independent" 2 "Unknown"
+label values adl_cat adl_cat
+tab adl_cat
+
+gen callahan_cat=.
+replace callahan_cat=0 if callahan_score==0 | callahan_score==1 | callahan_score==2 | callahan_score==3
+replace callahan_cat=1 if callahan_score==4 | callahan_score==5 | callahan_score==6
+label define callahan_cat 0 "Impairment likely" 1 "Not impaired"
+label values callahan_cat callahan_cat
+tab callahan_cat
+
+//fall assessment score 
+tab FallsAssessmentScore
+
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\redcap_to_merge.dta",replace 
+
+
+
+
+
+
+
+
+H="get exposure severity"
+
+//get exposure severity ready 
+// Load the dataset
+import delimited "\\mssm2\mssm2$\wangy63\Personal\DesktopFiles\DC_FK Frailty assessment\FK250117 Frailty\FK250117_eaq.csv", clear
+
+/*Exposure data from EAQ visit 1(asbestos, etc...)*/
+local asbestos    eaq_02_06   eaq_03_06   eaq_04_06   eaq_05_06   eaq_06_06   eaq_07_06   eaq_00_06   eaq_000_06
+local cadmium    eaq_02_08   eaq_03_08   eaq_04_08   eaq_05_08   eaq_06_08   eaq_07_08   eaq_00_08   eaq_000_08
+local diesel    eaq_02_10   eaq_03_10   eaq_04_10   eaq_05_10   eaq_06_10   eaq_07_10   eaq_00_10   eaq_000_10
+/*dust general*/
+local dustgen    eaq_02_12   eaq_03_12   eaq_04_12   eaq_05_12   eaq_06_12   eaq_07_12   eaq_00_12   eaq_000_12
+/*dust mineral or mining*/
+local dustmin    eaq_02_14   eaq_03_14   eaq_04_14   eaq_05_14   eaq_06_14   eaq_07_14   eaq_00_14   eaq_000_14
+/*dust silica/sand*/
+local silica    eaq_02_16   eaq_03_16   eaq_04_16   eaq_05_16   eaq_06_16   eaq_07_16   eaq_00_16   eaq_000_16
+/*dust wood*/
+local wood    eaq_02_18   eaq_03_18   eaq_04_18   eaq_05_18   eaq_06_18   eaq_07_18   eaq_00_18   eaq_000_18
+/*ergonomic risk factors*/
+local ergonom    eaq_02_20   eaq_03_20   eaq_04_20   eaq_05_20   eaq_06_20   eaq_07_20   eaq_00_20   eaq_000_20
+local fiberglass    eaq_02_22   eaq_03_22   eaq_04_22   eaq_05_22   eaq_06_22   eaq_07_22   eaq_00_22   eaq_000_22
+/*heat/cold stress*/
+local heat    eaq_02_24   eaq_03_24   eaq_04_24   eaq_05_24   eaq_06_24   eaq_07_24   eaq_00_24   eaq_000_24
+/*industrial cleaning solutions*/
+local industry    eaq_02_26   eaq_03_26   eaq_04_26   eaq_05_26   eaq_06_26   eaq_07_26   eaq_00_26   eaq_000_26
+local lead    eaq_02_28   eaq_03_28   eaq_04_28   eaq_05_28   eaq_06_28   eaq_07_28   eaq_00_28   eaq_000_28
+local mercury    eaq_02_30   eaq_03_30   eaq_04_30   eaq_05_30   eaq_06_30   eaq_07_30   eaq_00_30   eaq_000_30
+local noise    eaq_02_32   eaq_03_32   eaq_04_32   eaq_05_32   eaq_06_32   eaq_07_32   eaq_00_32   eaq_000_32
+/*non-diesel exhaust*/
+local nondiesel    eaq_02_34   eaq_03_34   eaq_04_34   eaq_05_34   eaq_06_34   eaq_07_34   eaq_00_34   eaq_000_34
+/*pesticides*/
+local pest    eaq_02_36   eaq_03_36   eaq_04_36   eaq_05_36   eaq_06_36   eaq_07_36   eaq_00_36   eaq_000_36
+/*smoke (non-cigarette)*/
+local noncig    eaq_02_38   eaq_03_38   eaq_04_38   eaq_05_38   eaq_06_38   eaq_07_38   eaq_00_38   eaq_000_38
+/*solvents/gasoline*/
+local gasoline    eaq_02_40   eaq_03_40   eaq_04_40   eaq_05_40   eaq_06_40   eaq_07_40   eaq_00_40   eaq_000_40
+/*welding fumes or brazing*/
+local welding    eaq_02_42   eaq_03_42   eaq_04_42   eaq_05_42   eaq_06_42   eaq_07_42   eaq_00_42   eaq_000_42
+/*other*/
+/*  eaq_02_44   eaq_03_44   eaq_04_44   eaq_05_44   eaq_06_44   eaq_07_44   eaq_00_44   eaq_000_44(excluded since these are free-txt)0*/
+
+
+// Loop through each exposure group
+local exposures asbestos cadmium diesel dustgen dustmin silica wood ergonom fiberglass ///
+                heat industry lead mercury noise nondiesel pest noncig gasoline welding
+
+foreach var in `exposures' {
+
+    // Create the binary exposure indicator and initialize to 0
+    gen `var' = 0
+
+    // Loop through the 8 variable names stored in the macro
+    forvalues i = 1/8 {
+        local v : word `i' of ``var''
+        replace `var' = `var'+1 if `v' == "Yes"
+    }
+}
+
+foreach var in asbestos cadmium diesel dustgen dustmin silica wood ergonom fiberglass ///
+             heat industry lead mercury noise nondiesel pest noncig gasoline welding {
+			 	tab `var'
+			 }
+			 
+
+
+H="get exposure severity (exp4)"
+
+//// Load the dataset
+import delimited "\\mssm2\mssm2$\wangy63\Personal\DesktopFiles\DC_FK Frailty assessment\FK250117 Frailty\FK250117_eaq.csv", clear
+rename patient_id ptid
+
+merge 1:1 ptid using "\\mssm2\mssm2$\wangy63\Personal\DesktopFiles\DC_FK Frailty assessment\FK250117 Frailty\FK250117_eaq.dta"
+tab exp4_imputed,m
+gen str20 exposure_final=""
+replace exposure_final="Low" if exp4_imputed=="Low"
+replace exposure_final="Intermediate" if exp4_imputed=="Intermediate"
+replace exposure_final="High" if exp4_imputed=="High"
+replace exposure_final="Very High" if exp4_imputed=="Very High"
+replace exposure_final="" if exp4_imputed=="M" | exp4_imputed==""
+tab exposure_final
+
+drop _merge 
+
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\FK250117_eaq_to_merge2.dta",replace 
+
+H="get pre911 occupation"
+
+//get pre-911 occupation ready 
+// Load the dataset
+import delimited "\\mssm2\mssm2$\wangy63\Personal\DesktopFiles\DC_FK Frailty assessment\FK250117 Frailty\FK250117_eaq.csv", clear
+rename patient_id ptid 
+
+// Initialize occupation and group variables
+gen pre9110ccup = ""
+gen pre911_group = ""
+
+// Map EAQ_01_04 to detailed occupations
+replace pre9110ccup = "11: Management Occupations" if inlist(eaq_01_04, ///
+    "DirectorofBuildingandCodeEnforcement,TownofQueensbury", "ExecutivePresident", ///
+    "SecruityManager", "accountmanage", "executiveasst.", "manager", "supervisor park department")
+
+replace pre9110ccup = "15: Computer & Mathematical Occupations" if eaq_01_04 == "Computer Security"
+
+replace pre9110ccup = "17: Architecture and Mathematical Occupations" if inlist(eaq_01_04, ///
+    "DOTURBANPLANNER", "EngineerfortheBoardofEducation")
+
+replace pre9110ccup = "19: Life, Physical, and Social Science Occupations" if inlist(eaq_01_04, ///
+    "SciencetistArchaeology", "Research Scientist")
+
+replace pre9110ccup = "23: Legal Occupations" if inlist(eaq_01_04, ///
+    "NYStatecourtofficer", "courtofficer")
+
+replace pre9110ccup = "27: Arts, Design, Entertainment, Sports & Media Occupations" if inlist(eaq_01_04, ///
+    "Artist", "BroadcastEngineer", "Producer/Director", "consultant/audioengineer")
+
+replace pre9110ccup = "31: Healthcare Support Occupations" if inlist(eaq_01_04, ///
+    "PARAMEDIC", "registerednurse")
+
+replace pre9110ccup = "33: Protective Service Occupations" if inlist(eaq_01_04, ///
+    "Commander-centralparkprecinct", "DeputyInspector-NYPD", "DeputySheriff", "Detective", ///
+    "DetectiveforNYPD", "Firefighter/asstchief", "MTAPOLICEDEPARTMENT", "N.Y.P.D-PoliceOfficer") | inlist(eaq_01_04,  ///
+	"NYPD", "NYPD DETECTIVE", "NYPDPoliceOfficer", "NYPDTraffic/TowTruckOperator", ///
+    "NYPoliceSergeant", "PENNSYLVANIA STATE CONSTABLE", "POLICE OFFICER", "Police") | inlist(eaq_01_04, ///
+	"Police Officer", "PoliceOfficer", "PoliceOfficerLT.", "PoliceSgt.", "SargentNYPD", "Sergaent", ///
+    "Sergeant", "Sergeant with Queen's DA office") | inlist(eaq_01_04, "captainnypd", "detective", "firefighter" ///
+    "newyorkcitydetective", "nypd", "nys zone seargent", "policeofficer", "sargent") | inlist(eaq_01_04, "sergeant" ///
+	"state of ny fire saftey", "state trooper", "NYCPoliceOfficer", "PoliceOfficer")
+
+replace pre9110ccup = "37: Building and Grounds Cleaning and Maintenance Occupations" if inlist(eaq_01_04, ///
+    "MAINTENANCEFEDERALRESERVEBANK", "sanitationworker", "windowcleaner")
+
+replace pre9110ccup = "43: Office and Administrative Support Occupations" if inlist(eaq_01_04, ///
+    "CentralOffice", "ClericalAssociate", "Procurement-OfficeofChiefMedicalExaminer")
+
+replace pre9110ccup = "45: Farming, Fishing, and Forestry Occupations" if inlist(eaq_01_04, ///
+    "Enviromentalprogramspecialist", "envirmental conservation officer", "TimberMan")
+
+replace pre9110ccup = "47: Construction Occupations" if inlist(eaq_01_04, ///
+    "Carpenter", "Mason", "Plumber", "TowOperator", "Bricklayer", "contruction officer", "ironworker")
+
+replace pre9110ccup = "49: Electrical, Telecommunications & Other Installation & Repair" if inlist(eaq_01_04, ///
+    "Field Technician for Verizon", "electrician", "fed tech", "lighttech", "Electrician", "fieldtech")
+
+replace pre9110ccup = "53: Transportation and Material Movers" if inlist(eaq_01_04, ///
+    "3rdrailoperations(nycta)", "NYCTransitmachinist", "TBTABRIDGESANDTUNNELS", "Busoperator")
+
+replace pre9110ccup = "55: Military Specific Occupations" if inlist(eaq_01_04, ///
+    "In the Army", "NYS TROOPER")
+
+replace pre9110ccup = "RETIRED" if inlist(eaq_01_04, "retired", "Retired")
+
+replace pre9110ccup = "UNEMPLOYED" if eaq_01_04 == "unemployed"
+
+replace pre9110ccup = "UNKNOWN" if eaq_01_04 == "same"
+
+
+// Categorize pre9110ccup into grouped occupation classes
+replace pre911_group = "Protective Services/Military" if inlist(pre9110ccup, ///
+    "33: Protective Service Occupations", "55: Military Specific Occupations")
+
+replace pre911_group = "Construction" if pre9110ccup == "47: Construction Occupations"
+
+replace pre911_group = "Electrical, Telecom, Other Install/Repair" if ///
+    pre9110ccup == "49: Electrical, Telecommunications & Other Installation & Repair"
+
+replace pre911_group = "Transportation and Material Moving" if ///
+    pre9110ccup == "53: Transportation and Material Movers"
+
+replace pre911_group = "Management" if pre9110ccup == "11: Management Occupations"
+
+replace pre911_group = "Unemployed/Retired" if inlist(pre9110ccup, "UNEMPLOYED", "RETIRED")
+
+replace pre911_group = "Not Reported" if pre9110ccup == "UNKNOWN"
+
+replace pre911_group = "Other" if missing(pre911_group)
+
+tab pre911_group
+
+
+save 
+//// Load the dataset
+import delimited "\\mssm2\mssm2$\wangy63\Personal\DesktopFiles\DC_FK Frailty assessment\FK250117 Frailty\FK250117_eaq.csv", clear
+rename patient_id ptid
+
+merge 1:1 ptid using "\\mssm2\mssm2$\wangy63\Personal\DesktopFiles\DC_FK Frailty assessment\FK250117 Frailty\FK250117_eaq.dta"
+tab exp4_imputed,m
+gen str20 exposure_final=""
+replace exposure_final="Low" if exp4_imputed=="Low"
+replace exposure_final="Intermediate" if exp4_imputed=="Intermediate"
+replace exposure_final="High" if exp4_imputed=="High"
+replace exposure_final="Very High" if exp4_imputed=="Very High"
+replace exposure_final="" if exp4_imputed=="M" | exp4_imputed==""
+tab exposure_final
+
+drop _merge 
+
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\FK250117_eaq_to_merge.dta",replace 
+
+
+
+
+H="get BMI ready "
+* Step 1: Load and keep needed BMI variables;
+import delimited "\\mssm2\mssm2$\wangy63\Personal\DesktopFiles\DC_FK Frailty assessment\FK250117 Frailty\FK250117_PE.csv", clear
+keep patient_id visit_number height_in weight_lb bmi_lbin
+sort patient_id visit_number
+
+
+* Step 2: Merge with crosswalk file (must have first_name and last_name in both)
+import delimited "\\mssm2\mssm2$\wangy63\Personal\DesktopFiles\DC_FK Frailty assessment\FK250117 Frailty\Fk250117_demographics.csv", clear
+merge 1:m patient_id using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\PE.dta"
+
+keep if _merge == 3  // Keep matched observations only
+drop _merge
+sort patient_id visit_number
+duplicates drop patient_id visit_number, force
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\PEx.dta", replace
+
+* Step 3: Clean height and weight
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\PEx.dta", clear
+
+gen visit_Num = visit_number
+drop visit_number
+
+gen height_orig = height_in
+gen weight_orig = weight_lb
+
+destring height_in,replace ignore("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ ,:()$")
+destring height_orig,replace ignore("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ ,:()$")
+destring weight_lb,replace ignore("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ ,:()$")
+destring weight_orig,replace ignore("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ ,:()$")
+
+replace height_in = . if height_in == 999 | height_in <= 0
+replace weight_lb = . if weight_lb == 999 | weight_lb <= 0
+
+* Round weight to nearest 0.1
+replace weight_lb = round(weight_lb, 0.1) if !missing(weight_lb)
+
+* Remove extreme values
+replace height_in = . if height_in <= 53 | height_in >= 84
+replace weight_lb = . if weight_lb <= 75 | weight_lb >= 600
+
+rename bmi_lbin bmi_kgm
+
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\BMI_raw.dta", replace
+
+* Step 4: Recalculate BMI in kg/m² accounting for data availability
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\BMI_raw.dta", clear
+
+gen double bmi_kgmR = .
+
+gen double kg = weight_lb / 2.2046226
+gen double m = height_in * 0.0254
+gen double orig_kg = weight_orig / 2.2046226
+gen double orig_m = height_orig * 0.0254
+
+destring bmi_kgm, replace ignore("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ ,:()$")
+
+replace bmi_kgm = kg / (m^2) if !missing(kg) & !missing(m)
+replace bmi_kgmR = round(bmi_kgm, 0.1) if !missing(bmi_kgm)
+
+replace bmi_kgm = orig_kg / (m^2) if missing(weight_lb) & !missing(height_in)
+replace bmi_kgm = kg / (orig_m^2) if !missing(weight_lb) & missing(height_in)
+replace bmi_kgm = orig_kg / (orig_m^2) if missing(weight_lb) & missing(height_in)
+
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\BMIx.dta", replace
+
+* Step 5: Calculate mean BMI per patient
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\BMIx.dta", clear
+collapse (mean) bmi_kgm, by(patient_id)
+gen BMI_mean = round(bmi_kgm, 0.1)
+drop bmi_kgm
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\BMI_mean.dta", replace
+
+* Step 6: Categorize BMI into CDC groups
+gen bmi_Group = ""
+
+replace bmi_Group = "Not reported" if BMI_mean < 0
+replace bmi_Group = "Underweight"  if BMI_mean > 0 & BMI_mean < 18.5
+replace bmi_Group = "Normal"       if BMI_mean >= 18.5 & BMI_mean < 25
+replace bmi_Group = "Overweight"   if BMI_mean >= 25   & BMI_mean < 30
+replace bmi_Group = "Obese"        if BMI_mean >= 30
+
+tab bmi_Group
+rename patient_id ptid 
+
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\PE_to_merge.dta", replace
+
+H="get age at most recent visit (Ahmad)"
+* Step 1: Load the visits data
+import delimited "\\mssm2\mssm2$\wangy63\Personal\DesktopFiles\DC_FK Frailty assessment\FK250117 Frailty\Fk250117_visits_marital_work.csv", clear
+
+* Step 2: Sort to get most recent visit per patient
+gen visit_date_num = date(visit_date, "YMD") if !missing(visit_date)  // format if not already numeric
+format visit_date_num %td
+
+bysort patient_id (visit_number): gen tag = (_n == _N)   // tag most recent visit per patient
+
+keep if tag == 1
+rename visit_number last_visit
+rename visit_date_num last_visdt
+keep patient_id last_visit last_visdt
+rename patient_id ptid
+save "last_visits.dta", replace
+
+* Step 3: Load demographics and merge
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\Fk250117_demographics.dta", clear
+gen dob_num = date(dob, "MDY") if !missing(dob)  // convert dob to numeric
+format dob_num %td
+
+merge 1:1 ptid using "last_visits.dta"
+
+* Step 4: Calculate age at most recent visit
+gen lastVis_Age = floor((last_visdt - dob_num)/365.25)
+
+gen age_cat=.
+replace age_cat=0 if lastVis_Age>=50 & lastVis_Age<=60
+replace age_cat=1 if lastVis_Age>=61 & lastVis_Age<70
+replace age_cat=2 if lastVis_Age>=70
+label define age_cat 0 "50-60 years" 1 "61-70" 2 "70+ years"
+label values age_cat age_cat
+tab age_cat,m
+
+//recode race 
+gen race_cat=.
+replace race_cat=0 if racehispanic=="White NH / Caucasian"
+replace race_cat=1 if racehispanic=="Black (H and NH) / African"
+replace race_cat=2 if racehispanic=="Hispanic (not Black) / Mexican"
+replace race_cat=3 if racehispanic==" Asian NH" | racehispanic=="M" | racehispanic=="Other NH"
+label define race_cat 0 "White" 1 "Black" 2 "Hispanic" 3 "Other"
+label values race_cat race_cat
+tab race_cat
+
+drop _merge 
+
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\Fk250117_demographics_to_merge.dta",replace
+
+
+
+H="merge all data "
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\redcap_to_merge.dta",clear 
+rename record_id ptid 
+destring ptid, replace 
+rename dob dob_redcap 
+
+//merge to demographics 
+merge 1:1 ptid using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\Fk250117_demographics.dta"
+list ptid if _merge==1 //IDs that only exist in the Redcap data 
+list ptid if _merge==2 //IDs that only exist in the demographics data 
+keep if _merge==3
+drop _merge
+
+//merge to exporesure data 
+merge 1:1 ptid using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\FK250117_eaq_to_merge2.dta"
+drop _merge 
+
+//merge to pre911 occupation data 
+merge 1:1 ptid using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\FK250117_eaq_to_merge.dta"
+drop _merge 
+
+//merge to BMI data 
+merge 1:1 ptid using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\PE_to_merge.dta"
+drop _merge 
+
+drop if jhu_score==.
+
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\final data\final_ags_data.dta",replace 
+
+H="get tables ready "
+log using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\output\ags_output_forChinmayi_v2.smcl",replace 
+
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\final data\final_ags_data.dta",clear 
+
+
+//calculate age at time of survey 
+gen age_survey = (SurveyDate - dob_redcap) / 365.25
+format age_survey %9.2f
+gen age_survey_floor = floor((SurveyDate - dob_redcap) / 365.25)
+tab age_survey_floor
+gen age_cat=.
+replace age_cat=0 if age_survey_floor>=50 & age_survey_floor<=54 
+replace age_cat=1 if age_survey_floor>=55 & age_survey_floor<=64 
+replace age_cat=2 if age_survey_floor>=65
+
+label define age_cat 0 "50-54" 1 "55-64" 2 "65+"
+label values age_cat age_cat
+
+//create race 
+gen str20 race_cat=""
+replace race_cat="White" if racehispanic=="White NH / Caucasian"
+replace race_cat="Black" if racehispanic=="Black (H and NH) / African"
+replace race_cat="Other" if racehispanic=="Other NH" | racehispanic=="Asian NH" | racehispanic=="Hispanic (not Black) / Mexican"
+replace race_cat="Not Reported" if racehispanic=="M"
+tab race_cat
+
+tab jhu_frail_flag
+tab jhu_cat
+
+tab frail_cat
+tab frail_flag
+
+////create 3 group bmi 
+gen bmi_Group3=.
+
+replace bmi_Group3=0 if bmi_Group=="Normal" | bmi_Group=="Underweight"
+replace bmi_Group3=1 if bmi_Group=="Overweight"
+replace bmi_Group3=2 if bmi_Group=="Obese"
+
+label define bmi_Group3 0 "Normal/Underweight" 1 "Overweight" 2 "Obese"
+label values bmi_Group3 bmi_Group3
+tab bmi_Group3
+
+//create 3 group exposure 
+gen exposure_final3=.
+
+replace exposure_final3=0 if exposure_final=="Low"
+replace exposure_final3=1 if exposure_final=="Intermediate"
+replace exposure_final3=2 if exposure_final=="High" | exposure_final=="Very High"
+
+label define exposure_final3 0 "Low" 1 "Intermediate" 2 "High/Very High"
+label values exposure_final3 exposure_final3
+tab exposure_final3
+
+//table1 
+tab age_cat,m
+tab gender,m
+tab race_cat,m
+tab exposure_final3,m
+tab soc_4_categories,m
+tab bmi_Group,m
+tab Hasthisparticipantbeenshown,m
+
+tab age_cat frail_flag,m
+tab gender frail_flag,m
+tab race_cat frail_flag,m
+tab exposure_final3 frail_flag,m
+tab soc_4_categories frail_flag,m
+tab bmi_Group frail_flag,m
+tab Hasthisparticipantbeenshown frail_flag,m
+
+tab age_cat jhu_frail_flag,m
+tab gender jhu_frail_flag,m
+tab race_cat jhu_frail_flag,m
+tab exposure_final3 jhu_frail_flag,m
+tab soc_4_categories jhu_frail_flag,m
+tab bmi_Group jhu_frail_flag,m
+tab Hasthisparticipantbeenshown jhu_frail_flag,m
+
+//table2 
+tab frail_cat jhu_cat,chi2
+
+
+//table3 
+kap frail_flag jhu_frail_flag
+kappaetc frail_flag jhu_frail_flag, wgt(linear)
+kappaetc frail_flag jhu_frail_flag, wgt(quadratic)
+
+//table4
+diagt frail_flag jhu_frail_flag, exact
+
+//table5
+diagt frail_flag jhu_frail_flag if age_cat==0, exact 
+diagt frail_flag jhu_frail_flag if age_cat==1 , exact 
+diagt frail_flag jhu_frail_flag if age_cat==2 , exact 
+
+diagt frail_flag jhu_frail_flag if gender=="Female", exact
+diagt frail_flag jhu_frail_flag if gender=="Male", exact
+
+diagt frail_flag jhu_frail_flag if race_cat=="White", exact
+diagt frail_flag jhu_frail_flag if race_cat=="Black", exact
+diagt frail_flag jhu_frail_flag if race_cat=="Other", exact
+*diagt frail_flag jhu_frail_flag if race_cat=="Not Reported", exact
+
+diagt frail_flag jhu_frail_flag if exposure_final3==0, exact
+diagt frail_flag jhu_frail_flag if exposure_final3==1, exact
+diagt frail_flag jhu_frail_flag if exposure_final3==2, exact
+
+diagt frail_flag jhu_frail_flag if bmi_Group3==0, exact
+diagt frail_flag jhu_frail_flag if bmi_Group3==1, exact
+diagt frail_flag jhu_frail_flag if bmi_Group3==2, exact
+
+diagt frail_flag jhu_frail_flag if soc_4_categories=="Construction", exact
+diagt frail_flag jhu_frail_flag if soc_4_categories=="Protective", exact
+*diagt frail_flag jhu_frail_flag if soc_4_categories=="SOC37&49", exact
+diagt frail_flag jhu_frail_flag if soc_4_categories=="residual", exact
+
+//table5
+tab fesi_cat jhu_cat,m chi2
+tab moca_catags jhu_cat,m chi2
+tab adl_cat jhu_cat,m chi2
+tab callahan_cat jhu_cat,m chi2
+tab Hasthisparticipantbeenshown jhu_cat,m chi2
+
+tab fesi_cat frail_cat,m chi2
+tab moca_catags frail_cat,m chi2
+tab adl_cat frail_cat,m chi2
+tab callahan_cat frail_cat,m chi2
+tab Hasthisparticipantbeenshown frail_cat,m chi2
+
+translate "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\output\ags_output_forChinmayi_v2.smcl" "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\output\ags_output_forChinmayi_v2.pdf"
+
+log close 
+
+
+
+
+
+H="get Hannah's tables ready "
+log using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\output\ags_output_forHannah_v5.smcl",replace 
+
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\final data\final_ags_data.dta",clear 
+
+
+//calculate age at time of survey 
+gen age_survey = (SurveyDate - dob_redcap) / 365.25
+format age_survey %9.2f
+gen age_survey_floor = floor((SurveyDate - dob_redcap) / 365.25)
+tab age_survey_floor
+gen age_cat=.
+replace age_cat=0 if age_survey_floor>=50 & age_survey_floor<=54 
+replace age_cat=1 if age_survey_floor>=55 & age_survey_floor<=64 
+replace age_cat=2 if age_survey_floor>=65
+
+label define age_cat 0 "50-54" 1 "55-64" 2 "65+"
+label values age_cat age_cat
+
+//create race 
+gen str20 race_cat=""
+replace race_cat="White" if racehispanic=="White NH / Caucasian"
+replace race_cat="Black" if racehispanic=="Black (H and NH) / African"
+replace race_cat="Other" if racehispanic=="Other NH" | racehispanic=="Asian NH" | racehispanic=="Hispanic (not Black) / Mexican"
+replace race_cat="Not Reported" if racehispanic=="M"
+tab race_cat
+
+tab jhu_frail_flag
+tab jhu_cat
+
+tab frail_cat
+tab frail_flag
+
+//create 3 group bmi 
+gen bmi_Group3=.
+
+replace bmi_Group3=0 if bmi_Group=="Normal" | bmi_Group=="Underweight"
+replace bmi_Group3=1 if bmi_Group=="Overweight"
+replace bmi_Group3=2 if bmi_Group=="Obese"
+
+label define bmi_Group3 0 "Normal/Underweight" 1 "Overweight" 2 "Obese"
+label values bmi_Group3 bmi_Group3
+
+//create 3 group exposure 
+gen exposure_final3=.
+
+replace exposure_final3=0 if exposure_final=="Low"
+replace exposure_final3=1 if exposure_final=="Intermediate"
+replace exposure_final3=2 if exposure_final=="High" | exposure_final=="Very High"
+
+label define exposure_final3 0 "Low" 1 "Intermediate" 2 "High/Very High"
+label values exposure_final3 exposure_final3
+
+//table1 
+tab age_cat jhu_cat,m chi2 
+tab gender jhu_cat,m chi2
+tab race_cat jhu_cat,m chi2
+tab educ jhu_cat,m chi2 
+tab bmi_Group3 jhu_cat,m chi2
+tab soc_4_categories jhu_cat,m chi2
+tab exposure_final3 jhu_cat,m chi2
+
+
+//table2 
+tab fesi_cat jhu_cat,m chi2
+tab moca_catags jhu_cat,m chi2
+tab adl_cat jhu_cat,m chi2
+tab callahan_cat jhu_cat,m chi2
+tab Hasthisparticipantbeenshown jhu_cat,m chi2
+
+//table3 - logistic regression 
+encode gender, gen(gender_num)
+encode race_cat, gen(race_cat_num)
+encode educ, gen(educ_num)
+encode soc_4_categories, gen(soc_4_categories_num)
+encode Hasthisparticipantbeenshown, gen(Hasthisparticipantbeenshown_num)
+
+logistic jhu_frail_flag i.age_cat ib2.gender_num ib4.race_cat_num ib2.educ_num i.bmi_Group3 i.exposure_final3 i.soc_4_categories_num i.Hasthisparticipantbeenshown_num i.fesi_cat i.moca_catags i.adl_cat i.callahan_cat 
+
+
+translate "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\output\ags_output_forHannah_v5.smcl" "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\output\ags_output_forHannah_v5.pdf"
+
+log close 
+
+
+
+
+
+H="********Hannah's paper*********"
+
+
+H="get WTC-certified condition"
+
+* Step 1: Summarize certifications by comment
+import delimited "\\mssm2\mssm2$\wangy63\Personal\DesktopFiles\DC_FK Frailty assessment\FK250117 Frailty\FK250117_certifications.csv",clear 
+
+contract comment patient_id, freq(freq)
+bysort comment (patient_id): keep if _n == 1
+collapse (count) participants = patient_id, by(comment)
+list, sepby(comment)
+
+* Step 2: Import ICD9/10 crosswalk Excel file
+import excel using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Ahmad\All_Related_180403_ICD9to10.xlsx",firstrow clear 
+rename Code code 
+save "\\mssm2\mssm2$\wangy63\Personal\DesktopFiles\DC_FK Frailty assessment\Yihan\ags analyses\All_Related_180403_ICD9to10.dta",replace 
+
+* Step 3: Prepare main certification dataset
+import delimited "\\mssm2\mssm2$\wangy63\Personal\DesktopFiles\DC_FK Frailty assessment\FK250117 Frailty\FK250117_certifications.csv",clear 
+sort patient_id
+save "\\mssm2\mssm2$\wangy63\Personal\DesktopFiles\DC_FK Frailty assessment\FK250117 Frailty\Frailty_certs.dta", replace
+
+
+* Step 4: Merge with ICD9/10 code crosswalk
+use "\\mssm2\mssm2$\wangy63\Personal\DesktopFiles\DC_FK Frailty assessment\FK250117 Frailty\Frailty_certs.dta", clear
+rename related_condition code
+sort code
+
+merge m:1 code using "\\mssm2\mssm2$\wangy63\Personal\DesktopFiles\DC_FK Frailty assessment\Yihan\ags analyses\All_Related_180403_ICD9to10.dta", ///
+    keepusing(Code_Description Care_Suite_Detail) keep(master match)
+rename code related_condition  // restore name if needed
+
+sort patient_id start_date related_condition associated_condition
+save "\\mssm2\mssm2$\wangy63\Personal\DesktopFiles\DC_FK Frailty assessment\FK250117 Frailty\Frailty_certs1.dta", replace
+
+
+
+
+
+
+H="get date of first day on WTC site"
+
+
+H="get smoking status"

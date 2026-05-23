@@ -1,0 +1,326 @@
+= V4 Outline MultiLine NoSorting TabWidth=30
+
+H="get the data ready "
+
+
+import delimited "\\mssm2\mssm2$\wangy63\Personal\DesktopFiles\DC_FK Frailty assessment\FK250117 Frailty\FK250117_IAMQ_self reported meds.csv", clear stringcols(_all)
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\iamq1.dta",replace
+
+import delimited "\\researchsan02a\Shr3\PM\DC_FK Frailty assessment\RDR FK250603 Frailty\Fk250603_iamq_meds.csv",clear 
+tostring patient_id,replace
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\iamq2.dta",replace
+
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\iamq1.dta"
+append using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\iamq2.dta",force
+rename patient_id subject_id_main
+ds
+foreach var of varlist `r(varlist)' {
+    capture tostring `var', replace force
+}
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\iamq_main.dta",replace
+
+distinct subject_id_main
+
+import excel "\\researchsan02a\shr3\PM\DC_KO WTC Frailty\Aim 2\KO211223\KO211223WTCFrailty_IAMQMEDS with ID.xlsx", firstrow clear
+rename *,lower
+rename subject_id subject_id_pilot 
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\iamq3.dta",replace
+
+import excel "\\researchsan02a\shr3\PM\DC_KO WTC Frailty\Aim 2\OLD\KO210921\Unique ID_12Oct2021\KO210512WTCFrailty_IAMQ self-reported medications_deidentified 1.xlsx", firstrow clear 
+rename ID subject_id_pilot
+rename visit_Number visit_number 
+drop RxName Scan drug_name drug_class drug_generic gedscore_f gedscore_b ab_ba_len ab_score ba_score IAMQ_Medication
+rename *,lower
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\iamq4.dta",replace
+
+import excel "\\researchsan02a\shr3\PM\DC_KO WTC Frailty\Aim 2\OLD\KO210921\Unique ID_12Oct2021\KO210921WTCFrailty_IAMQ self-reported medications_deidentified 2.xlsx", firstrow clear 
+rename ID subject_id_pilot
+rename *,lower
+drop visit_date
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\iamq5.dta",replace
+
+
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\iamq3.dta",replace
+append using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\iamq4.dta",force
+append using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\iamq5.dta",force
+tostring subject_id_pilot,replace
+tostring visit_number,replace
+ds
+foreach var of varlist `r(varlist)' {
+    capture tostring `var', replace force
+}
+
+distinct subject_id_pilot
+
+append using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\iamq_main.dta"
+
+distinct subject_id_main
+distinct subject_id_pilot
+
+*deleted those 25 duplicates from the pilot data 
+
+drop if inlist(subject_id_pilot, "9","93","30","8","7","11","22","109","28") | inlist(subject_id_pilot, "31","123","117","60","41","21","116","12","26") | inlist(subject_id_pilot,"46","50","69","75","100","107","119")
+
+distinct subject_id_main
+distinct subject_id_pilot
+
+//create new merge ID 
+gen str merge_id_iamq = ""
+
+replace merge_id_iamq = "M_" + subject_id_main if !missing(subject_id_main)
+replace merge_id_iamq = "P_" + subject_id_pilot if !missing(subject_id_pilot)
+
+
+//rename existing variables 
+rename iamq_med_01 currently_taking
+rename iamq_med_02 brand_name
+rename iamq_med_03 generic_name
+rename iamq_med_04 form_of_med
+rename iamq_med_05 other_form
+rename iamq_med_06 quantity_or_strength
+rename iamq_med_07 dose_measure
+rename iamq_med_08 dose_measure_other
+rename iamq_med_09 frequency_of_use
+rename iamq_med_09a frequency_other
+rename iamq_med_10 reason_code1
+rename iamq_med_11 reason_code2
+rename iamq_med_12 reason_other
+rename iamq_med_13 when_start_taking
+rename iamq_med_14 start_taking_range 
+rename iamq_med_15 end_taking_range
+rename iamq_med_16 time_units
+
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\iamq_final_polypharmacy 03.17.dta",replace
+
+H="clean the drug names"
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\iamq_final_polypharmacy 04.09.dta", clear
+
+
+count if generic_name != ""
+count if currently_taking == "Yes" & generic_name != ""
+tab currently_taking, m
+
+*-----------------------------------
+* 1) unique meds currently taking per visit
+*-----------------------------------
+bysort merge_id visit_number generic_name: gen n_current_meds = (_n == 1 & currently_taking == "Yes" & generic_name != "")
+
+bysort merge_id visit_number: replace n_current_meds = sum(n_current_meds)
+bysort merge_id visit_number: replace n_current_meds = n_current_meds[_N]
+
+tab n_current_meds if generic_name != "", m
+tabstat n_current_meds if generic_name != "", stat(n mean sd min p50 max)
+
+*-----------------------------------
+* 2) unique meds per visit
+*-----------------------------------
+bysort merge_id visit_number generic_name: gen n_unique_meds_visit = (_n == 1 & generic_name != "")
+
+bysort merge_id visit_number: replace n_unique_meds_visit = sum(n_unique_meds_visit)
+bysort merge_id visit_number: replace n_unique_meds_visit = n_unique_meds_visit[_N]
+
+tab n_unique_meds_visit if generic_name != "", m
+tabstat n_unique_meds_visit if generic_name != "", stat(n mean sd min p50 max)
+
+*-----------------------------------
+* 3) cumulative unique meds up to each visit
+*-----------------------------------
+egen visit_order = group(visit_number)
+sort merge_id generic_name visit_number
+
+by merge_id generic_name: gen n_cum_unique_meds = (generic_name != "" & _n == 1)
+
+sort merge_id visit_number generic_name
+by merge_id visit_number: replace n_cum_unique_meds = sum(n_cum_unique_meds)
+by merge_id visit_number: replace n_cum_unique_meds = n_cum_unique_meds[_N]
+
+sort merge_id visit_number
+by merge_id: replace n_cum_unique_meds = sum(n_cum_unique_meds) if _n == 1 | visit_order != visit_order[_n-1]
+by merge_id: replace n_cum_unique_meds = n_cum_unique_meds[_n-1] if missing(n_cum_unique_meds)
+
+tab n_cum_unique_meds if generic_name != "", m
+tabstat n_cum_unique_meds if generic_name != "", stat(n mean sd min p50 max)
+
+
+
+bysort merge_id : gen tag_visit = _n==1
+bysort merge_id: gen tag_person = _n==1
+
+tab n_current_meds if tag_visit
+tab n_unique_meds_visit if tag_visit
+tab n_cum_unique_meds if tag_visit
+tab n_cum_unique_meds if tag_person
+
+H="get unique med #"
+
+log using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\output\polypharmacy final 041426.smcl",replace 
+
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\iamq_final_polypharmacy 04.09.dta", clear
+
+*=========================================================
+//only keep useful variables and remove duplicates on the person-visit-med level 
+*=========================================================
+
+keep merge_id visit_number currently_taking generic_name
+duplicates drop
+
+duplicates report
+duplicates report visit_number merge_id generic_name
+by merge_id visit_number generic_name,sort: drop if _N==2 & currently_taking!="Yes"
+
+duplicates report visit_number merge_id generic_name
+
+distinct merge_id
+
+count if generic_name != ""
+count if currently_taking == "Yes" & generic_name != ""
+tab currently_taking, m
+
+destring visit_number,replace
+
+*=========================================================
+* 1) # of unique meds currently taking per visit (person-visit level)
+*=========================================================
+
+bysort merge_id visit_number generic_name: gen tag_current_visit = (_n == 1 & currently_taking == "Yes" & generic_name != "")
+
+bysort merge_id visit_number: egen n_current_meds = total(tag_current_visit)
+
+bysort merge_id visit_number: gen tag_unique_visit = _n==1
+
+tab tag_unique_visit
+
+tab n_current_meds if tag_unique_visit
+
+tabstat n_current_meds if tag_unique_visit, stat(n mean sd min p50 max)
+tab visit_number n_current_meds if merge_id == "M_100"
+
+*=========================================================
+* 2) # of unique meds listed per visit (person-visit level)
+*=========================================================
+
+bysort merge_id visit_number generic_name: gen tag_visit_med = (_n == 1 & generic_name != "")
+
+bysort merge_id visit_number: egen n_unique_meds_visit = total(tag_visit_med)
+
+tab n_unique_meds_visit if tag_unique_visit, m
+tabstat n_unique_meds_visit if tag_unique_visit, stat(n mean sd min p50 max)
+tab visit_number n_unique_meds_visit if merge_id == "M_100"
+
+*=========================================================
+* 3) cumulative unique meds a person had taken up to each visit (person-visit level)
+*=========================================================
+
+
+* flag first time each drug appears for a person
+sort merge_id generic_name visit_number
+
+by merge_id generic_name: gen first_ever_drug = (_n == 1 & generic_name != "")
+
+* count how many new drugs appeared at each visit
+bysort merge_id visit_number: egen new_meds_this_visit = total(first_ever_drug)
+
+replace new_meds_this_visit=0 if tag_unique_visit!=1
+
+* cumulative unique meds across visits
+sort merge_id visit_number
+by merge_id: gen n_cum_unique_meds = sum(new_meds_this_visit)
+
+tab n_cum_unique_meds if tag_unique_visit, m
+tabstat n_cum_unique_meds if tag_unique_visit, stat(n mean sd min p50 max)
+tab visit_number n_cum_unique_meds if merge_id == "M_100"
+
+*=========================================================
+* 4) cumulative unique meds a person has taken across all visits (person-level)
+*=========================================================
+
+bysort merge_id generic_name: gen tag_unique_person_drug = (_n == 1 & generic_name != "")
+
+bysort merge_id: egen n_unique_meds_person = total(tag_unique_person_drug)
+
+bysort merge_id: gen tag_unique_id = _n==1
+
+tab n_unique_meds_person if tag_unique_id ==1, m
+tabstat n_unique_meds_person if tag_unique_id ==1, stat(n mean sd min p50 max)
+
+translate "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\output\polypharmacy final 041426.smcl" "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\output\polypharmacy final 041426.pdf"
+
+log close 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+H="merge pharmacy data to main data"
+
+
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\iamq_final_polypharmacy 04.09.dta", clear
+
+*=========================================================
+//only keep useful variables and remove duplicates on the person-visit-med level 
+*=========================================================
+
+keep merge_id visit_number currently_taking generic_name
+duplicates drop
+
+duplicates report
+duplicates report visit_number merge_id generic_name
+by merge_id visit_number generic_name,sort: drop if _N==2 & currently_taking!="Yes"
+
+duplicates report visit_number merge_id generic_name
+
+distinct merge_id
+
+count if generic_name != ""
+count if currently_taking == "Yes" & generic_name != ""
+tab currently_taking, m
+
+destring visit_number,replace
+
+
+//create the same format merge_id that can link back to the main working data 
+gen merge_id_new = .
+* main data IDs: M_99 -> 99
+replace merge_id_new = real(substr(merge_id,3,.)) if strpos(merge_id,"M_")==1
+* pilot data IDs: P_1 -> 5001
+replace merge_id_new = real(substr(merge_id,3,.)) + 5000 if strpos(merge_id,"P_")==1
+tab merge_id_new
+drop merge_id
+rename merge_id_new merge_id
+sort merge_id visit
+order merge_id,before(visit_number)
+
+//calculate number of meds for each visit before reshape 
+keep if currently_taking=="Yes" & generic_name!=""
+duplicates drop merge_id visit_number generic_name, force
+
+bysort merge_id visit_number: gen n_meds_currently_visit=_N
+bysort merge_id visit_number: keep if _n==1
+
+keep merge_id visit_number n_meds_currently_visit
+
+reshape wide n_meds_currently_visit, i(merge_id) j(visit_number)
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\iamq_final_polypharmacy 0506.dta",replace 
+
+
+//use main data to merge to pharmacy data 
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\all done 0919 Jan 2026.dta",clear 
+merge 1:1 merge_id using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\iamq_final_polypharmacy 0506.dta"
+
+drop if _merge==1
+drop _merge
+
+sort merge_id
+
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\final data with drugs 050626.dta",replace

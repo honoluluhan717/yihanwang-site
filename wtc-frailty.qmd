@@ -1,0 +1,72 @@
+---
+title: "WTC First Responders Frailty Study"
+---
+
+## Overview
+
+This ongoing study examines frailty trajectories among World Trade Center (WTC) first responders — a unique cohort with well-characterized environmental exposures and long-term health monitoring. As **lead biostatistician**, I am responsible for the full statistical analysis plan, modeling strategy, and results interpretation.
+
+---
+
+## Research Questions
+
+- What is the **prevalence** of frailty in WTC first responders, and how has it changed over time?
+- What are the key **predictors and risk factors** for frailty in this population?
+- How does frailty relate to **downstream health outcomes** including hospitalizations, functional decline, and mortality?
+
+---
+
+## Study Design
+
+**Longitudinal / repeated measures** — participants assessed at multiple time points, enabling analysis of frailty onset, progression, and reversal over time.
+
+---
+
+## Statistical Methods
+
+| Method | Purpose |
+|---|---|
+| Descriptive statistics | Frailty prevalence and sample characteristics at each wave |
+| Longitudinal regression | Frailty trajectories over time, adjusting for covariates |
+| Mixed effects models | Within-person change accounting for repeated measures |
+| Survival analysis | Time to frailty onset and frailty-related outcomes |
+| Causal inference | Estimating effect of WTC exposures on frailty risk |
+
+---
+
+## My Role
+
+- Designed and wrote the **statistical analysis plan (SAP)**
+- Built and maintained all **Stata analysis pipelines**
+- Conducted all primary and sensitivity analyses
+- Interpreted and communicated results to clinical collaborators
+- Contributed to **manuscript writing** for methods sections
+
+---
+
+## Tools & Software
+
+- **Stata** — primary analysis environment
+- Data cleaning, harmonization, and longitudinal linkage of clinical assessment data
+
+---
+
+## Code
+
+*Code will be added as the study progresses toward publication. All scripts include inline comments explaining analytical decisions.*
+
+📂 [View Repository on GitHub](https://github.com/honoluluhan717)
+
+---
+
+## Status
+
+🟡 **Ongoing** — analyses done, manuscript in preparation.
+
+---
+
+## Notes & Analytical Decisions
+
+- **Frailty operationalization:** *(add your frailty definition/index here — e.g. Fried phenotype, deficit accumulation index)*
+- **Missing data approach:** *(multiple imputation)*
+- **Covariate selection:** *(note key confounders included and rationale)*

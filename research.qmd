@@ -45,6 +45,32 @@ Workshop materials from the Institute for Quantitative Social Science.
 
 ---
 
+## Ongoing Projects
+
+### WTC First Responders Frailty Study
+Longitudinal study of frailty prevalence, predictors, risk factors, and health outcomes in World Trade Center first responders. Lead biostatistician — responsible for statistical analysis plan, all Stata pipelines, and results interpretation.
+
+- **Methods:** Mixed effects models, survival analysis, causal inference, longitudinal regression
+- **Tools:** Stata
+- **Status:** 🟡 Ongoing — manuscript in preparation
+- **[View Full Project Page](wtc-frailty.qmd)**
+
+### ADRD Drug Repurposing Study
+Using large-scale CMS Medicare & Medicaid claims data to identify candidate drugs for Alzheimer's Disease and Related Dementias (ADRD) repurposing. Lead analyst applying causal inference methods to observational claims data.
+
+- **Methods:** Causal inference, pharmacoepidemiology, claims data analysis
+- **Tools:** Stata, SQL
+- **Status:** 🟡 In progress
+
+### Palliative Care at Home RCT
+Randomized controlled trial evaluating a home-based palliative care intervention. Responsible for research database management, CONSORT diagram design, and statistical analysis planning.
+
+- **Methods:** RCT design, CONSORT reporting, longitudinal outcomes
+- **Tools:** Stata, R
+- **Status:** 🟡 Recruitment ongoing
+
+---
+
 ## In Progress
 
 - Python reimplementation of CMS survival analysis pipeline

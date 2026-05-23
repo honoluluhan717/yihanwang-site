@@ -1,0 +1,4025 @@
+= V4 Outline MultiLine NoSorting TabWidth=30
+
+H="get data ready"
+import delimited "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\WTC Pilot_Database.csv",clear 
+drop patientid
+rename subjectid record_id
+rename consentdate consentdate_pilot
+tostring record_id,replace
+gen  merge_id = _n + 5499
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\WTC Pilot_Database.dta",replace
+
+import delimited "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\WTCPilot_Data.csv",clear
+rename participantid record_id 
+tostring record_id,replace 
+gen  merge_id = _n + 5499
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\WTCPilot_Data.dta",replace 
+
+import delimited "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\WTCII_DATA_2025-06-02_1545.csv",clear 
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\WTCII_DATA_2025-06-02_1545.dta",replace 
+
+H="create main data with new ID"
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\WTCII_DATA_2025-06-02_1545.dta",clear 
+
+keep record_id redcap_event_name survey_date
+
+//fix ID errors 
+replace record_id = "16" if record_id == "16 (withdrawn)"
+replace record_id = "50" if record_id == "50 (withdrawn)"
+replace record_id = "86" if record_id == "86 (withdrawn)"
+replace record_id = "88" if record_id == "88 (Withdrawn)"
+
+//Reshape the main database 
+//create visit names
+gen visit = ""
+replace visit = "baseline" if redcap_event_name == "baseline_arm_1"
+replace visit = "first"    if redcap_event_name == "first_follow_up_arm_1"
+replace visit = "second"   if redcap_event_name == "second_follow_up_arm_1"
+
+//Convert survey_date string to Stata date format
+gen survey_date_clean = date(survey_date, "MDY")
+format survey_date_clean %td
+
+//Keep only relevant variables
+keep record_id visit survey_date_clean
+drop if missing(visit) | missing(survey_date_clean)
+
+//Collapse in case of duplicates (keep earliest per visit per ID)
+collapse (min) survey_date_clean, by(record_id visit)
+
+//Reshape to wide
+reshape wide survey_date_clean, i(record_id) j(visit) string
+
+//add duplicate flag in the main data 
+gen overlap_main_pilot=.
+replace overlap_main_pilot=1 if record_id=="34" | record_id=="32" | record_id=="21" | record_id=="36" | record_id=="4847" | record_id=="121" | record_id=="38" | record_id=="43" | record_id=="49" | record_id=="25" | record_id=="50" | record_id=="118" | record_id=="51" | record_id=="99" | record_id=="77" | record_id=="3102" | record_id=="1487" | record_id=="22" | record_id=="116" | record_id=="194" | record_id=="41" | record_id=="2332" | record_id=="67" | record_id=="1105" | record_id=="55"
+
+// Rename for clarity
+rename survey_date_cleanbaseline survey_date_baseline
+rename survey_date_cleanfirst survey_date_firstfp
+rename survey_date_cleansecond survey_date_secondfp
+gen record_id_main=record_id
+
+//sort record ID 
+destring record_id, replace
+gsort record_id 
+
+gen merge_id = record_id
+list record_id merge_id if overlap_main_pilot==1
+
+gen unique_in_main=.
+replace unique_in_main=1 if overlap_main_pilot!=1
+tab unique_in_main
+tab overlap_main_pilot
+
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\main data with new ID.dta",replace 
+
+
+
+
+
+H="pilot data with new ID "
+import delimited "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\WTC Pilot_Database.csv",clear 
+drop patientid
+rename subjectid record_id
+rename consentdate consentdate_pilot
+gsort record_id
+tostring record_id,replace
+
+gen overlap_main_pilot=.
+replace overlap_main_pilot=1 if record_id=="7" | record_id=="8" | record_id=="9" | record_id=="11" | record_id=="12" | record_id=="21" | record_id=="22" | record_id=="26" | record_id=="28" | record_id=="30" | record_id=="31" | record_id=="41" | record_id=="46" | record_id=="50" | record_id=="60" | record_id=="69" | record_id=="75" | record_id=="93" | record_id=="100" | record_id=="107" | record_id=="109" | record_id=="116" | record_id=="117" | record_id=="119" | record_id=="123"
+tab overlap_main_pilot
+
+gen  merge_id = _n + 5000
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\WTC Pilot_Database.dta",replace
+
+import delimited "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\WTCPilot_Data.csv",clear
+rename participantid record_id 
+gsort record_id
+tostring record_id,replace 
+
+gen overlap_main_pilot=.
+replace overlap_main_pilot=1 if record_id=="7" | record_id=="8" | record_id=="9" | record_id=="11" | record_id=="12" | record_id=="21" | record_id=="22" | record_id=="26" | record_id=="28" | record_id=="30" | record_id=="31" | record_id=="41" | record_id=="46" | record_id=="50" | record_id=="60" | record_id=="69" | record_id=="75" | record_id=="93" | record_id=="100" | record_id=="107" | record_id=="109" | record_id=="116" | record_id=="117" | record_id=="119" | record_id=="123"
+tab overlap_main_pilot
+
+gen  merge_id = _n + 5000
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\WTCPilot_Data.dta",replace 
+
+//merge the two data 
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\WTC Pilot_Database.dta",clear 
+merge 1:1 record_id using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\WTCPilot_Data.dta",nogen
+destring record_id,replace 
+gsort record_id
+
+list record_id merge_id if overlap_main_pilot==1
+
+gen unique_in_pilot=.
+replace unique_in_pilot=1 if overlap_main_pilot!=1
+tab unique_in_pilot
+tab overlap_main_pilot 
+gen record_id_pilot=record_id
+
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\pilot_all.dta",replace
+
+
+H="merge the two data "
+//record_id_pilot range: 1-123
+//record_id_main range: 1-4863
+//merge_id range: 1-5123
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\main data with new ID.dta",clear 
+append using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\pilot_all.dta"
+
+//keep 8 sample from the pilot data, among the 25 duplicates, which had a JHU assessment
+//dropped the 17 duplicates from the main data; changed 8 main data ID from missing to actual ID from the main 
+drop if merge_id==5007 | merge_id==5008 | merge_id==5009 | merge_id==5011 | merge_id==5012
+drop if merge_id==5021 | merge_id==5022 | merge_id==5028 | merge_id==5030 | merge_id==5031
+drop if merge_id==5041 | merge_id==5060 | merge_id==5093 | merge_id==5109 | merge_id==5116
+drop if merge_id==5117 | merge_id==5123
+
+destring record_id_main,replace 
+
+replace record_id_main=43 if merge_id==5026
+replace record_id_main=51 if merge_id==5046
+replace record_id_main=99 if merge_id==5050
+replace record_id_main=3102 if merge_id==5069
+replace record_id_main=1487 if merge_id==5075
+replace record_id_main=116 if merge_id==5100
+replace record_id_main=194 if merge_id==5107
+replace record_id_main=1105 if merge_id==5119
+
+
+//keep 17 sample from the main data, among the 25 duplicates, which missed a JHU assessment from the pilot 
+//dropped the 8 duplicates from pilot data; changed 17 pilot data from missing to actual ID from the pilot 
+drop if merge_id==43 | merge_id==51 | merge_id==99 | merge_id==3102 | merge_id==1487 | merge_id==116 | merge_id==194 | merge_id==1105 
+
+replace record_id_pilot=9 if merge_id==21
+replace record_id_pilot=93 if merge_id==22
+replace record_id_pilot=30 if merge_id==25
+replace record_id_pilot=8 if merge_id==32
+replace record_id_pilot=7 if merge_id==34
+
+replace record_id_pilot=11 if merge_id==36
+replace record_id_pilot=22 if merge_id==38
+replace record_id_pilot=109 if merge_id==41
+replace record_id_pilot=28 if merge_id==49
+replace record_id_pilot=31 if merge_id==50
+
+replace record_id_pilot=123 if merge_id==55
+replace record_id_pilot=117 if merge_id==67
+replace record_id_pilot=60 if merge_id==77
+replace record_id_pilot=41 if merge_id==118
+replace record_id_pilot=21 if merge_id==121
+
+replace record_id_pilot=116 if merge_id==2332
+replace record_id_pilot=12 if merge_id==4847
+
+list record_id_pilot record_id_main if overlap_main_pilot==1
+
+gen survey_date = date(consentdate_pilot, "MDY")
+format survey_date %td
+drop consentdate_pilot
+rename survey_date survey_date_pilot
+
+order record_id merge_id survey_date_pilot survey_date_baseline survey_date_firstfp survey_date_secondfp,first
+
+//validity check 
+duplicates report merge_id
+
+tab unique_in_main 
+tab unique_in_pilot
+tab overlap_main_pilot
+
+list record_id_main record_id_pilot merge_id if overlap_main_pilot==1
+
+
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\MERGED_ALL.dta",replace
+
+***//reshape to long format 
+***reshape long survey_date_, i(merge_id) j(visit_type) string
+
+H="**********"
+
+
+H="merge all demographics"
+
+
+import excel "\\researchsan02a\shr3\PM\DC_KO WTC Frailty\Aim 2\KO211223\KO211223WTCFrailty_Demographics with ID.xlsx", sheet("Sheet1") firstrow clear
+keep subject_id income_category gender dob race education
+tempfile pilot1
+save `pilot1'
+
+import excel "\\researchsan02a\shr3\PM\DC_KO WTC Frailty\Aim 2\OLD\KO210921\Unique ID_12Oct2021\KO210921WTCFrailty_Demographics_deidentified.xlsx", sheet("KO210921WTCFrailty_Demographics") firstrow clear
+rename SUBJECTID subject_id
+keep subject_id income_category gender dob race education
+
+merge 1:1 subject_id using `pilot1'
+
+drop _merge 
+rename subject_id record_id_pilot
+
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\demo pilot.dta",replace 
+
+
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\new 12 demo.dta",clear
+append using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\main demo.dta"
+rename record_id record_id_main
+
+
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\demo main.dta",replace 
+
+
+
+H="two frail outcomes from redcap"
+import delimited "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\WTCII_DATA_2025-07-01_1432.csv",clear
+
+drop if record_id=="88"
+replace record_id="16" if record_id=="16 (withdrawn)"
+replace record_id="50" if record_id=="50 (withdrawn)"
+replace record_id="86" if record_id=="86 (withdrawn)"
+replace record_id="88" if record_id=="88 (Withdrawn)"
+
+//fill those missing Callahan score on Redcap 
+**#88; #1175; #1577; #4855 has actual missing scores 
+replace callahan_score=6 if record_id=="3"
+replace callahan_score=6 if record_id=="26"
+replace callahan_score=6 if record_id=="28"
+replace callahan_score=6 if record_id=="36"
+replace callahan_score=6 if record_id=="45"
+replace callahan_score=6 if record_id=="46"
+
+
+//create JHU frail flag & frail scale flag 
+**0 = 'Not Frail/Robust Health'
+**1-2 = 'Pre-Frail'
+**3-5 = 'Frail'
+**. = 'Missing' ;
+
+//jhu categorical variable 
+gen jhu_cat=.
+replace jhu_cat=0 if jhu_score==0 
+replace jhu_cat=1 if jhu_score==1 | jhu_score==2 
+replace jhu_cat=2 if jhu_score==3 | jhu_score==4 | jhu_score==5
+
+label define jhu_cat 0 "Not Frail/Robust Health" 1 "Pre-Frail" 2 "Frail"
+label values jhu_cat jhu_cat
+tab jhu_cat,m
+
+//jhu binary flag 
+gen jhu_frail_flag=.
+replace jhu_frail_flag=0 if jhu_cat==0
+replace jhu_frail_flag=1 if jhu_cat==1 | jhu_cat==2 
+label define jhu_frail_flag 0 "Not Frail/Robust Health" 1 "Pre-Frail/Frail"
+label values jhu_frail_flag jhu_frail_flag 
+tab jhu_frail_flag
+
+
+//Frail phenotype categorical variable 
+gen frail_cat=.
+replace frail_cat=0 if frail_total==0
+replace frail_cat=1 if frail_total==1 | frail_total==2
+replace frail_cat=2 if frail_total>=3
+tab frail_cat
+label define frail_cat 0 "Not Frail" 1 "Pre-Frial" 2 "Frail"
+label values frail_cat frail_cat
+tab frail_cat,m
+
+//Frail phenotype flag 
+gen frail_flag=.
+replace frail_flag=0 if frail_cat==0 
+replace frail_flag=1 if frail_cat==1 | frail_cat==2
+label define frail_flag 0 "Not Frail" 1 "Pre-Frail/Frail"
+label values frail_flag frail_flag
+tab frail_flag,m
+
+
+//Other geriatric assessments 
+
+//FESI score 
+gen fesi_cat=.
+replace fesi_cat=0 if fesi_total>=16 & fesi_total<=19
+replace fesi_cat=1 if fesi_total>=20 & fesi_total<=27
+replace fesi_cat=2 if fesi_total>=28 & fesi_total<64 
+label define fesi_cat 0 "Low Concern" 1 "Moderate Concern" 2 "High Concern"
+label values fesi_cat fesi_cat
+tab fesi_cat,m
+
+//MOCA score 
+gen moca_catags=.
+replace moca_catags=0 if moca_total>=26 & moca_total<=31
+replace moca_catags=1 if moca_total>=18 & moca_total<=25
+replace moca_catags=2 if moca_total>=10 & moca_total<=17
+replace moca_catags=3 if moca_total>=0 & moca_total<=9
+label define moca_catags 0 "Normal" 1 "Mild cognitive impairment" 2 "Moderate cognitive impairment" 3 "Severe cognitive impairment"
+label values moca_catags moca_catags
+tab moca_catags,m
+
+//ADL category 
+gen adl_cat=.
+replace adl_cat=0 if adl_score<24
+replace adl_cat=1 if adl_score>=24
+replace adl_cat=2 if adl_score<0
+label define adl_cat 0 "Not fully independent" 1 "Independent" 2 "Unknown"
+label values adl_cat adl_cat
+tab adl_cat
+
+//Callahan Score 
+gen callahan_cat=.
+replace callahan_cat=0 if callahan_score==0 | callahan_score==1 | callahan_score==2 | callahan_score==3
+replace callahan_cat=1 if callahan_score==4 | callahan_score==5 | callahan_score==6
+label define callahan_cat 0 "Impairment likely" 1 "Not impaired"
+label values callahan_cat callahan_cat
+tab callahan_cat,m
+
+//reshape the data from long to wide using necessary geriatric variables 
+
+* 1) Make short wave suffixes for wide names
+gen str6 wave = "_b"    if redcap_event_name=="baseline_arm_1"
+replace  wave = "_fu1"  if redcap_event_name=="first_follow_up_arm_1"
+replace  wave = "_fu2"  if redcap_event_name=="second_follow_up_arm_1"
+
+* 2) Ensure one row per id×wave before reshaping (optional but recommended)
+isid record_id wave   // will error if duplicates exist
+
+* 3) Collect all stubs = everything except ID and J
+ds
+local all `r(varlist)'
+local falls_year falls_year_mult callahan_cat adl_cat moca_catags fesi_cat frail_flag frail_cat jhu_frail_flag jhu_cat hospital_stay hospital_stay_6month er_stay er_stay_6month adl_phone adl_move adl_shop adl_meal adl_house adl_med adl_money adl_wash adl_dress adl_eat adl_walk adl_clean adl_score fesi_cleaning fesi_dressed fesi_meals fesi_bathing fesi_shopping fesi_sitting fesi_stairs fesi_walking fesi_reaching fesi_phone fesi_slippery fesi_visit fesi_crowds fesi_uneven fesi_slope fesi_social_event fesi_total falls falls_count falls_afraid  cog_word cog_year cog_month cog_day cog_obj_apple cog_obj_table cog_obj_penny callahan_score moca_total weight_current weight_past weight_change weight_height fall_risk : list all - record_id - redcap_event_name - wave
+
+keep falls_year falls_year_mult callahan_cat adl_cat moca_catags fesi_cat frail_flag frail_cat jhu_frail_flag jhu_cat hospital_stay hospital_stay_6month er_stay er_stay_6month adl_phone adl_move adl_shop adl_meal adl_house adl_med adl_money adl_wash adl_dress adl_eat adl_walk adl_clean adl_score fesi_cleaning fesi_dressed fesi_meals fesi_bathing fesi_shopping fesi_sitting fesi_stairs fesi_walking fesi_reaching fesi_phone fesi_slippery fesi_visit fesi_crowds fesi_uneven fesi_slope fesi_social_event fesi_total falls falls_count falls_afraid cog_word cog_year cog_month cog_day cog_obj_apple cog_obj_table cog_obj_penny callahan_score moca_total weight_current weight_past weight_change weight_height fall_risk record_id wave 
+
+rename record_id record_id_main 
+
+* 4) Reshape ALL variables to wide (short suffixes avoid name-length issues)
+reshape wide falls_year falls_year_mult callahan_cat adl_cat moca_catags fesi_cat frail_flag frail_cat jhu_frail_flag jhu_cat hospital_stay hospital_stay_6month er_stay er_stay_6month adl_phone adl_move adl_shop adl_meal adl_house adl_med adl_money adl_wash adl_dress adl_eat adl_walk adl_clean adl_score fesi_cleaning fesi_dressed fesi_meals fesi_bathing fesi_shopping fesi_sitting fesi_stairs fesi_walking fesi_reaching fesi_phone fesi_slippery fesi_visit fesi_crowds fesi_uneven fesi_slope fesi_social_event fesi_total falls falls_count cog_word cog_year cog_month cog_day cog_obj_apple cog_obj_table cog_obj_penny callahan_score moca_total weight_current weight_past weight_change weight_height fall_risk falls_afraid, i(record_id) j(wave) string
+
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\redcap0701_cleaned.dta",replace
+
+
+H="**********"
+
+
+H="get BMI main sample "
+* Step 1: Load and keep needed BMI variables;
+import delimited "\\mssm2\mssm2$\wangy63\Personal\DesktopFiles\DC_FK Frailty assessment\FK250117 Frailty\FK250117_PE.csv", clear
+keep patient_id visit_number height_in weight_lb bmi_lbin
+sort patient_id visit_number
+
+reshape wide height_in weight_lb bmi_lbin, i(patient_id) j(visit_number)
+gen grdc_source="main"
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\PE.dta",replace 
+
+
+* Step 2: Merge with crosswalk file (must have first_name and last_name in both)
+import delimited "\\mssm2\mssm2$\wangy63\Personal\DesktopFiles\DC_FK Frailty assessment\FK250117 Frailty\Fk250117_visits_marital_work.csv", clear
+keep patient_id visit_number visit_date
+reshape wide visit_date, i(patient_id) j(visit_number)
+merge 1:m patient_id using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\PE.dta"
+
+drop _merge
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\PEx.dta", replace
+
+* Step 3: Clean height and weight
+*==============================
+* Wide data BMI pipeline (visits 1-20)
+*==============================
+
+* 0) Ensure numeric types (safe even if already numeric)
+capture destring height_in*, replace ignore("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ ,:()$")
+capture destring weight_lb*,  replace ignore("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ ,:()$")
+capture destring bmi_lbin*,   replace ignore("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ ,:()$")
+
+* 1) Preserve originals before cleaning
+foreach k of numlist 1/20 {
+    capture confirm variable height_in`k'
+    if !_rc gen height_orig`k' = height_in`k'
+    capture confirm variable weight_lb`k'
+    if !_rc gen weight_orig`k' = weight_lb`k'
+}
+
+* 2) Clean height & weight per visit
+foreach k of numlist 1/20 {
+    * height
+    capture confirm variable height_in`k'
+    if !_rc {
+        replace height_in`k' = . if height_in`k' == 999 | height_in`k' <= 0
+        replace height_in`k' = . if height_in`k' <= 53 | height_in`k' >= 84
+    }
+    * weight
+    capture confirm variable weight_lb`k'
+    if !_rc {
+        replace weight_lb`k' = . if weight_lb`k' == 999 | weight_lb`k' <= 0
+        replace weight_lb`k' = round(weight_lb`k', 0.1) if !missing(weight_lb`k')
+        replace weight_lb`k' = . if weight_lb`k' <= 75 | weight_lb`k' >= 600
+    }
+}
+
+* 3) Compute per-visit BMI (kg/m^2) with fallbacks; also rounded BMI
+foreach k of numlist 1/20 {
+    capture confirm variable height_in`k'
+    if _rc continue
+
+    * prepare BMI holder: rename bmi_lbin# -> bmi_kgm# if present; else create
+    capture confirm variable bmi_lbin`k'
+    if !_rc {
+        rename bmi_lbin`k' bmi_kgm`k'
+        capture destring bmi_kgm`k', replace ignore("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ ,:()$")
+    }
+    else {
+        gen double bmi_kgm`k' = .
+    }
+
+    * helpers
+    gen double kg`k'      = weight_lb`k'   / 2.2046226
+    gen double m`k'       = height_in`k'   * 0.0254
+    gen double orig_kg`k' = weight_orig`k' / 2.2046226
+    gen double orig_m`k'  = height_orig`k' * 0.0254
+
+    * primary BMI
+    replace bmi_kgm`k' = kg`k' / (m`k'^2) if !missing(kg`k') & !missing(m`k')
+
+    * fallbacks (match your long-form logic)
+    replace bmi_kgm`k' = orig_kg`k' / (m`k'^2)      if missing(weight_lb`k') & !missing(height_in`k')
+    replace bmi_kgm`k' = kg`k'      / (orig_m`k'^2) if !missing(weight_lb`k') & missing(height_in`k')
+    replace bmi_kgm`k' = orig_kg`k' / (orig_m`k'^2) if missing(weight_lb`k') & missing(height_in`k')
+
+    * rounded BMI for reporting
+    gen double bmi_kgmR`k' = round(bmi_kgm`k', 0.1) if !missing(bmi_kgm`k')
+
+    * drop helpers
+    drop kg`k' m`k' orig_kg`k' orig_m`k'
+}
+
+* 4) CDC BMI categories per visit (string labels per visit)
+foreach k of numlist 1/20 {
+    capture confirm variable bmi_kgm`k'
+    if _rc continue
+    gen str12 bmi_Group`k' = ""
+    replace bmi_Group`k' = "Underweight"  if !missing(bmi_kgm`k') & bmi_kgm`k' < 18.5
+    replace bmi_Group`k' = "Normal"       if !missing(bmi_kgm`k') & bmi_kgm`k' >= 18.5 & bmi_kgm`k' < 25
+    replace bmi_Group`k' = "Overweight"   if !missing(bmi_kgm`k') & bmi_kgm`k' >= 25   & bmi_kgm`k' < 30
+    replace bmi_Group`k' = "Obese"        if !missing(bmi_kgm`k') & bmi_kgm`k' >= 30
+    replace bmi_Group`k' = "" if missing(bmi_kgm`k')
+}
+
+rename patient_id record_id_main 
+
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\PE_to_merge_olddata.dta", replace
+
+H="get BMI new sample"
+* Step 1: Load and keep needed BMI variables;
+import delimited "\\researchsan02a\Shr3\PM\DC_FK Frailty assessment\RDR FK250603 Frailty\Fk250603_PE.csv", clear
+keep patient_id visit_number height_in weight_lb bmi_lbin
+sort patient_id visit_number
+
+reshape wide height_in weight_lb bmi_lbin, i(patient_id) j(visit_number)
+gen grdc_source="main"
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\PEnew.dta",replace 
+
+
+* Step 2: Merge with crosswalk file (must have first_name and last_name in both)
+import delimited "\\researchsan02a\Shr3\PM\DC_FK Frailty assessment\RDR FK250603 Frailty\Fk250603_visits_marital_work.csv", clear
+keep patient_id visit_number visit_date
+reshape wide visit_date, i(patient_id) j(visit_number)
+gen grdc_source="main"
+merge 1:m patient_id using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\PEnew.dta"
+
+drop _merge
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\PExnew.dta", replace
+
+* Step 3: Clean height and weight
+*==============================
+* Wide data BMI pipeline (visits 1-20)
+*==============================
+
+* 0) Ensure numeric types (safe even if already numeric)
+capture destring height_in*, replace ignore("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ ,:()$")
+capture destring weight_lb*,  replace ignore("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ ,:()$")
+capture destring bmi_lbin*,   replace ignore("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ ,:()$")
+
+* 1) Preserve originals before cleaning
+foreach k of numlist 1/20 {
+    capture confirm variable height_in`k'
+    if !_rc gen height_orig`k' = height_in`k'
+    capture confirm variable weight_lb`k'
+    if !_rc gen weight_orig`k' = weight_lb`k'
+}
+
+* 2) Clean height & weight per visit
+foreach k of numlist 1/20 {
+    * height
+    capture confirm variable height_in`k'
+    if !_rc {
+        replace height_in`k' = . if height_in`k' == 999 | height_in`k' <= 0
+        replace height_in`k' = . if height_in`k' <= 53 | height_in`k' >= 84
+    }
+    * weight
+    capture confirm variable weight_lb`k'
+    if !_rc {
+        replace weight_lb`k' = . if weight_lb`k' == 999 | weight_lb`k' <= 0
+        replace weight_lb`k' = round(weight_lb`k', 0.1) if !missing(weight_lb`k')
+        replace weight_lb`k' = . if weight_lb`k' <= 75 | weight_lb`k' >= 600
+    }
+}
+
+* 3) Compute per-visit BMI (kg/m^2) with fallbacks; also rounded BMI
+foreach k of numlist 1/20 {
+    capture confirm variable height_in`k'
+    if _rc continue
+
+    * prepare BMI holder: rename bmi_lbin# -> bmi_kgm# if present; else create
+    capture confirm variable bmi_lbin`k'
+    if !_rc {
+        rename bmi_lbin`k' bmi_kgm`k'
+        capture destring bmi_kgm`k', replace ignore("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ ,:()$")
+    }
+    else {
+        gen double bmi_kgm`k' = .
+    }
+
+    * helpers
+    gen double kg`k'      = weight_lb`k'   / 2.2046226
+    gen double m`k'       = height_in`k'   * 0.0254
+    gen double orig_kg`k' = weight_orig`k' / 2.2046226
+    gen double orig_m`k'  = height_orig`k' * 0.0254
+
+    * primary BMI
+    replace bmi_kgm`k' = kg`k' / (m`k'^2) if !missing(kg`k') & !missing(m`k')
+
+    * fallbacks (match your long-form logic)
+    replace bmi_kgm`k' = orig_kg`k' / (m`k'^2)      if missing(weight_lb`k') & !missing(height_in`k')
+    replace bmi_kgm`k' = kg`k'      / (orig_m`k'^2) if !missing(weight_lb`k') & missing(height_in`k')
+    replace bmi_kgm`k' = orig_kg`k' / (orig_m`k'^2) if missing(weight_lb`k') & missing(height_in`k')
+
+    * rounded BMI for reporting
+    gen double bmi_kgmR`k' = round(bmi_kgm`k', 0.1) if !missing(bmi_kgm`k')
+
+    * drop helpers
+    drop kg`k' m`k' orig_kg`k' orig_m`k'
+}
+
+* 4) CDC BMI categories per visit (string labels per visit)
+foreach k of numlist 1/20 {
+    capture confirm variable bmi_kgm`k'
+    if _rc continue
+    gen str12 bmi_Group`k' = ""
+    replace bmi_Group`k' = "Underweight"  if !missing(bmi_kgm`k') & bmi_kgm`k' < 18.5
+    replace bmi_Group`k' = "Normal"       if !missing(bmi_kgm`k') & bmi_kgm`k' >= 18.5 & bmi_kgm`k' < 25
+    replace bmi_Group`k' = "Overweight"   if !missing(bmi_kgm`k') & bmi_kgm`k' >= 25   & bmi_kgm`k' < 30
+    replace bmi_Group`k' = "Obese"        if !missing(bmi_kgm`k') & bmi_kgm`k' >= 30
+    replace bmi_Group`k' = "" if missing(bmi_kgm`k')
+}
+
+rename patient_id record_id_main 
+
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\PE_to_merge_newdata.dta", replace
+
+H="merge two BMI "
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\PE_to_merge_olddata.dta",clear 
+append using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\PE_to_merge_newdata.dta"
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\bmi all main.dta",replace 
+
+H="BMI pilot sample"
+
+
+clear all
+set more off
+
+*---------------------------
+* Step 1: Load PE (pilot) and reshape wide
+*---------------------------
+import excel using "\\researchsan02a\Shr3\PM\DC_KO WTC Frailty\Aim 2\KO211223\KO211223WTCFrailty_PE with ID.xlsx", firstrow clear
+rename *, lower
+keep subject_id visit_number height_in weight_lb bmi_lbin
+rename subject_id ptid 
+sort ptid visit_number
+reshape wide height_in weight_lb bmi_lbin, i(ptid) j(visit_number)
+
+preserve 
+import excel "\\researchsan02a\Shr3\PM\DC_KO WTC Frailty\Aim 2\OLD\KO210921\Unique ID_12Oct2021\KO210921WTCFrailty_PE_deidentified.xlsx", firstrow clear 
+rename *,lower
+rename subjectid ptid 
+keep ptid visit_number height_in weight_lb bmi_lbin
+sort ptid visit_number
+drop if missing(visit_number)
+reshape wide height_in weight_lb bmi_lbin, i(ptid) j(visit_number)
+tempfile source 
+save `source'
+restore 
+
+merge 1:1 ptid using `source',force
+
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\PEpilot.dta", replace
+
+*---------------------------
+* Step 2: Merge pilot visit dates (vis#dt)
+*---------------------------
+import excel using "\\researchsan02a\Shr3\PM\DC_KO WTC Frailty\Aim 2\KO211223\KO211223WTCFrailty_Demographics with ID.xlsx", firstrow clear
+rename *, lower
+keep subject_id vis1dt vis2dt vis3dt vis4dt vis5dt vis6dt vis7dt vis8dt vis9dt vis10dt vis11dt vis12dt vis13dt vis14dt vis15dt vis16dt
+rename subject_id ptid 
+
+preserve 
+import excel using "\\researchsan02a\Shr3\PM\DC_KO WTC Frailty\Aim 2\OLD\KO210921\Unique ID_12Oct2021\KO210921WTCFrailty_Demographics_deidentified.xlsx", firstrow clear
+rename *, lower
+keep subjectid vis1dt vis2dt vis3dt vis4dt vis5dt vis6dt vis7dt vis8dt vis9dt vis10dt vis11dt vis12dt vis13dt vis14dt vis15dt vis16dt
+rename subjectid ptid 
+tempfile source1
+save `source1'
+restore 
+
+merge 1:1 ptid using `source1'
+
+drop _merge 
+merge 1:m ptid using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\PEpilot.dta",nogen 
+drop _merge 
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\PExpilot.dta", replace
+
+*================================================
+* Step 3: Clean height and weight (wide, v1–v20)
+*================================================
+
+* 0) Ensure numeric types (safe even if already numeric)
+capture destring height_in*, replace ignore("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ ,:()$")
+capture destring weight_lb*,  replace ignore("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ ,:()$")
+capture destring bmi_lbin*,   replace ignore("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ ,:()$")
+
+* 1) Preserve originals before cleaning
+forvalues k = 1/20 {
+    capture confirm variable height_in`k'
+    if !_rc gen height_orig`k' = height_in`k'
+    capture confirm variable weight_lb`k'
+    if !_rc gen weight_orig`k' = weight_lb`k'
+}
+
+* 2) Clean height & weight per visit
+forvalues k = 1/20 {
+    * height
+    capture confirm variable height_in`k'
+    if !_rc {
+        replace height_in`k' = . if height_in`k' == 999 | height_in`k' <= 0
+        replace height_in`k' = . if height_in`k' <= 53 | height_in`k' >= 84
+    }
+    * weight
+    capture confirm variable weight_lb`k'
+    if !_rc {
+        replace weight_lb`k' = . if weight_lb`k' == 999 | weight_lb`k' <= 0
+        replace weight_lb`k' = round(weight_lb`k', 0.1) if !missing(weight_lb`k')
+        replace weight_lb`k' = . if weight_lb`k' <= 75 | weight_lb`k' >= 600
+    }
+}
+
+*================================================
+* Step 4: Per-visit BMI (kg/m^2), rounded, and *_p categories
+*================================================
+forvalues k = 1/20 {
+    capture confirm variable height_in`k'
+    if _rc continue
+
+    * Standardize BMI numeric holder: bmi_lbin# -> bmi_kgm#
+    capture confirm variable bmi_lbin`k'
+    if !_rc {
+        rename bmi_lbin`k' bmi_kgm`k'
+        capture destring bmi_kgm`k', replace ignore("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ ,:()$")
+    }
+    else gen double bmi_kgm`k' = .
+
+    * Helpers from cleaned and original values
+    gen double kg`k'      = . 
+    gen double m`k'       = . 
+    gen double orig_kg`k' = . 
+    gen double orig_m`k'  = . 
+
+    capture replace kg`k'      = weight_lb`k'   / 2.2046226 if !missing(weight_lb`k')
+    capture replace m`k'       = height_in`k'   * 0.0254    if !missing(height_in`k')
+    capture replace orig_kg`k' = weight_orig`k' / 2.2046226 if !missing(weight_orig`k')
+    capture replace orig_m`k'  = height_orig`k' * 0.0254    if !missing(height_orig`k')
+
+    * Primary BMI using cleaned values
+    replace bmi_kgm`k' = kg`k' / (m`k'^2) if !missing(kg`k', m`k')
+
+    * Fallbacks using originals when one or both cleaned inputs missing
+    replace bmi_kgm`k' = orig_kg`k' / (m`k'^2)      if missing(weight_lb`k') & !missing(m`k')
+    replace bmi_kgm`k' = kg`k'      / (orig_m`k'^2) if !missing(kg`k') & missing(m`k')
+    replace bmi_kgm`k' = orig_kg`k' / (orig_m`k'^2) if missing(kg`k', m`k') & !missing(orig_kg`k', orig_m`k')
+
+    * Rounded BMI
+    gen double bmi_kgmR`k' = round(bmi_kgm`k', 0.1) if !missing(bmi_kgm`k')
+
+    * Drop helpers
+    drop kg`k' m`k' orig_kg`k' orig_m`k'
+
+    * CDC BMI categories — create directly with "_p" suffix
+    gen str12 bmi_Group`k'_p = ""
+    replace bmi_Group`k'_p = "Underweight"  if !missing(bmi_kgm`k') & bmi_kgm`k' < 18.5
+    replace bmi_Group`k'_p = "Normal"       if !missing(bmi_kgm`k') & bmi_kgm`k' >= 18.5 & bmi_kgm`k' < 25
+    replace bmi_Group`k'_p = "Overweight"   if !missing(bmi_kgm`k') & bmi_kgm`k' >= 25   & bmi_kgm`k' < 30
+    replace bmi_Group`k'_p = "Obese"        if !missing(bmi_kgm`k') & bmi_kgm`k' >= 30
+    replace bmi_Group`k'_p = "" if missing(bmi_kgm`k')
+}
+
+rename ptid record_id_pilot
+
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\bmi_pilotdata.dta", replace
+
+
+H="---"
+
+
+H="recent smoke main sample"
+* Step 1: Stack two IAMQ datasets;
+import delimited "\\mssm2\mssm2$\wangy63\Personal\DesktopFiles\DC_FK Frailty assessment\FK250117 Frailty\FK250117_IAMQV1TDB.csv", clear
+keep patient_id visit_number smoking_status
+reshape wide smoking_status, i(patient_id) j(visit_number)
+tempfile v1
+save `v1'
+
+import delimited "\\mssm2\mssm2$\wangy63\Personal\DesktopFiles\DC_FK Frailty assessment\FK250117 Frailty\FK250117_IAMQV2ON.csv", clear
+keep patient_id visit_number smoking_status
+reshape wide smoking_status, i(patient_id) j(visit_number)
+merge 1:1 patient_id using `v1'
+drop _merge
+save smoke, replace
+
+* Step 2: Merge with crosswalk by id;
+import delimited "\\mssm2\mssm2$\wangy63\Personal\DesktopFiles\DC_FK Frailty assessment\FK250117 Frailty\Fk250117_visits_marital_work.csv",clear
+keep patient_id visit_number visit_date
+reshape wide visit_date, i(patient_id) j(visit_number)
+merge 1:1 patient_id using smoke.dta
+drop _merge 
+save smokex, replace
+
+* Final IDs
+rename patient_id record_id_main
+tostring record_id_main, replace
+
+order smoking_status1,before(smoking_status2)
+
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\recent smoke_olddata.dta",replacee
+
+H="recent smoke new sample"
+* Step 1: Stack two IAMQ datasets;
+import delimited "\\researchsan02a\Shr3\PM\DC_FK Frailty assessment\RDR FK250603 Frailty\Fk250603_iamqv1tdb.csv", clear
+keep patient_id visit_number smoking_status
+reshape wide smoking_status, i(patient_id) j(visit_number)
+tempfile v1
+save `v1'
+
+import delimited "\\researchsan02a\Shr3\PM\DC_FK Frailty assessment\RDR FK250603 Frailty\Fk250603_iamqv2on.csv", clear
+keep patient_id visit_number smoking_status
+reshape wide smoking_status, i(patient_id) j(visit_number)
+merge 1:1 patient_id using `v1'
+drop _merge
+save smokenew, replace
+
+* Step 2: Merge with crosswalk by id;
+import delimited "\\researchsan02a\Shr3\PM\DC_FK Frailty assessment\RDR FK250603 Frailty\Fk250603_visits_marital_work.csv",clear
+keep patient_id visit_number visit_date
+reshape wide visit_date, i(patient_id) j(visit_number)
+merge 1:1 patient_id using smokenew.dta
+drop _merge 
+save smokexnew, replace
+
+* Final IDs
+rename patient_id record_id_main
+tostring record_id_main, replace
+
+order smoking_status1,before(smoking_status2)
+
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\recent smoke_newdata.dta",replace
+
+
+
+H="merge two smoke"
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\recent smoke_olddata.dta",clear 
+append using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\recent smoke_newdata.dta"
+order smoking_status1, before(smoking_status2)
+
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\smoke all main.dta",replace 
+
+
+H="recent smoke pilot sample"
+* Step 1: Stack two IAMQ datasets;
+import excel "\\researchsan02a\shr3\PM\DC_KO WTC Frailty\Aim 2\KO211223\KO211223WTCFrailty_IAMQV1TDB with ID.xlsx", firstrow clear
+rename *,lower
+keep subject_id visit_number smoking_status
+reshape wide smoking_status, i(subject_id) j(visit_number)
+tempfile v1
+save `v1'
+
+import excel "\\researchsan02a\Shr3\PM\DC_KO WTC Frailty\Aim 2\OLD\KO210921\Unique ID_12Oct2021\KO210921WTCFrailty_IAMQV1TDB_deidentified.xlsx", firstrow clear
+rename *,lower
+rename subjectid subject_id
+keep subject_id visit_number smoking_status
+drop if missing(visit_number)
+reshape wide smoking_status, i(subject_id) j(visit_number)
+append using `v1'
+tempfile v2
+save `v2'
+
+import excel "\\researchsan02a\shr3\PM\DC_KO WTC Frailty\Aim 2\KO211223\KO211223WTCFrailty_IAMQV2On with ID.xlsx", firstrow clear
+rename *,lower
+keep subject_id visit_number smoking_status
+reshape wide smoking_status, i(subject_id) j(visit_number)
+keep if inrange(subject_id, 101, 123)
+tempfile v3
+save `v3'
+
+import excel "\\researchsan02a\Shr3\PM\DC_KO WTC Frailty\Aim 2\OLD\KO210921\Unique ID_12Oct2021\KO210921WTCFrailty_IAMQV2On_10142021_deidentified.xlsx", firstrow clear
+rename *,lower
+rename subjectid subject_id
+keep subject_id visit_number smoking_status
+drop if missing(visit_number)
+reshape wide smoking_status, i(subject_id) j(visit_number)
+append using `v3'
+
+
+merge 1:1 subject_id using `v2'
+drop _merge
+save smokepilot, replace
+
+* Step 2: Merge with crosswalk by id;
+import excel "\\researchsan02a\shr3\PM\DC_KO WTC Frailty\Aim 2\KO211223\KO211223WTCFrailty_Demographics with ID.xlsx", firstrow clear
+rename *,lower
+keep subject_id vis1dt vis2dt vis3dt vis4dt vis5dt vis6dt vis7dt vis8dt vis9dt vis10dt vis11dt vis12dt vis13dt vis14dt vis15dt vis16dt
+
+merge 1:1 subject_id using smokepilot.dta
+drop _merge 
+order smoking_status1, before(smoking_status2)
+
+rename subject_id record_id_pilot
+
+forvalues i = 1/16 {
+    cap rename smoking_status`i' smoking_status`i'_p
+}
+
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\recent smoke_pilotdata.dta", replace
+
+
+H="---"
+
+
+H="certification data old "
+import delimited "\\mssm2\mssm2$\wangy63\Personal\DesktopFiles\DC_FK Frailty assessment\FK250117 Frailty\FK250117_certifications.csv", clear
+keep patient_id certification_category
+replace certification_category = itrim(trim(certification_category))
+drop if missing(certification_category) | certification_category==""
+
+gen byte has_cert = 1
+bys patient_id certification_category: keep if _n==1
+reshape wide has_cert, i(patient_id) j(certification_category) string
+foreach v of varlist has_cert* { 
+	replace `v' = 0 if missing(`v') 
+	}
+
+* Rename all flags to *_old and keep only those + patient_id
+ds has_cert*
+foreach v of varlist `r(varlist)' {
+    rename `v' `v'_old
+}
+
+keep patient_id has_cert*_old
+
+* Tab all available *_old flags (automatically picks up existing categories)
+ds has_cert*_old
+tab1 `r(varlist)', missing
+
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\certification_olddata.dta", replace
+
+
+H="certification data new"
+import delimited "\\researchsan02a\Shr3\PM\DC_FK Frailty assessment\RDR FK250603 Frailty\Fk250603_certifications.csv", clear
+keep patient_id certification_category
+replace certification_category = itrim(trim(certification_category))
+drop if missing(certification_category) | certification_category==""
+
+gen byte has_cert = 1
+bys patient_id certification_category: keep if _n==1
+reshape wide has_cert, i(patient_id) j(certification_category) string
+foreach v of varlist has_cert* { 
+	replace `v' = 0 if missing(`v') 
+	}
+
+* Rename all flags to *_old and keep only those + patient_id
+ds has_cert*
+foreach v of varlist `r(varlist)' {
+    rename `v' `v'_new
+}
+
+keep patient_id has_cert*_new
+
+* Tab all available *_old flags (automatically picks up existing categories)
+ds has_cert*_new
+tab1 `r(varlist)', missing
+
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\certification_newdata.dta", replace
+
+
+H="merge two certification data"
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\certification_olddata.dta",clear 
+
+merge 1:1 patient_id using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\certification_newdata.dta"
+* === Build _main flags from _old/_new ===
+local cats ANX Cancer DEP EXT GERD ILD OAD PTSD SA SP SRC URD
+foreach c of local cats {
+    capture confirm variable has_cert`c'_old
+    if _rc gen byte has_cert`c'_old = .
+    capture confirm variable has_cert`c'_new
+    if _rc gen byte has_cert`c'_new = .
+    egen has_cert`c'_main = rowmax(has_cert`c'_old has_cert`c'_new)
+    replace has_cert`c'_main = 0 if missing(has_cert`c'_main)
+}
+
+* === Any + count flags across all _main ===
+egen has_any_cert_main = rowmax( ///
+    has_certANX_main has_certCancer_main has_certDEP_main has_certEXT_main has_certGERD_main ///
+    has_certILD_main has_certOAD_main has_certPTSD_main has_certSA_main has_certSP_main ///
+    has_certSRC_main has_certURD_main)
+replace has_any_cert_main = 0 if missing(has_any_cert_main)
+
+egen n_certs_main = rowtotal( ///
+    has_certANX_main has_certCancer_main has_certDEP_main has_certEXT_main has_certGERD_main ///
+    has_certILD_main has_certOAD_main has_certPTSD_main has_certSA_main has_certSP_main ///
+    has_certSRC_main has_certURD_main)
+replace n_certs_main = 0 if missing(n_certs_main)
+
+* Tabulate each binary _main flag + any flag
+ds has_cert*_main has_any_cert_main
+foreach v of varlist `r(varlist)' {
+    di "=============================="
+    di "Tabulation of `v'"
+    tab `v', missing
+}
+
+* Tabulate the count flag
+di "=============================="
+di "Tabulation of n_certs_main"
+tab n_certs_main, missing
+
+drop *_old *_new _merge 
+rename patient_id record_id_main 
+tostring record_id_main,replace
+
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\certification_maindata.dta",replace 
+
+
+H="get pilot1"
+import excel "\\researchsan02a\Shr3\PM\DC_KO WTC Frailty\Aim 2\KO211223\KO211223WTCFrailty_Certs with ID.xlsx", firstrow clear
+
+rename *, lower
+keep subject_id certification_category
+replace certification_category = itrim(trim(certification_category))
+drop if missing(certification_category) | certification_category==""
+
+gen byte has_cert = 1
+bys subject_id certification_category: keep if _n==1
+reshape wide has_cert, i(subject_id) j(certification_category) string
+
+foreach v of varlist has_cert* {
+    replace `v' = 0 if missing(`v')
+}
+
+* Add _one for each has_cert* flag
+ds has_cert*
+foreach v of varlist `r(varlist)' {
+    capture confirm variable `v'_one
+    if _rc gen byte `v'_one = `v'
+}
+
+* Tabulate each _one flag
+ds has_cert*_one
+tab1 `r(varlist)', missing
+
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\certification_pilot1data.dta",replace
+
+
+
+H="get pilot2"
+
+import excel "\\researchsan02a\Shr3\PM\DC_KO WTC Frailty\Aim 2\OLD\KO210921\Unique ID_12Oct2021\KO210921WTCFrailty_Certifications_deidentified.xlsx",firstrow clear 
+
+rename *,lower
+rename subjectid subject_id
+keep subject_id certification_category
+
+replace certification_category = itrim(trim(certification_category))
+drop if missing(certification_category) | certification_category==""
+
+gen has_cert = 1
+
+bys subject_id certification_category: keep if _n==1
+
+reshape wide has_cert, i(subject_id) j(certification_category) string
+
+foreach v of varlist has_cert* {
+    replace `v' = 0 if missing(`v')
+}
+
+* Add _one for each has_cert* flag
+ds has_cert*
+foreach v of varlist `r(varlist)' {
+    capture confirm variable `v'_two
+    if _rc gen byte `v'_two = `v'
+}
+
+* Tabulate each _one flag
+ds has_cert*_two
+tab1 `r(varlist)', missing
+
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\certification_pilot2data.dta",replace
+
+
+H="merge pilot1 & pilot2"
+
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\certification_pilot1data.dta",clear 
+
+merge m:1 subject_id using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\certification_pilot2data.dta"
+
+local missing
+forvalues i = 1/123 {
+    count if subject_id == `i'
+    if r(N) == 0 {
+        local missing `missing' `i'
+    }
+}
+
+display "Missing IDs: `missing'"
+
+sort subject_id
+drop _merge 
+* Pair the ones with _one and _two
+foreach base in has_certCancer has_certDEP has_certGERD has_certOAD has_certPTSD has_certSP has_certSRC has_certURD {
+    gen `base'_pilot = max(`base'_one, `base'_two)
+    replace `base'_pilot = 0 if missing(`base'_pilot)
+}
+
+* For ANX (no _new version), just copy
+gen has_certANX_pilot = has_certANX
+replace has_certANX_pilot = 0 if missing(has_certANX_pilot)
+
+* Overall flag = 1 if ANY main cert is 1
+egen has_any_cert_pilot = rowmax(has_certANX_pilot has_certCancer_pilot has_certDEP_pilot ///
+    has_certGERD_pilot has_certOAD_pilot has_certPTSD_pilot has_certSP_pilot ///
+    has_certSRC_pilot has_certURD_pilot)
+
+* Ensure binary 0/1
+replace has_any_cert_pilot = 0 if missing(has_any_cert_pilot)
+
+* Count how many certification flags = 1
+egen n_certs_pilot = rowtotal(has_certANX_pilot has_certCancer_pilot has_certDEP_pilot ///
+    has_certGERD_pilot has_certOAD_pilot has_certPTSD_pilot has_certSP_pilot ///
+    has_certSRC_pilot has_certURD_pilot)
+
+foreach v in has_certANX_pilot has_certCancer_pilot has_certDEP_pilot has_certGERD_pilot ///
+             has_certOAD_pilot has_certPTSD_pilot has_certSP_pilot has_certSRC_pilot has_certURD_pilot {
+    tab `v'
+}
+
+* Collect all pilot + summary flags
+ds has_cert*_pilot has_any_cert_pilot n_certs_pilot
+
+* Tabulate each
+foreach v of varlist `r(varlist)' {
+    di "=============================="
+    di "Tabulation of `v'"
+    tab `v', missing
+}
+
+rename subject_id record_id_pilot 
+drop *_one *_two has_certANX has_certCancer has_certDEP has_certGERD has_certOAD has_certPTSD has_certSP has_certSRC has_certURD
+
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\certification_pilotfinal.dta",replace
+
+
+
+
+H="---"
+
+
+H="occupatoin before 911 old"
+
+//get pre-911 occupation ready 
+// Load the dataset
+import delimited "\\mssm2\mssm2$\wangy63\Personal\DesktopFiles\DC_FK Frailty assessment\FK250117 Frailty\FK250117_eaq.csv", clear
+rename patient_id ptid 
+
+* Create new variable with 4 occup categories
+gen soc_4_categories = ""
+
+* residual group (broken into groups of 5)
+replace soc_4_categories = "residual" if inlist(majorsoc, ///
+"11: Management Occupations", "13: Business & Financial Operations Occupations", ///
+"15: Computer & Mathematical Occupations", "17: Architecture and Mathematical Occupations", ///
+"19: Life, Physical, and Social Science Occupations")
+
+replace soc_4_categories = "residual" if inlist(majorsoc, ///
+"21: Community and Social Services Occupations", "23: Legal Occupations", ///
+"25: Education, Training, and Library Occuapations", "27: Arts, Design, Entertainment, Sports & Media Occupations", ///
+"29: Healthcare Practitioner and Technical Occupations")
+
+replace soc_4_categories = "residual" if inlist(majorsoc, ///
+"31: Healthcare Support Occupations", "35: Food Preparation and Serving Related Occupations", ///
+"39: Personal Care and Service Occupations", "41: Sales and Related Occupations", ///
+"43: Office and Administrative Support Occupations")
+
+replace soc_4_categories = "residual" if inlist(majorsoc, ///
+"45: Farming, Fishing, and Forestry Occupations", "51: Production Occupations", ///
+"53: Transportation and Material Movers", "RETIRED", "UNEMPLOYED")
+
+* Construction
+replace soc_4_categories = "Construction" if majorsoc == "47: Construction Occupations"
+
+* Protective
+replace soc_4_categories = "Protective" if inlist(majorsoc, ///
+"33: Protective Service Occupations", "55: Military Specific Occupations")
+
+* Cleaning/Maintenance + Installation/Repair
+replace soc_4_categories = "SOC37&49" if inlist(majorsoc, ///
+"37: Building and Grounds Cleaning and Maintenance Occupations", ///
+"49: Electrical, Telecommunications & Other Installation & Repair")
+
+* Fix case and add Unknown + blanks to residual
+replace soc_4_categories = "residual" if inlist(majorsoc,"Retired","Unemployed","Unknown","")
+
+* Fix typos / spelling mismatches
+replace soc_4_categories = "residual" if strpos(majorsoc,"Education, Training, and Library")
+replace soc_4_categories = "residual" if strpos(majorsoc,"Food Prepar")   // covers "Prepara/Prepera-"
+
+
+* Set missing if not classified
+replace soc_4_categories = "" if soc_4_categories==""
+rename soc_4_categories soc_4_categories_main 
+tab soc_4_categories_main,m
+rename ptid record_id_main 
+tostring record_id_main,replace
+
+
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\pre911_group_old.dta",replace 
+
+
+H="occupation before 911 new"
+
+//get pre-911 occupation ready 
+// Load the dataset
+import delimited "\\researchsan02a\Shr3\PM\DC_FK Frailty assessment\RDR FK250603 Frailty\FK250603_eaq.csv", clear
+rename patient_id ptid 
+
+
+* Create new variable with 4 occup categories
+gen soc_4_categories = ""
+
+* residual group (broken into groups of 5)
+replace soc_4_categories = "residual" if inlist(majorsoc, ///
+"11: Management Occupations", "13: Business & Financial Operations Occupations", ///
+"15: Computer & Mathematical Occupations", "17: Architecture and Mathematical Occupations", ///
+"19: Life, Physical, and Social Science Occupations")
+
+replace soc_4_categories = "residual" if inlist(majorsoc, ///
+"21: Community and Social Services Occupations", "23: Legal Occupations", ///
+"25: Education, Training, and Library Occuapations", "27: Arts, Design, Entertainment, Sports & Media Occupations", ///
+"29: Healthcare Practitioner and Technical Occupations")
+
+replace soc_4_categories = "residual" if inlist(majorsoc, ///
+"31: Healthcare Support Occupations", "35: Food Preparation and Serving Related Occupations", ///
+"39: Personal Care and Service Occupations", "41: Sales and Related Occupations", ///
+"43: Office and Administrative Support Occupations")
+
+replace soc_4_categories = "residual" if inlist(majorsoc, ///
+"45: Farming, Fishing, and Forestry Occupations", "51: Production Occupations", ///
+"53: Transportation and Material Movers", "RETIRED", "UNEMPLOYED")
+
+* Construction
+replace soc_4_categories = "Construction" if majorsoc == "47: Construction Occupations"
+
+* Protective
+replace soc_4_categories = "Protective" if inlist(majorsoc, ///
+"33: Protective Service Occupations", "55: Military Specific Occupations")
+
+* Cleaning/Maintenance + Installation/Repair
+replace soc_4_categories = "SOC37&49" if inlist(majorsoc, ///
+"37: Building and Grounds Cleaning and Maintenance Occupations", ///
+"49: Electrical, Telecommunications & Other Installation & Repair")
+
+* Fix case and add Unknown + blanks to residual
+replace soc_4_categories = "residual" if inlist(majorsoc,"Retired","Unemployed","Unknown","")
+
+* Fix typos / spelling mismatches
+replace soc_4_categories = "residual" if strpos(majorsoc,"Education, Training, and Library")
+replace soc_4_categories = "residual" if strpos(majorsoc,"Food Prepar")   // covers "Prepara/Prepera-"
+
+
+* Set missing if not classified
+replace soc_4_categories = "" if soc_4_categories==""
+rename soc_4_categories soc_4_categories_main 
+tab soc_4_categories_main,m
+rename ptid record_id_main 
+tostring record_id_main,replace
+
+
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\pre911_group_new.dta",replace 
+
+H="merge two occupation"
+
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\pre911_group_old.dta",clear 
+append using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\pre911_group_new.dta",force
+
+tab soc_4_categories_main,m
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\occupation all.dta",replace 
+
+
+H="occupation pilot sample"
+
+//get pre-911 occupation ready 
+// Load the dataset
+import excel "\\researchsan02a\shr3\PM\DC_KO WTC Frailty\Aim 2\KO211223\KO211223WTCFrailty_EAQ with ID.xlsx", firstrow clear
+rename *,lower
+rename subject_id ptid 
+
+preserve 
+import excel "\\researchsan02a\Shr3\PM\DC_KO WTC Frailty\Aim 2\OLD\KO210921\Unique ID_12Oct2021\KO210921WTCFrailty_EAQ_deidentified.xlsx", firstrow clear 
+rename *,lower
+rename subjectid ptid 
+tempfile source 
+save `source'
+restore 
+
+merge 1:1 ptid using `source',force
+
+* Create new variable with 4 occup categories
+gen soc_4_categories = ""
+
+* residual group (broken into groups of 5)
+replace soc_4_categories = "residual" if inlist(majorsoc, ///
+"11: Management Occupations", "13: Business & Financial Operations Occupations", ///
+"15: Computer & Mathematical Occupations", "17: Architecture and Mathematical Occupations", ///
+"19: Life, Physical, and Social Science Occupations")
+
+replace soc_4_categories = "residual" if inlist(majorsoc, ///
+"21: Community and Social Services Occupations", "23: Legal Occupations", ///
+"25: Education, Training, and Library Occuapations", "27: Arts, Design, Entertainment, Sports & Media Occupations", ///
+"29: Healthcare Practitioner and Technical Occupations")
+
+replace soc_4_categories = "residual" if inlist(majorsoc, ///
+"31: Healthcare Support Occupations", "35: Food Preparation and Serving Related Occupations", ///
+"39: Personal Care and Service Occupations", "41: Sales and Related Occupations", ///
+"43: Office and Administrative Support Occupations")
+
+replace soc_4_categories = "residual" if inlist(majorsoc, ///
+"45: Farming, Fishing, and Forestry Occupations", "51: Production Occupations", ///
+"53: Transportation and Material Movers", "RETIRED", "UNEMPLOYED")
+
+* Construction
+replace soc_4_categories = "Construction" if majorsoc == "47: Construction Occupations"
+
+* Protective
+replace soc_4_categories = "Protective" if inlist(majorsoc, ///
+"33: Protective Service Occupations", "55: Military Specific Occupations")
+
+* Cleaning/Maintenance + Installation/Repair
+replace soc_4_categories = "SOC37&49" if inlist(majorsoc, ///
+"37: Building and Grounds Cleaning and Maintenance Occupations", ///
+"49: Electrical, Telecommunications & Other Installation & Repair")
+
+* Fix case and add Unknown + blanks to residual
+replace soc_4_categories = "residual" if inlist(majorsoc,"Retired","Unemployed","Unknown","")
+
+* Fix typos / spelling mismatches
+replace soc_4_categories = "residual" if strpos(majorsoc,"Education, Training, and Library")
+replace soc_4_categories = "residual" if strpos(majorsoc,"Food Prepar")   // covers "Prepara/Prepera-"
+
+
+* Set missing if not classified
+replace soc_4_categories = "" if soc_4_categories==""
+rename soc_4_categories soc_4_categories_pilot 
+tab soc_4_categories_pilot,m
+
+rename ptid record_id_pilot
+
+
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\pre911_group_pilot.dta",replace 
+
+H="---"
+
+
+H="WTC exposure severity old"
+
+//// Load the dataset
+import delimited "\\mssm2\mssm2$\wangy63\Personal\DesktopFiles\DC_FK Frailty assessment\FK250117 Frailty\FK250117_eaq.csv", clear
+rename patient_id ptid
+
+tab exp4_imputed,m
+gen str20 exposure_old=""
+replace exposure_old="Low" if exp4_imputed=="Low"
+replace exposure_old="Intermediate" if exp4_imputed=="Intermediate"
+replace exposure_old="High" if exp4_imputed=="High"
+replace exposure_old="Very High" if exp4_imputed=="Very High"
+replace exposure_old="" if exp4_imputed=="M" | exp4_imputed==""
+tab exposure_old,m
+
+rename exposure_old exposure_main 
+
+rename ptid record_id_main
+tostring record_id_main,replace
+
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\exposure_old.dta",replace 
+
+H="WTC exposure severity new"
+
+//// Load the dataset
+import delimited "\\researchsan02a\Shr3\PM\DC_FK Frailty assessment\RDR FK250603 Frailty\FK250603_eaq.csv", clear
+rename patient_id ptid
+
+tab exp4_imputed,m
+gen str20 exposure_new=""
+replace exposure_new="Low" if exp4_imputed=="Low"
+replace exposure_new="Intermediate" if exp4_imputed=="Intermediate"
+replace exposure_new="High" if exp4_imputed=="High"
+replace exposure_new="Very High" if exp4_imputed=="Very High"
+replace exposure_new="" if exp4_imputed=="M" | exp4_imputed==""
+tab exposure_new,m
+
+rename exposure_new exposure_main 
+
+rename ptid record_id_main
+tostring record_id_main,replace 
+
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\exposure_new.dta",replace 
+
+H="merge two exposure"
+
+use"J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\exposure_old.dta",clear 
+
+append using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\exposure_new.dta",force
+
+tab exposure_main,m 
+
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\exposure all.dta",replace 
+
+
+
+H="exposure severity pilot "
+
+//// Load the dataset
+import excel "\\researchsan02a\shr3\PM\DC_KO WTC Frailty\Aim 2\KO211223\KO211223WTCFrailty_EAQ with ID", firstrow clear
+rename *,lower
+rename subject_id ptid
+
+preserve 
+import excel "\\researchsan02a\Shr3\PM\DC_KO WTC Frailty\Aim 2\OLD\KO210921\Unique ID_12Oct2021\KO210921WTCFrailty_EAQ_deidentified.xlsx", firstrow clear 
+rename *,lower
+rename subjectid ptid 
+tempfile source 
+save `source'
+restore 
+
+merge 1:1 ptid using `source',force
+
+tab exp4_imputed,m
+gen str20 exposure_pilot=""
+replace exposure_pilot="Low" if exp4_imputed=="Low"
+replace exposure_pilot="Intermediate" if exp4_imputed=="Intermediate"
+replace exposure_pilot="High" if exp4_imputed=="High"
+replace exposure_pilot="Very High" if exp4_imputed=="Very High"
+replace exposure_pilot="" if exp4_imputed=="M" | exp4_imputed==""
+tab exposure_pilot,m
+
+rename ptid record_id_pilot
+
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\exposure_pilot.dta",replace 
+
+H="---"
+
+
+H="WTC certified condition old"
+
+
+H="WTC certified condition new"
+
+
+H="---"
+
+
+H="clean redcap pilot data "
+import excel "\\mssm2\mssm2$\wangy63\Personal\DesktopFiles\WTC Pilot data_7.9.2025 raw.xlsx",firstrow clear
+
+rename participant_id record_id_pilot
+
+//jhu score 
+gen jhu_cat_p=.
+replace jhu_cat_p=0 if jhu_score==0 
+replace jhu_cat_p=1 if jhu_score==1 | jhu_score==2 
+replace jhu_cat_p=2 if jhu_score==3 | jhu_score==4 | jhu_score==5
+
+label define jhu_cat 0 "Not Frail/Robust Health" 1 "Pre-Frail" 2 "Frail"
+label values jhu_cat_p jhu_cat
+tab jhu_cat_p,m
+
+//frail scales 
+gen frail_cat_p=.
+replace frail_cat_p=0 if frail_total==0
+replace frail_cat_p=1 if frail_total==1 | frail_total==2
+replace frail_cat_p=2 if frail_total>=3
+tab frail_cat_p
+
+label define frail_cat 0 "Not Frail" 1 "Pre-Frial" 2 "Frail"
+label values frail_cat_p frail_cat
+tab frail_cat_p,m
+
+//ADL scale 
+egen adl_score = rowtotal(adl_phone adl_move adl_shop adl_meal adl_house adl_med adl_money adl_wash adl_dress adl_eat adl_walk adl_clean)
+egen _nvalid   = rownonmiss(adl_phone adl_move adl_shop adl_meal adl_house adl_med adl_money adl_wash adl_dress adl_eat adl_walk adl_clean)
+replace adl_score = . if _nvalid==0
+drop _nvalid
+
+gen adl_cat_p=.
+replace adl_cat_p=0 if adl_score<24 & adl_score>=0
+replace adl_cat_p=1 if adl_score>=24
+replace adl_cat_p=2 if adl_score<0
+label define adl_cat 0 "Not fully independent" 1 "Independent" 2 "Unknown"
+label values adl_cat_p adl_cat
+tab adl_cat_p,m nol
+
+//Callahan scale 
+egen callahan_score_p=rowtotal(cog_year cog_month cog_day cog_obj_apple cog_obj_table cog_obj_penny)
+tab callahan_score_p,m
+
+gen callahan_cat_p=.
+replace callahan_cat_p=0 if callahan_score_p==0 | callahan_score_p==1 | callahan_score_p==2 | callahan_score_p==3
+replace callahan_cat_p=1 if callahan_score_p==4 | callahan_score_p==5 | callahan_score_p==6
+label define callahan_cat_p 0 "Impairment likely" 1 "Not impaired"
+label values callahan_cat_p callahan_cat_p
+tab callahan_cat_p,m
+tab callahan_cat_p,m nol 
+
+//MOCA
+gen moca_cat_p=.
+replace moca_cat_p=0 if moca_total>=26 & moca_total<=31
+replace moca_cat_p=1 if moca_total>=18 & moca_total<=25
+replace moca_cat_p=2 if moca_total>=10 & moca_total<=17
+replace moca_cat_p=3 if moca_total>=0 & moca_total<=9
+label define moca_cat 0 "Normal" 1 "Mild cognitive impairment" 2 "Moderate cognitive impairment" 3 "Severe cognitive impairment"
+label values moca_cat_p moca_cat
+tab moca_cat_p,m
+tab moca_cat_p,m nol 
+
+//FESI scale 
+gen fesi_cat_p=.
+replace fesi_cat_p=0 if fesi_total>=16 & fesi_total<=19
+replace fesi_cat_p=1 if fesi_total>=20 & fesi_total<=27
+replace fesi_cat_p=2 if fesi_total>=28 & fesi_total<64 
+label define fesi_cat 0 "Low Concern" 1 "Moderate Concern" 2 "High Concern"
+label values fesi_cat_p fesi_cat
+tab fesi_cat_p,m
+tab fesi_cat_p,m nol
+
+//fall assessment score 
+gen fall_risk_p = .
+replace fall_risk_p = 1 if falls_afraid == 1 | falls_year == 1
+replace fall_risk_p = 0 if falls_afraid == 0 & falls_year == 0
+replace fall_risk_p=. if fall_risk_p<0
+tab fall_risk_p,m
+
+rename falls_year falls_year_p
+rename falls_year_mult falls_year_mult_p
+
+//ER visits 
+rename er_stay er_stay_p
+rename er_stay_6month er_stay_6month_p
+
+//hospital stay 
+rename hospital_stay hospital_stay_p
+rename hospital_stay_6month hospital_stay_6month_p
+
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\redcap0729_pilot.dta",replace
+
+
+H="---"
+
+
+H="only check the pilot data"
+import excel "\\mssm2\mssm2$\wangy63\Personal\DesktopFiles\WTC Pilot data_7.9.2025 raw.xlsx", sheet("WTC Pilot data_7.9.2025 raw") firstrow
+
+* ADL item list
+local adl_items adl_clean adl_dress adl_eat adl_house adl_meal adl_med ///
+                adl_money adl_move adl_phone adl_shop adl_walk adl_wash
+
+* 1) Recode -98/-99/-95 to missing
+foreach v of local adl_items {
+    replace `v' = . if inlist(`v', -98, -99, -95)
+}
+
+* 2) Sum available items (skips missing)
+capture drop adl_score
+egen adl_score = rowtotal(`adl_items')
+label var adl_score "Total ADL score"
+
+* 3) Categorize
+capture drop adl_cat
+label define adl_cat 0 "Not fully independent" 1 "Independent" 2 "Unknown"
+
+gen adl_cat = .
+replace adl_cat = 0 if adl_score < 24 & adl_score >= 0
+replace adl_cat = 1 if adl_score >= 24
+replace adl_cat = 2 if missing(adl_score)
+
+label values adl_cat adl_cat
+label var adl_cat "ADL category"
+
+tab adl_cat,m
+
+gen falls_risk = .
+replace falls_risk = 1 if falls_afraid == 1 | falls_year == 1
+replace falls_risk = 0 if falls_afraid == 0 & falls_year == 0
+replace falls_risk=. if falls_risk<0
+
+tab falls_risk,missing
+
+H="---"
+
+
+H="merge to original data"
+
+//use main data: with new merge id created 
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\MERGED_ALL.dta",clear 
+tostring record_id_main,replace
+
+//merge to demographic data 
+merge m:1 record_id_main using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\demo main.dta",nogen
+
+preserve 
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\demo pilot.dta",clear 
+rename gender gender_pilot
+rename dob dob_pilot 
+rename race race_pilot
+rename education education_pilot 
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\demo pilot_cleaned.dta",replace
+restore
+merge m:1 record_id_pilot using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\demo pilot_cleaned.dta",nogen force
+
+
+//merge to redcap data 
+preserve 
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\redcap0701_cleaned.dta",clear 
+
+tempfile redcap2 
+save `redcap2'
+restore
+merge m:1 record_id_main using `redcap2',nogen
+
+
+merge m:1 record_id_pilot using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\redcap0729_pilot.dta", nogen force
+
+
+preserve 
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\pilot_0728.dta",clear 
+rename participant_id record_id_pilot
+tempfile redcap3 
+save `redcap3'
+restore
+
+merge m:1 record_id_pilot using `redcap3',nogen force
+
+//merge to bmi
+destring record_id_main,replace
+merge m:1 record_id_main using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\bmi all main.dta",nogen
+
+merge m:1 record_id_pilot using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\bmi_pilotdata.dta", nogen force
+
+//merge to smoke 
+tostring record_id_main,replace
+merge m:1 record_id_main using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\smoke all main.dta",nogen force
+merge m:1 record_id_pilot using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\recent smoke_pilotdata.dta", nogen force
+
+//merge to occupation 
+merge m:1 record_id_main using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\occupation all.dta",nogen force
+
+destring record_id_pilot,replace
+merge m:1 record_id_pilot using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\pre911_group_pilot.dta",nogen force
+
+//merge to exposure severity 
+merge m:1 record_id_main using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\exposure all.dta",nogen force
+
+merge m:1 record_id_pilot using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\exposure_pilot.dta",nogen force
+
+//merge to certification 
+
+merge m:1 record_id_main using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\certification_maindata.dta",nogen force 
+
+merge m:1 record_id_pilot using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\certification_pilotfinal.dta",nogen force 
+
+
+//merge to income from pilot 
+
+merge m:1 record_id_pilot using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\initial data\merged to pilot\demo pilot.dta",nogen force update 
+
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\FINAL_MERGED 0728.dta",replace 
+
+
+H="clean all demo + smoking done"
+
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\FINAL_MERGED 0728.dta",clear
+
+drop if record_id_pilot==83 
+drop if record_id_pilot==92 
+
+* Build final JHU category and its source (pilot -> baseline -> fu1 -> fu2)
+gen jhu_cat_final = .
+gen str9 jhu_source = ""
+
+replace jhu_cat_final = jhu_cat_p if !missing(jhu_cat_p)
+replace jhu_source    = "pilot"         if jhu_source=="" & !missing(jhu_cat_p)
+
+replace jhu_cat_final = jhu_cat_b       if missing(jhu_cat_final) & !missing(jhu_cat_b)
+replace jhu_source    = "baseline"      if jhu_source=="" & !missing(jhu_cat_b)
+
+replace jhu_cat_final = jhu_cat_fu1     if missing(jhu_cat_final) & !missing(jhu_cat_fu1)
+replace jhu_source    = "fu1"           if jhu_source=="" & !missing(jhu_cat_fu1)
+
+replace jhu_cat_final = jhu_cat_fu2     if missing(jhu_cat_final) & !missing(jhu_cat_fu2)
+replace jhu_source    = "fu2"           if jhu_source=="" & !missing(jhu_cat_fu2)
+
+* keep labels if the jhu_cat_* variables share a value label
+cap label values jhu_cat_final jhu_cat
+label var jhu_cat_final "JHU frailty category (earliest: pilot?baseline?fu1?fu2)"
+label var jhu_source    "Source visit for jhu_cat_final"
+
+
+* Frailty category final: use same-visit-as-JHU first, then fallback to any available
+capture drop frail_cat_final
+gen frail_cat_final = .
+
+* 1) Same visit as JHU
+replace frail_cat_final = frail_cat_p if jhu_source=="pilot"    & !missing(frail_cat_p)
+replace frail_cat_final = frail_cat_b       if jhu_source=="baseline" & !missing(frail_cat_b)
+replace frail_cat_final = frail_cat_fu1     if jhu_source=="fu1"      & !missing(frail_cat_fu1)
+replace frail_cat_final = frail_cat_fu2     if jhu_source=="fu2"      & !missing(frail_cat_fu2)
+
+* 2) Fallbacks: if still missing, take first available in priority (pilot -> baseline -> fu1 -> fu2)
+replace frail_cat_final = frail_cat_p if missing(frail_cat_final) & !missing(frail_cat_p)
+replace frail_cat_final = frail_cat_b       if missing(frail_cat_final) & !missing(frail_cat_b)
+replace frail_cat_final = frail_cat_fu1     if missing(frail_cat_final) & !missing(frail_cat_fu1)
+replace frail_cat_final = frail_cat_fu2     if missing(frail_cat_final) & !missing(frail_cat_fu2)
+
+* Keep labels/description (if your frailty vars use label "frail_cat")
+capture label values frail_cat_final frail_cat
+label var frail_cat_final "Frailty category (JHU visit if present; else pilot?baseline?fu1?fu2)"
+
+tab jhu_source, m
+tab jhu_cat_final, m
+tab frail_cat_final,m
+
+
+//overall 
+
+//gender 
+gen gender_final = gender   // start with master version
+replace gender_final = gender_pilot if missing(gender_final) & !missing(gender_pilot)
+drop gender gender_pilot
+tab gender_final
+
+//Pick the survey date from the same visit as jhu_source
+gen jhu_visit_date = .
+replace jhu_visit_date = survey_date_pilot    if jhu_source=="pilot"
+replace jhu_visit_date = survey_date_baseline if jhu_source=="baseline"
+replace jhu_visit_date = survey_date_firstfp  if jhu_source=="fu1"
+replace jhu_visit_date = survey_date_secondfp if jhu_source=="fu2"
+format jhu_visit_date %td
+
+//dob 
+gen dob_num = date(dob, "YMD")
+format dob_num %td
+
+gen dob_pilot_num = dob_pilot
+format dob_pilot_num %td
+
+gen dob_final = dob_num
+replace dob_final = dob_pilot_num if missing(dob_final) & !missing(dob_pilot_num)
+format dob_final %td
+
+* Age at JHU visit
+gen age_at_jhu = (jhu_visit_date - dob_final) / 365.25
+format age_at_jhu %9.2f
+gen age_at_jhu_int = floor(age_at_jhu)
+
+* Age groups
+gen byte age_group = .
+replace age_group = 1 if inrange(age_at_jhu_int,50,54)
+replace age_group = 2 if inrange(age_at_jhu_int,55,64)
+replace age_group = 3 if age_at_jhu_int>=65
+
+label define agegrp 1 "50-54" 2 "55-64" 3 "65+"
+label values age_group agegrp
+tab age_group,m
+
+
+//race 
+gen race_final = race   // start with master version
+replace race_final = race_pilot if missing(race_final) & !missing(race_pilot)
+drop race race_pilot
+tab race_final
+
+//education
+gen education_final = education   // start with master version
+replace education_final = education_pilot if missing(education_final) & !missing(education_pilot)
+drop education education_pilot
+tab education_final
+
+
+//smoking status 
+
+//PILOT DATA 
+* Create final smoking status from the appropriate source
+preserve 
+keep if jhu_source=="pilot"
+
+* Closest visit ? final status; if that status is missing, backfill from prior visits
+gen double __min = .
+gen byte   k     = .
+forvalues i=1/16 {
+    replace k    = `i' if missing(__min) | abs(vis`i'dt - survey_date_pilot) < __min
+    replace __min= abs(vis`i'dt - survey_date_pilot) if k==`i'
+}
+gen str30 smoking_status_final_pilot = ""
+forvalues i=1/16 {
+    replace smoking_status_final_pilot = smoking_status`i'_p if k==`i'
+}
+forvalues j=15(-1)1 {
+    replace smoking_status_final_pilot = smoking_status`j'_p if smoking_status_final_pilot=="" & k>`j' & smoking_status`j'_p!=""
+}
+drop __min k
+
+
+tab smoking_status_final_pilot,m
+list record_id_pilot if smoking_status_final_pilot==""
+keep merge_id record_id_pilot record_id_main smoking_status_final_pilot jhu_source
+tempfile smoking_pilot
+save `smoking_pilot'
+restore 
+
+
+//BASELINE DATA 
+preserve 
+keep if jhu_source=="baseline"
+
+* Set "Unknown" to missing across smoking_status1–smoking_status20
+forvalues i=1/20 {
+    capture confirm string variable smoking_status`i'
+    if !_rc {
+        replace smoking_status`i' = "" if lower(strtrim(smoking_status`i'))=="unknown"
+    }
+    else {
+        tempvar s
+        capture decode smoking_status`i', gen(`s')
+        if !_rc {
+            replace smoking_status`i' = . if lower(strtrim(`s'))=="unknown"
+            drop `s'
+        }
+    }
+}
+
+* Convert string dates to %td, pick closest visit to survey_date_baseline, backfill from prior if needed
+
+* 1) baseline date (string ? %td)
+capture confirm numeric variable survey_date_baseline
+if _rc {
+    gen double _sdb = daily(survey_date_baseline,"DMY")
+    format _sdb %td
+}
+else gen double _sdb = survey_date_baseline
+
+* 2) visit dates (strings ? %td helpers)
+forvalues i=1/20 {
+    gen double _vdt`i' = daily(visit_date`i',"DMY")
+    format _vdt`i' %td
+}
+
+* 3) closest visit index (ignore missing dates)
+gen double __min = .
+gen byte   k     = .
+forvalues i=1/20 {
+    replace k     = `i' if _vdt`i'<. & (missing(__min) | abs(_vdt`i' - _sdb) < __min)
+    replace __min = abs(_vdt`i' - _sdb) if k==`i'
+}
+
+* 4) final status at closest visit; if missing, use prior visit
+gen str30 smoking_status_final_main = ""
+forvalues i=1/20 {
+    replace smoking_status_final_main = smoking_status`i' if k==`i'
+}
+forvalues j=19(-1)1 {
+    replace smoking_status_final_main = smoking_status`j' if smoking_status_final_main=="" & k>`j' & smoking_status`j'!=""
+}
+
+drop _vdt1-_vdt20 _sdb __min k
+
+
+rename smoking_status_final_main smoking_status_final_baseline
+
+tab smoking_status_final_baseline,m
+list smoking_status1- smoking_status20 if smoking_status_final_baseline=="Unknown"
+keep merge_id record_id_pilot record_id_main smoking_status_final_baseline jhu_source
+tempfile smoking_baseline
+save `smoking_baseline'
+restore 
+
+//FIRST FOLLOW UP 
+preserve 
+keep if jhu_source=="fu1"
+
+* Set "Unknown" to missing across smoking_status1–smoking_status20
+forvalues i=1/20 {
+    capture confirm string variable smoking_status`i'
+    if !_rc {
+        replace smoking_status`i' = "" if lower(strtrim(smoking_status`i'))=="Unknown"
+    }
+    else {
+        tempvar s
+        capture decode smoking_status`i', gen(`s')
+        if !_rc {
+            replace smoking_status`i' = . if lower(strtrim(`s'))=="Unknown"
+            drop `s'
+        }
+    }
+}
+
+* Convert string dates to %td, pick closest visit to survey_date_baseline, backfill from prior if needed
+
+* 1) baseline date (string ? %td)
+capture confirm numeric variable survey_date_firstfp
+if _rc {
+    gen double _sdb = daily(survey_date_firstfp,"DMY")
+    format _sdb %td
+}
+else gen double _sdb = survey_date_firstfp
+
+* 2) visit dates (strings ? %td helpers)
+forvalues i=1/20 {
+    gen double _vdt`i' = daily(visit_date`i',"DMY")
+    format _vdt`i' %td
+}
+
+* 3) closest visit index (ignore missing dates)
+gen double __min = .
+gen byte   k     = .
+forvalues i=1/20 {
+    replace k     = `i' if _vdt`i'<. & (missing(__min) | abs(_vdt`i' - _sdb) < __min)
+    replace __min = abs(_vdt`i' - _sdb) if k==`i'
+}
+
+* 4) final status at closest visit; if missing, use prior visit
+gen str30 smoking_status_final_main = ""
+forvalues i=1/20 {
+    replace smoking_status_final_main = smoking_status`i' if k==`i'
+}
+forvalues j=19(-1)1 {
+    replace smoking_status_final_main = smoking_status`j' if smoking_status_final_main=="" & k>`j' & smoking_status`j'!=""
+}
+
+drop _vdt1-_vdt20 _sdb __min k
+
+
+rename smoking_status_final_main smoking_status_final_first_fp
+
+tab smoking_status_final_first_fp,m
+keep merge_id record_id_pilot record_id_main smoking_status_final_first_fp jhu_source
+tempfile smoking_firstfollowup
+save `smoking_firstfollowup'
+restore 
+
+preserve 
+use `smoking_firstfollowup',clear 
+merge 1:1 record_id_main using `smoking_baseline'
+drop _merge
+merge m:1 record_id_pilot using `smoking_pilot'
+
+gen str10 smoking_status_final=""
+replace smoking_status_final = smoking_status_final_baseline if jhu_source=="baseline"
+replace smoking_status_final = smoking_status_final_first_fp if jhu_source=="fu1"
+replace smoking_status_final = smoking_status_final_pilot    if jhu_source=="pilot"
+drop _merge 
+
+tab smoking_status_final,m
+tempfile smoking_all 
+save `smoking_all'
+restore 
+
+
+drop _merge 
+merge 1:1 merge_id using `smoking_all'
+
+//if jhu is missing 
+* earliest from MAIN (smoking_status1..20)
+gen str30 _earliest_main = ""
+foreach v in smoking_status1 smoking_status2 smoking_status3 smoking_status4 smoking_status5 ///
+               smoking_status6 smoking_status7 smoking_status8 smoking_status9 smoking_status10 ///
+               smoking_status11 smoking_status12 smoking_status13 smoking_status14 smoking_status15 ///
+               smoking_status16 smoking_status17 smoking_status18 smoking_status19 smoking_status20 {
+    replace _earliest_main = `v' if _earliest_main=="" & `v'!=""
+}
+
+* earliest from PILOT (smoking_status1_p..20_p)
+gen str30 _earliest_pilot = ""
+foreach v in smoking_status1_p smoking_status2_p smoking_status3_p smoking_status4_p smoking_status5_p ///
+               smoking_status6_p smoking_status7_p smoking_status8_p smoking_status9_p smoking_status10_p ///
+               smoking_status11_p smoking_status12_p smoking_status13_p smoking_status14_p smoking_status15_p ///
+               smoking_status16_p {
+    replace _earliest_pilot = `v' if _earliest_pilot=="" & `v'!=""
+}
+
+* If BOTH smoking_status_final and jhu_source are missing:
+* 1) fill from MAIN when main id present
+replace smoking_status_final = _earliest_main  if smoking_status_final=="" & missing(jhu_source) & !missing(record_id_main)
+
+* 2) fill from PILOT when pilot id present
+replace smoking_status_final = _earliest_pilot if smoking_status_final=="" & missing(jhu_source) & !missing(record_id_pilot)
+
+* 3) if BOTH ids present, prefer PILOT (override)
+replace smoking_status_final = _earliest_pilot if smoking_status_final=="" & missing(jhu_source) ///
+    & !missing(record_id_main) & !missing(record_id_pilot) & _earliest_pilot!=""
+
+drop _earliest_main _earliest_pilot
+
+
+tab smoking_status_final,m
+
+
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\smoking_complete 0902.dta",replace
+
+
+
+H="soc4 & exposure done "
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\smoking_complete 0902.dta",clear 
+
+destring record_id_main,replace 
+
+gen soc_4_categories_final=""
+replace soc_4_categories_final=soc_4_categories_main if record_id_main!=.
+replace soc_4_categories_final=soc_4_categories_pilot if record_id_pilot!=.
+tab soc_4_categories_final,m
+
+gen exposure_final=""
+replace exposure_final=exposure_main if record_id_main!=.
+replace exposure_final=exposure_pilot if record_id_pilot!=.
+tab exposure_final,m
+
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\soc&exposure_complete 0902.dta",replace 
+
+H="bmi done"
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\soc&exposure_complete 0902.dta",clear 
+
+preserve 
+//get bmi group with jhu source from the baseline 
+* --- Final BMI group (main): closest visit to survey_date_baseline; if missing, use prior visit ---
+
+* 1) baseline date ? %td (works whether string or numeric)
+capture confirm numeric variable survey_date_baseline
+if _rc gen double _sdb = daily(survey_date_baseline,"DMY")
+else    gen double _sdb = survey_date_baseline
+format _sdb %td
+
+* 2) visit dates ? %td helpers
+forvalues i=1/20 {
+    capture confirm numeric variable visit_date`i'
+    if _rc gen double _vd`i' = daily(visit_date`i',"DMY")
+    else    gen double _vd`i' = visit_date`i'
+    format _vd`i' %td
+}
+
+* 3) index of closest visit (ignore missing dates)
+gen double __min = .
+gen byte   k     = .
+forvalues i=1/20 {
+    replace k     = `i' if _vd`i'<. & (missing(__min) | abs(_vd`i' - _sdb) < __min)
+    replace __min = abs(_vd`i' - _sdb) if k==`i'
+}
+
+* 4) treat "Not reported" as missing
+forvalues i=1/20 {
+    replace bmi_Group`i' = "" if lower(strtrim(bmi_Group`i'))=="not reported"
+}
+
+* 5) take BMI group at closest visit; if empty, backfill from prior visits
+gen str20 bmi_Group_baseline = ""
+forvalues i=1/20 {
+    replace bmi_Group_baseline = bmi_Group`i' if k==`i'
+}
+forvalues j=19(-1)1 {
+    replace bmi_Group_baseline = bmi_Group`j' if bmi_Group_baseline=="" & k>`j' & bmi_Group`j'!=""
+}
+
+drop _vd1-_vd20 _sdb __min k
+keep merge_id record_id_main record_id_pilot bmi_Group_baseline
+tab bmi_Group_baseline,m
+keep if record_id_main!=.
+tempfile baseline 
+save `baseline'
+restore 
+
+
+preserve 
+//get bmi group with jhu source from the first follow up 
+* BMI group at first follow-up (closest to survey_date_firstfp; backfill from prior if missing)
+
+* 1) Anchor date -> %td
+capture confirm numeric variable survey_date_firstfp
+if _rc gen double _sdf = daily(survey_date_firstfp,"DMY")
+else    gen double _sdf = survey_date_firstfp
+format _sdf %td
+
+* 2) Visit dates -> %td helpers
+forvalues i=1/20 {
+    capture confirm numeric variable visit_date`i'
+    if _rc gen double _vd`i' = daily(visit_date`i',"DMY")
+    else    gen double _vd`i' = visit_date`i'
+    format _vd`i' %td
+}
+
+* 3) Closest visit index
+gen double __min = .
+gen byte   k     = .
+forvalues i=1/20 {
+    replace k     = `i' if _vd`i'<. & (missing(__min) | abs(_vd`i' - _sdf) < __min)
+    replace __min = abs(_vd`i' - _sdf) if k==`i'
+}
+
+* 4) Treat "Not reported" as missing
+forvalues i=1/20 {
+    replace bmi_Group`i' = "" if lower(strtrim(bmi_Group`i'))=="not reported"
+}
+
+* 5) Final value: pick closest; if empty, use prior visits
+capture drop bmi_Group_first_fp
+gen str20 bmi_Group_first_fp = ""
+forvalues i=1/20 {
+    replace bmi_Group_first_fp = bmi_Group`i' if k==`i'
+}
+forvalues j=19(-1)1 {
+    replace bmi_Group_first_fp = bmi_Group`j' if bmi_Group_first_fp=="" & k>`j' & bmi_Group`j'!=""
+}
+
+drop _vd1-_vd20 _sdf __min k
+keep merge_id record_id_main record_id_pilot bmi_Group_first_fp
+tab bmi_Group_first_fp,m
+tempfile firstfp
+save `firstfp'
+
+restore 
+
+
+preserve 
+//get bmi group with jhu source from the pilot 
+* BMI group (pilot): closest visit to survey_date_pilot; if missing, use prior visit
+
+* anchor date -> %td (works whether string or numeric)
+capture confirm numeric variable survey_date_pilot
+if _rc gen double _sdp = daily(survey_date_pilot,"DMY")
+else    gen double _sdp = survey_date_pilot
+format _sdp %td
+
+* index of closest visit (use vis1dt–vis16dt directly)
+gen double __min = .
+gen byte   k     = .
+forvalues i=1/16 {
+    replace k     = `i' if vis`i'dt<. & (missing(__min) | abs(vis`i'dt - _sdp) < __min)
+    replace __min = abs(vis`i'dt - _sdp) if k==`i'
+}
+
+* treat "Not reported" as missing
+forvalues i=1/16 {
+    replace bmi_Group`i'_p = "" if lower(strtrim(bmi_Group`i'_p))=="not reported"
+}
+
+* take BMI group at closest visit; if empty, backfill from prior visits
+capture drop bmi_Group_pilot
+gen str20 bmi_Group_pilot = ""
+forvalues i=1/16 {
+    replace bmi_Group_pilot = bmi_Group`i'_p if k==`i'
+}
+forvalues j=15(-1)1 {
+    replace bmi_Group_pilot = bmi_Group`j'_p if bmi_Group_pilot=="" & k>`j' & bmi_Group`j'_p!=""
+}
+
+drop _sdp __min k
+keep merge_id record_id_main record_id_pilot bmi_Group_pilot 
+tab bmi_Group_pilot,m
+keep if record_id_pilot!=.
+tempfile pilot
+save `pilot'
+
+restore 
+
+preserve 
+use `pilot'
+merge 1:m record_id_pilot using `firstfp',nogen 
+merge m:1 record_id_main using `baseline',nogen 
+tempfile merge 
+save `merge'
+restore 
+
+
+merge 1:1 merge_id using `merge',nogen 
+
+gen bmi_Group_final=""
+replace bmi_Group_final=bmi_Group_pilot if jhu_source=="pilot"
+replace bmi_Group_final=bmi_Group_baseline if jhu_source=="baseline"
+replace bmi_Group_final=bmi_Group_first_fp if jhu_source=="fu1"
+
+* Fill bmi_Group_final when jhu_source is missing:
+capture confirm string variable jhu_source
+if _rc {
+    * jhu_source is numeric
+    replace bmi_Group_final = bmi_Group_pilot    if missing(jhu_source) & bmi_Group_final=="" & bmi_Group_pilot!=""
+    replace bmi_Group_final = bmi_Group_baseline if missing(jhu_source) & bmi_Group_final=="" & bmi_Group_baseline!=""
+    replace bmi_Group_final = bmi_Group_first_fp if missing(jhu_source) & bmi_Group_final=="" & bmi_Group_first_fp!=""
+}
+else {
+    * jhu_source is string
+    replace bmi_Group_final = bmi_Group_pilot    if (missing(jhu_source) | strtrim(jhu_source)=="") & bmi_Group_final=="" & bmi_Group_pilot!=""
+    replace bmi_Group_final = bmi_Group_baseline if (missing(jhu_source) | strtrim(jhu_source)=="") & bmi_Group_final=="" & bmi_Group_baseline!=""
+    replace bmi_Group_final = bmi_Group_first_fp if (missing(jhu_source) | strtrim(jhu_source)=="") & bmi_Group_final=="" & bmi_Group_first_fp!=""
+}
+
+tab bmi_Group_final, m
+
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\bmi_complete 0902.dta",replace
+
+
+
+
+
+H="geri done"
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\bmi_complete 0902.dta",clear 
+
+drop if record_id_pilot==83 
+drop if record_id_pilot==92 
+
+tab jhu_cat_final,m
+tab frail_cat_final,m
+
+//adl 
+gen adl_cat_final = .
+
+* primary: take from the wave indicated by jhu_source
+replace adl_cat_final = adl_cat_b   if jhu_source=="baseline" & adl_cat_b   <.
+replace adl_cat_final = adl_cat_fu1 if jhu_source=="fu1"      & adl_cat_fu1 <.
+replace adl_cat_final = adl_cat_fu2 if jhu_source=="fu2"      & adl_cat_fu2 <.
+replace adl_cat_final = adl_cat_p   if jhu_source=="pilot"    & adl_cat_p   <.
+
+* fallback order when jhu_source is missing/unknown OR the chosen value is missing
+replace adl_cat_final = adl_cat_p   if missing(adl_cat_final) & adl_cat_p   <.
+replace adl_cat_final = adl_cat_b   if missing(adl_cat_final) & adl_cat_b   <.
+replace adl_cat_final = adl_cat_fu1 if missing(adl_cat_final) & adl_cat_fu1 <.
+replace adl_cat_final = adl_cat_fu2 if missing(adl_cat_final) & adl_cat_fu2 <.
+tab adl_cat_final,missing
+
+//callahan score 
+
+* Callahan category aligned to the visit where JHU was collected
+gen callahan_cat_final = .
+
+replace callahan_cat_final = callahan_cat_b   if jhu_source=="baseline" & callahan_cat_b   <.
+replace callahan_cat_final = callahan_cat_fu1 if jhu_source=="fu1"      & callahan_cat_fu1 <.
+replace callahan_cat_final = callahan_cat_fu2 if jhu_source=="fu2"      & callahan_cat_fu2 <.
+replace callahan_cat_final = callahan_cat_p   if jhu_source=="pilot"    & callahan_cat_p   <.
+
+replace callahan_cat_final = callahan_cat_p   if missing(callahan_cat_final) & callahan_cat_p   <.
+replace callahan_cat_final = callahan_cat_b   if missing(callahan_cat_final) & callahan_cat_b   <.
+replace callahan_cat_final = callahan_cat_fu1 if missing(callahan_cat_final) & callahan_cat_fu1 <.
+replace callahan_cat_final = callahan_cat_fu2 if missing(callahan_cat_final) & callahan_cat_fu2 <.
+tab callahan_cat_final,m
+
+
+//moca 
+rename moca_catags_b moca_cat_b
+rename moca_catags_fu1 moca_cat_fu1
+rename moca_catags_fu2 moca_cat_fu2
+
+* MoCA category aligned to the visit where JHU was collected
+gen moca_cat_final = .
+
+replace moca_cat_final = moca_cat_b   if jhu_source=="baseline" & moca_cat_b   <.
+replace moca_cat_final = moca_cat_fu1 if jhu_source=="fu1"      & moca_cat_fu1 <.
+replace moca_cat_final = moca_cat_fu2 if jhu_source=="fu2"      & moca_cat_fu2 <.
+replace moca_cat_final = moca_cat_p   if jhu_source=="pilot"    & moca_cat_p   <.
+
+replace moca_cat_final = moca_cat_p   if missing(moca_cat_final) & moca_cat_p   <.
+replace moca_cat_final = moca_cat_b   if missing(moca_cat_final) & moca_cat_b   <.
+replace moca_cat_final = moca_cat_fu1 if missing(moca_cat_final) & moca_cat_fu1 <.
+replace moca_cat_final = moca_cat_fu2 if missing(moca_cat_final) & moca_cat_fu2 <.
+tab moca_cat_final,m
+
+//fesi score 
+gen fesi_cat_final = .
+
+replace fesi_cat_final = fesi_cat_b   if jhu_source=="baseline" & fesi_cat_b   <.
+replace fesi_cat_final = fesi_cat_fu1 if jhu_source=="fu1"      & fesi_cat_fu1 <.
+replace fesi_cat_final = fesi_cat_fu2 if jhu_source=="fu2"      & fesi_cat_fu2 <.
+replace fesi_cat_final = fesi_cat_p   if jhu_source=="pilot"    & fesi_cat_p   <.
+
+replace fesi_cat_final = fesi_cat_p   if missing(fesi_cat_final) & fesi_cat_p   <.
+replace fesi_cat_final = fesi_cat_b   if missing(fesi_cat_final) & fesi_cat_b   <.
+replace fesi_cat_final = fesi_cat_fu1 if missing(fesi_cat_final) & fesi_cat_fu1 <.
+replace fesi_cat_final = fesi_cat_fu2 if missing(fesi_cat_final) & fesi_cat_fu2 <.
+tab fesi_cat_final,m
+
+//fall risk 
+gen fall_risk_final = .
+
+replace fall_risk_final = fall_risk_b   if jhu_source=="baseline" & fall_risk_b   <.
+replace fall_risk_final = fall_risk_fu2 if jhu_source=="fu2"      & fall_risk_fu2 <.
+replace fall_risk_final = fall_risk_p   if jhu_source=="pilot"    & fall_risk_p   <.
+
+replace fall_risk_final = fall_risk_p   if missing(fall_risk_final) & fall_risk_p   <.
+replace fall_risk_final = fall_risk_b   if missing(fall_risk_final) & fall_risk_b   <.
+replace fall_risk_final = fall_risk_fu2 if missing(fall_risk_final) & fall_risk_fu2 <.
+
+tab fall_risk_final,m
+
+gen falls_year_final = .
+
+replace falls_year_final = falls_year_b   if jhu_source=="baseline" & falls_year_b   < .
+replace falls_year_final = falls_year_fu2 if jhu_source=="fu2"      & falls_year_fu2 < .
+replace falls_year_final = falls_year_p   if jhu_source=="pilot"    & falls_year_p   < .
+
+replace falls_year_final = falls_year_p   if missing(falls_year_final) & falls_year_p   < .
+replace falls_year_final = falls_year_b   if missing(falls_year_final) & falls_year_b   < .
+replace falls_year_final = falls_year_fu2 if missing(falls_year_final) & falls_year_fu2 < .
+
+tab falls_year_final, m
+
+gen falls_year_mult_final = .
+
+replace falls_year_mult_final = falls_year_mult_b   if jhu_source=="baseline" & falls_year_mult_b   < .
+replace falls_year_mult_final = falls_year_mult_fu2 if jhu_source=="fu2"      & falls_year_mult_fu2 < .
+replace falls_year_mult_final = falls_year_mult_p   if jhu_source=="pilot"    & falls_year_mult_p   < .
+
+replace falls_year_mult_final = falls_year_mult_p   if missing(falls_year_mult_final) & falls_year_mult_p   < .
+replace falls_year_mult_final = falls_year_mult_b   if missing(falls_year_mult_final) & falls_year_mult_b   < .
+replace falls_year_mult_final = falls_year_mult_fu2 if missing(falls_year_mult_final) & falls_year_mult_fu2 < .
+
+tab falls_year_mult_final, m
+
+
+//ER
+* ER stay aligned to the visit where JHU was collected
+capture drop er_stay_final
+gen er_stay_final = .
+
+replace er_stay_final = er_stay_b   if jhu_source=="baseline" & er_stay_b   <.
+replace er_stay_final = er_stay_fu1 if jhu_source=="fu1"      & er_stay_fu1 <.
+replace er_stay_final = er_stay_fu2 if jhu_source=="fu2"      & er_stay_fu2 <.
+replace er_stay_final = er_stay_p   if jhu_source=="pilot"    & er_stay_p   <.
+
+replace er_stay_final = er_stay_p   if missing(er_stay_final) & er_stay_p   <.
+replace er_stay_final = er_stay_b   if missing(er_stay_final) & er_stay_b   <.
+replace er_stay_final = er_stay_fu1 if missing(er_stay_final) & er_stay_fu1 <.
+replace er_stay_final = er_stay_fu2 if missing(er_stay_final) & er_stay_fu2 <.
+tab er_stay_final,m 
+
+* ER stay (6-month) from the same visit where JHU was collected
+gen er_stay_6month_final = .
+
+replace er_stay_6month_final = er_stay_6month_b   if jhu_source=="baseline" & er_stay_6month_b   <.
+replace er_stay_6month_final = er_stay_6month_fu1 if jhu_source=="fu1"      & er_stay_6month_fu1 <.
+replace er_stay_6month_final = er_stay_6month_fu2 if jhu_source=="fu2"      & er_stay_6month_fu2 <.
+replace er_stay_6month_final = er_stay_6month_p   if jhu_source=="pilot"    & er_stay_6month_p   <.
+
+replace er_stay_6month_final = er_stay_6month_p   if missing(er_stay_6month_final) & er_stay_6month_p   <.
+replace er_stay_6month_final = er_stay_6month_b   if missing(er_stay_6month_final) & er_stay_6month_b   <.
+replace er_stay_6month_final = er_stay_6month_fu1 if missing(er_stay_6month_final) & er_stay_6month_fu1 <.
+replace er_stay_6month_final = er_stay_6month_fu2 if missing(er_stay_6month_final) & er_stay_6month_fu2 <.
+replace er_stay_6month_final = . if er_stay_final != 1 
+tab er_stay_6month_final,m
+
+//hospital stay 
+* Hospital stay from the same visit where JHU was collected
+gen hospital_stay_final = .
+
+replace hospital_stay_final = hospital_stay_b   if jhu_source=="baseline" & hospital_stay_b   <.
+replace hospital_stay_final = hospital_stay_fu1 if jhu_source=="fu1"      & hospital_stay_fu1 <.
+replace hospital_stay_final = hospital_stay_fu2 if jhu_source=="fu2"      & hospital_stay_fu2 <.
+replace hospital_stay_final = hospital_stay_p   if jhu_source=="pilot"    & hospital_stay_p   <.
+
+replace hospital_stay_final = hospital_stay_p   if missing(hospital_stay_final) & hospital_stay_p   <.
+replace hospital_stay_final = hospital_stay_b   if missing(hospital_stay_final) & hospital_stay_b   <.
+replace hospital_stay_final = hospital_stay_fu1 if missing(hospital_stay_final) & hospital_stay_fu1 <.
+replace hospital_stay_final = hospital_stay_fu2 if missing(hospital_stay_final) & hospital_stay_fu2 <.
+tab hospital_stay_final,m
+
+gen hospital_stay_6month_final = .
+
+replace hospital_stay_6month_final = hospital_stay_6month_b   if jhu_source=="baseline" & hospital_stay_6month_b   <.
+replace hospital_stay_6month_final = hospital_stay_6month_fu1 if jhu_source=="fu1"      & hospital_stay_6month_fu1 <.
+replace hospital_stay_6month_final = hospital_stay_6month_fu2 if jhu_source=="fu2"      & hospital_stay_6month_fu2 <.
+replace hospital_stay_6month_final = hospital_stay_6month_p   if jhu_source=="pilot"    & hospital_stay_6month_p   <.
+
+replace hospital_stay_6month_final = hospital_stay_6month_p   if missing(hospital_stay_6month_final) & hospital_stay_6month_p   <.
+replace hospital_stay_6month_final = hospital_stay_6month_b   if missing(hospital_stay_6month_final) & hospital_stay_6month_b   <.
+replace hospital_stay_6month_final = hospital_stay_6month_fu1 if missing(hospital_stay_6month_final) & hospital_stay_6month_fu1 <.
+replace hospital_stay_6month_final = hospital_stay_6month_fu2 if missing(hospital_stay_6month_final) & hospital_stay_6month_fu2 <.
+
+replace hospital_stay_6month_final = . if hospital_stay_final != 1
+tab hospital_stay_6month_final,m
+
+
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\geri done 0902.dta",replace
+
+H="certification done "
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\geri done 0902.dta", clear
+
+* --- Categories to finalize ---
+local cats ANX Cancer DEP EXT GERD ILD OAD PTSD SA SP SRC URD
+
+* --- _final = 1 if either _main or _pilot is 1 (treat missings as 0)
+foreach c of local cats {
+    capture confirm variable has_cert`c'_main
+    if _rc gen byte has_cert`c'_main = 0
+    replace has_cert`c'_main = 0 if missing(has_cert`c'_main)
+
+    capture confirm variable has_cert`c'_pilot
+    if _rc gen byte has_cert`c'_pilot = 0
+    replace has_cert`c'_pilot = 0 if missing(has_cert`c'_pilot)
+
+    gen byte has_cert`c'_final = (has_cert`c'_main==1 | has_cert`c'_pilot==1)
+}
+
+* --- Any & count from the _final set
+egen has_any_cert_final = rowmax( ///
+    has_certANX_final has_certCancer_final has_certDEP_final has_certEXT_final has_certGERD_final ///
+    has_certILD_final has_certOAD_final has_certPTSD_final has_certSA_final has_certSP_final ///
+    has_certSRC_final has_certURD_final)
+
+egen n_certs_final = rowtotal( ///
+    has_certANX_final has_certCancer_final has_certDEP_final has_certEXT_final has_certGERD_final ///
+    has_certILD_final has_certOAD_final has_certPTSD_final has_certSA_final has_certSP_final ///
+    has_certSRC_final has_certURD_final)
+
+	
+* Tabulate each _final flag + any + count
+ds has_cert*_final has_any_cert_final n_certs_final
+foreach v of varlist `r(varlist)' {
+    di "=============================="
+    di "Tabulation of `v'"
+    tab `v', missing
+}
+
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\all done 0919.dta", replace
+
+
+H="---"
+
+
+H="all sample to report"
+log using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\output\output 0924.smcl",replace 
+
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\all done 0919.dta",clear 
+
+keep if !missing(jhu_source)
+
+//Overall - demo +grdc data 
+tab jhu_cat_final,m
+tab frail_cat_final,m
+tab gender_final,m
+tab age_group,m
+tab race_final,m
+tab smoking_status_final,m
+tab bmi_Group_final,m
+tab soc_4_categories_final,m
+tab education_final,m
+tab exposure_final,m
+
+tab adl_cat_final,m	
+tab callahan_cat_final,m
+tab moca_cat_final,m
+tab fesi_cat_final,m
+tab fall_risk_final,m
+tab er_stay_6month_final,m
+tab er_stay_final,m
+tab hospital_stay_6month_final,m
+tab hospital_stay_final,m
+
+ds has_*_final
+foreach v of varlist `r(varlist)' {
+    di "=============================="
+    di "Tabulation of `v' vs jhu_cat_final"
+    tab `v', missing
+}
+
+//Tabulation with JHU categories
+tab frail_cat_final jhu_cat_final,chi2 m
+tab gender_final jhu_cat_final,chi2 m
+tab age_group jhu_cat_final,chi2 m
+tab race_final jhu_cat_final,chi2 m
+tab smoking_status_final jhu_cat_final,chi2 m
+tab bmi_Group_final jhu_cat_final,chi2 m
+tab soc_4_categories_final jhu_cat_final,chi2 m
+tab education_final jhu_cat_final,chi2 m
+tab exposure_final jhu_cat_final,chi2 m
+
+tab adl_cat_final jhu_cat_final,chi2 m	
+tab callahan_cat_final jhu_cat_final,chi2 m
+tab moca_cat_final jhu_cat_final,chi2 m
+tab fesi_cat_final jhu_cat_final,chi2 m
+tab fall_risk_final jhu_cat_final,chi2 m
+tab er_stay_6month_final jhu_cat_final,chi2 m
+tab er_stay_final jhu_cat_final,chi2 m
+tab hospital_stay_6month_final jhu_cat_final,chi2 m
+tab hospital_stay_final jhu_cat_final,chi2 m
+
+ds has_*_final
+foreach v of varlist `r(varlist)' {
+    di "=============================="
+    di "Tabulation of `v' vs jhu_cat_final"
+    tab `v' jhu_cat_final, chi2 missing
+}
+
+translate "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\output\output 0924.smcl" "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\output\output 0924.pdf"
+
+log close 
+
+H="regression output abstract "
+log using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\output\output 0929.smcl",replace 
+
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\all done 0919.dta",clear 
+
+keep if !missing(jhu_source)
+
+gen byte jhu_2cat_final = .
+replace jhu_2cat_final = 0 if jhu_cat_final == 0   // Not Frail
+replace jhu_2cat_final = 1 if inlist(jhu_cat_final, 1, 2)   // Pre-Frail or Frail
+
+label define jhu2 0 "Not Frail" 1 "Pre-Frail or Frail"
+label values jhu_2cat_final jhu2
+
+* Check
+tab jhu_cat_final jhu_2cat_final, m
+
+* Combine Normal + Underweight into one category from the ORIGINAL string var
+gen byte bmi_Group_final_combined = .
+replace bmi_Group_final_combined = 0 if inlist(lower(strtrim(bmi_Group_final)), "normal", "underweight")
+replace bmi_Group_final_combined = 1 if lower(strtrim(bmi_Group_final)) == "obese"
+replace bmi_Group_final_combined = 2 if lower(strtrim(bmi_Group_final)) == "overweight"
+
+label define bmi_comb 0 "Normal+Underweight" 1 "Obese" 2 "Overweight", replace
+label values bmi_Group_final_combined bmi_comb
+
+sum jhu_2cat_final gender_final age_group race_final smoking_status_final bmi_Group_final_combined soc_4_categories_final education_final exposure_final has_*_final adl_cat_final callahan_cat_final moca_cat_final fesi_cat_final fall_risk_final er_stay_final hospital_stay_final
+
+summarize age_at_jhu, meanonly
+replace age_at_jhu = r(mean) if missing(age_at_jhu)
+
+gen str20 education_regrped_final = ""
+replace education_regrped_final = "Some College"          if education_final == "<BA/BS"
+replace education_regrped_final = "Less than high school" if education_final == "<HS Grad"
+replace education_regrped_final = "College"               if inlist(education_final, "BA/BS", "Grad Sch")
+replace education_regrped_final = "High School"           if education_final == "HS Grad"
+replace education_regrped_final = "Not Reported"          if education_final == "Unknown"
+
+//multiple imputation 
+
+* 1. Set data for MI
+mi set wide
+
+encode exposure_final, gen(exposure_final_num)
+encode smoking_status_final, gen(smoking_status_final_num)
+encode gender_final, gen(gender_final_num)
+encode race_final, gen(race_final_num)
+encode soc_4_categories_final, gen(soc_4_categories_final_num)
+encode education_regrped_final, gen(education_regrped_final_num)
+
+
+* 2. Register vars with missing
+mi register imputed moca_cat_final exposure_final_num smoking_status_final_num bmi_Group_final_combined
+mi register regular jhu_2cat_final gender_final_num age_at_jhu race_final_num soc_4_categories_final_num education_regrped_final_num adl_cat_final callahan_cat_final fesi_cat_final fall_risk_final er_stay_final hospital_stay_final has_certCancer_final has_certDEP_final has_certEXT_final has_certGERD_final has_certILD_final has_certOAD_final has_certPTSD_final has_certSA_final has_certSP_final has_certSRC_final has_certURD_final has_any_cert_final
+
+mi impute chained ///
+    (mlogit, augment) exposure_final_num smoking_status_final_num bmi_Group_final_combined ///
+    (ologit, augment) moca_cat_final ///
+    = jhu_2cat_final gender_final_num age_at_jhu race_final_num soc_4_categories_final_num ///
+      education_regrped_final_num has_any_cert_final adl_cat_final callahan_cat_final fesi_cat_final ///
+      fall_risk_final er_stay_final hospital_stay_final ///
+      has_certCancer_final has_certDEP_final has_certEXT_final has_certGERD_final has_certILD_final ///
+      has_certOAD_final has_certPTSD_final has_certSA_final has_certSP_final has_certSRC_final has_certURD_final, ///
+    add(20) rseed(12345)
+	
+* Make Normal+Underweight the reference for factor notation
+mi fvset base 0 bmi_Group_final_combined
+mi fvset base 3 exposure_final_num
+mi fvset base 5 race_final_num
+mi fvset base 3 education_regrped_final_num
+	  
+* Logistic regression with MI, allowing the estimation sample to vary across imputations
+mi estimate, or esampvaryok: logistic jhu_2cat_final ///
+    i.gender_final_num c.age_at_jhu ///
+    i.race_final_num i.smoking_status_final_num i.bmi_Group_final_combined i.exposure_final_num ///
+    i.soc_4_categories_final_num i.education_regrped_final_num ///
+    i.adl_cat_final i.callahan_cat_final i.moca_cat_final ///
+    i.fesi_cat_final i.fall_risk_final i.er_stay_final i.hospital_stay_final ///
+    1.has_any_cert_final
+
+mi estimate, or esampvaryok: logistic jhu_2cat_final ///
+    i.gender_final_num c.age_at_jhu ///
+    i.race_final_num i.smoking_status_final_num i.bmi_Group_final_combined i.exposure_final_num ///
+    i.soc_4_categories_final_num i.education_regrped_final_num ///
+    i.adl_cat_final i.callahan_cat_final i.moca_cat_final ///
+    i.fesi_cat_final i.fall_risk_final i.er_stay_final i.hospital_stay_final i.has_any_cert_final ///
+	i.has_certCancer_final i.has_certDEP_final i.has_certEXT_final i.has_certGERD_final i.has_certILD_final ///
+	i.has_certOAD_final i.has_certPTSD_final i.has_certSA_final i.has_certSP_final i.has_certSRC_final i.has_certURD_final i.has_any_cert_final
+	
+	
+translate "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\output\output 0929.smcl" "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\output\output 0929.pdf"
+
+log close 
+	
+	
+
+H="revised regression based on Hannah's "
+log using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\output\output 1006.smcl",replace 
+
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\all done 0919.dta",clear 
+
+keep if !missing(jhu_source)
+
+gen byte jhu_2cat_final = .
+replace jhu_2cat_final = 0 if jhu_cat_final == 0   // Not Frail
+replace jhu_2cat_final = 1 if inlist(jhu_cat_final, 1, 2)   // Pre-Frail or Frail
+
+label define jhu2 0 "Not Frail" 1 "Pre-Frail or Frail"
+label values jhu_2cat_final jhu2
+
+* Check
+tab jhu_cat_final jhu_2cat_final, m
+
+* Combine Normal + Underweight into one category from the ORIGINAL string var
+gen byte bmi_Group_final_combined = .
+replace bmi_Group_final_combined = 0 if inlist(lower(strtrim(bmi_Group_final)), "normal", "underweight")
+replace bmi_Group_final_combined = 1 if lower(strtrim(bmi_Group_final)) == "obese"
+replace bmi_Group_final_combined = 2 if lower(strtrim(bmi_Group_final)) == "overweight"
+
+label define bmi_comb 0 "Normal+Underweight" 1 "Obese" 2 "Overweight", replace
+label values bmi_Group_final_combined bmi_comb
+
+sum jhu_2cat_final gender_final age_group race_final smoking_status_final bmi_Group_final_combined soc_4_categories_final education_final exposure_final has_*_final adl_cat_final callahan_cat_final moca_cat_final fesi_cat_final fall_risk_final er_stay_final hospital_stay_final
+
+summarize age_at_jhu, meanonly
+replace age_at_jhu = r(mean) if missing(age_at_jhu)
+
+gen str20 education_regrped_final = ""
+replace education_regrped_final = "Some College"          if education_final == "<BA/BS"
+replace education_regrped_final = "Less than high school" if education_final == "<HS Grad"
+replace education_regrped_final = "College"               if inlist(education_final, "BA/BS", "Grad Sch")
+replace education_regrped_final = "High School"           if education_final == "HS Grad"
+replace education_regrped_final = "Not Reported"          if education_final == "Unknown"
+tab education_regrped_final 
+
+//multiple imputation 
+
+* 1. Set data for MI
+mi set wide
+
+encode exposure_final, gen(exposure_final_num)
+encode smoking_status_final, gen(smoking_status_final_num)
+encode gender_final, gen(gender_final_num)
+encode race_final, gen(race_final_num)
+encode soc_4_categories_final, gen(soc_4_categories_final_num)
+encode education_regrped_final, gen(education_regrped_final_num)
+
+* Overwrite original: 1==High School, 2=Some College, 3=College (Not Reported -> missing)
+replace education_regrped_final_num = . if education_regrped_final_num == 4
+recode  education_regrped_final_num (3 2=1) (5=2) (1=3)
+label define edu3_lbl 1 "= High School" 2 "Some College" 3 "College", replace
+label values education_regrped_final_num edu3_lbl
+tab education_regrped_final_num,m
+
+recode exposure_final_num (3 = 1) (2 = 2) (1 4 = 3)
+label define exposure_lbl 1 "Low" 2 "Intermediate" 3 "High + Very High", replace
+label values exposure_final_num exposure_lbl
+tab exposure_final_num
+tab exposure_final_num, nol
+
+replace adl_cat_final = . if adl_cat_final == 2
+label define adl_lbl 0 "Not fully independent" 1 "Independent", replace
+label values adl_cat_final adl_lbl
+tab adl_cat_final, missing
+
+label define moca_lbl 0 "Normal" 1 "Mild" 2 "Moderate/Severe", replace
+label values moca_cat_final moca_lbl
+tab moca_cat_final
+
+replace race_final_num = . if race_final_num == 4
+
+* 2. Register vars with missing
+mi register imputed moca_cat_final exposure_final_num smoking_status_final_num bmi_Group_final_combined education_regrped_final_num adl_cat_final race_final_num 
+mi register regular jhu_2cat_final gender_final_num age_at_jhu soc_4_categories_final_num fall_risk_final has_certCancer_final has_certDEP_final has_certGERD_final has_certOAD_final has_certPTSD_final has_certSP_final has_certURD_final 
+
+mi impute chained ///
+    (mlogit,augment) smoking_status_final_num race_final_num ///
+	(ologit,augment) adl_cat_final moca_cat_final bmi_Group_final_combined exposure_final_num education_regrped_final_num ///
+    = jhu_2cat_final gender_final_num age_at_jhu soc_4_categories_final_num ///
+      fall_risk_final has_certCancer_final has_certDEP_final has_certGERD_final ///
+      has_certOAD_final has_certPTSD_final has_certSP_final has_certURD_final, add(20) rseed(12345) force
+	  
+* Set reference groups 
+mi fvset base 2 bmi_Group_final_combined
+mi fvset base 2 exposure_final_num
+mi fvset base 5 race_final_num
+mi fvset base 3 education_regrped_final_num
+mi fvset base 3 smoking_status_final_num
+mi fvset base 2 soc_4_categories_final_num
+mi fvset base 1 adl_cat_final
+mi fvset base 1 moca_cat_final
+mi fvset base 0 fall_risk_final
+  
+* Logistic regression model1 
+mi estimate, or esampvaryok: logistic jhu_2cat_final c.age_at_jhu i.race_final_num i.education_regrped_final_num i.smoking_status_final_num i.bmi_Group_final_combined
+
+* Logistic regression model2 
+mi estimate, or esampvaryok: logistic jhu_2cat_final c.age_at_jhu i.race_final_num i.education_regrped_final_num i.smoking_status_final_num i.bmi_Group_final_combined i.soc_4_categories_final_num i.exposure_final_num i.has_certCancer_final i.has_certDEP_final i.has_certGERD_final i.has_certOAD_final i.has_certPTSD_final i.has_certSP_final i.has_certURD_final
+	
+* Logistic regression model3  
+mi estimate, or esampvaryok: logistic jhu_2cat_final c.age_at_jhu i.race_final_num i.education_regrped_final_num i.smoking_status_final_num i.bmi_Group_final_combined i.soc_4_categories_final_num i.exposure_final_num i.has_certCancer_final i.has_certDEP_final i.has_certGERD_final i.has_certOAD_final i.has_certPTSD_final i.has_certSP_final i.has_certURD_final i.adl_cat_final i.moca_cat_final i.fall_risk_final
+
+	
+translate "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\output\output 1006.smcl" "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\output\output 1006.pdf"
+
+log close 
+
+H="revised descriptive "
+log using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\output\descriptive output 1006.smcl",replace 
+
+
+keep if !missing(jhu_source)
+
+//Overall - demo +grdc data 
+tab jhu_cat_final,m
+tab frail_cat_final,m
+tab gender_final,m
+tab age_group,m
+tab race_final,m
+tab smoking_status_final,m
+tab bmi_Group_final,m
+tab soc_4_categories_final,m
+tab education_regrped_final_num,m
+tab exposure_final_num,m
+
+tab adl_cat_final,m	
+tab callahan_cat_final,m
+tab moca_cat_final,m
+tab fesi_cat_final,m
+tab fall_risk_final,m
+tab er_stay_6month_final,m
+tab er_stay_final,m
+tab hospital_stay_6month_final,m
+tab hospital_stay_final,m
+
+ds has_*_final
+foreach v of varlist `r(varlist)' {
+    di "=============================="
+    di "Tabulation of `v' vs jhu_2cat_final"
+    tab `v', missing
+}
+
+//Tabulation with JHU categories
+tab frail_cat_final jhu_2cat_final,chi2 m
+tab gender_final jhu_2cat_final,chi2 m
+tab age_group jhu_2cat_final,chi2 m
+
+ttest age_at_jhu, by (jhu_2cat_final)
+tab race_final jhu_2cat_final,chi2 m
+tab smoking_status_final jhu_2cat_final,chi2 m
+tab bmi_Group_final jhu_2cat_final,chi2 m
+tab soc_4_categories_final jhu_2cat_final,chi2 m
+tab education_regrped_final_num jhu_2cat_final,chi2 m
+tab exposure_final_num jhu_2cat_final,chi2 m
+
+tab adl_cat_final jhu_2cat_final,chi2 m	
+tab callahan_cat_final jhu_2cat_final,chi2 m
+tab moca_cat_final jhu_2cat_final,chi2 m
+tab fesi_cat_final jhu_2cat_final,chi2 m
+tab fall_risk_final jhu_2cat_final,chi2 m
+tab er_stay_6month_final jhu_2cat_final,chi2 m
+tab er_stay_final jhu_2cat_final,chi2 m
+tab hospital_stay_6month_final jhu_2cat_final,chi2 m
+tab hospital_stay_final jhu_2cat_final,chi2 m
+
+ds has_*_final
+foreach v of varlist `r(varlist)' {
+    di "=============================="
+    di "Tabulation of `v' vs jhu_2cat_final"
+    tab `v' jhu_2cat_final, chi2 missing
+}
+
+translate "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\output\descriptive output 1006.smcl" "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\output\descriptive output 1006.pdf"
+
+log close 
+
+H="certification groups "
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\all done 0919.dta",clear 
+keep if !missing(jhu_source)
+
+gen has_any_mental_condition = has_certPTSD_final == 1 | has_certANX_final == 1 | has_certDEP_final == 1
+
+//recode 3 category race 
+gen race3_final = .
+
+replace race3_final = 1 if race_final == "White"
+replace race3_final = 2 if race_final == "Black"
+replace race3_final = 3 if inlist(race_final, "Asian", "Other", "Unknown")
+
+label define race3lab 1 "White" 2 "Black" 3 "Other"
+label values race3_final race3lab
+
+tab race3_final
+
+//recode binary education 
+gen education2_final = .
+
+* < college
+replace education2_final = 1 if inlist(education_final, "<HS Grad", "HS Grad", "<BA/BS")
+
+* College or more
+replace education2_final = 2 if inlist(education_final, "BA/BS", "Grad Sch")
+
+* Unknown
+replace education2_final = 3 if education_final == "Unknown"
+
+* Label the categories
+label define edu2lab 1 "<College" 2 "College or more" 3 "Unknown"
+label values education2_final edu2lab
+
+tab education2_final
+
+//recode binary smoking status 
+gen smoke2_final = . 
+replace smoke2_final = 1 if inlist(smoking_status_final, "Current smoker", "Former smoker")
+replace smoke2_final = 0 if smoking_status_final == "Never smoker"
+label define smoke2lab 1 "Current/Former smoker" 0 "Never smoker"
+label values smoke2_final smoke2lab
+
+tab smoke2_final
+
+//recode BMI to 3 category 
+gen bmi3_final = .
+replace bmi3_final = 1 if inlist(bmi_Group_final, "Normal", "Underweight")
+replace bmi3_final = 2 if bmi_Group_final == "Overweight"
+replace bmi3_final = 3 if bmi_Group_final == "Obese"
+label define bmi3lab 1 "Normal/Underweight" 2 "Overweight" 3 "Obese"
+label values bmi3_final bmi3lab
+
+tab bmi3_final
+
+//recode binary MOCA 
+gen moca2_final = .
+replace moca2_final = 0 if moca_cat_final == 0
+replace moca2_final = 1 if inlist(moca_cat_final, 1, 2)
+label define moca2lab 0 "Normal" 1 "Mild/Moderate/Severe"
+label values moca2_final moca2lab
+
+tab moca2_final
+
+//recode binary jhu 
+gen jhu_frail_binary = .
+replace jhu_frail_binary = 0 if jhu_cat_final == 0
+replace jhu_frail_binary = 1 if inlist(jhu_cat_final, 1, 2)
+
+tab jhu_frail_binary
+
+//Cancer 
+ttest age_at_jhu_int, by (has_certCancer_final)
+
+foreach var in jhu_frail_binary jhu_frail_binary gender_final race3_final education2_final smoke2_final bmi3_final soc_4_categories_final adl_cat_final moca2_final fesi_cat_final fall_risk_final er_stay_final hospital_stay_final {
+tab `var' has_certCancer_final,chi2 
+}
+
+//GERD 
+ttest age_at_jhu_int, by (has_certGERD_final)
+
+foreach var in jhu_frail_binary gender_final race3_final education2_final smoke2_final bmi3_final soc_4_categories_final adl_cat_final moca2_final fesi_cat_final fall_risk_final er_stay_final hospital_stay_final {
+tab `var' has_certGERD_final,chi2 
+}
+
+//OAD
+ttest age_at_jhu_int, by (has_certOAD_final)
+
+foreach var in jhu_frail_binary gender_final race3_final education2_final smoke2_final bmi3_final soc_4_categories_final adl_cat_final moca2_final fesi_cat_final fall_risk_final er_stay_final hospital_stay_final {
+tab `var' has_certOAD_final,chi2 
+}
+
+//URD
+ttest age_at_jhu_int, by (has_certURD_final)
+
+foreach var in jhu_frail_binary gender_final race3_final education2_final smoke2_final bmi3_final soc_4_categories_final adl_cat_final moca2_final fesi_cat_final fall_risk_final er_stay_final hospital_stay_final {
+tab `var' has_certURD_final,chi2 
+}
+
+//Any certificate 
+ttest age_at_jhu_int, by (has_any_cert_final)
+
+foreach var in jhu_frail_binary gender_final race3_final education2_final smoke2_final bmi3_final soc_4_categories_final adl_cat_final moca2_final fesi_cat_final fall_risk_final er_stay_final hospital_stay_final {
+tab `var' has_any_cert_final,chi2 
+}
+
+//PTSD 
+ttest age_at_jhu_int, by (has_certPTSD_final)
+
+foreach var in jhu_frail_binary gender_final race3_final education2_final smoke2_final bmi3_final soc_4_categories_final adl_cat_final moca2_final fesi_cat_final fall_risk_final er_stay_final hospital_stay_final {
+tab `var' has_certPTSD_final,chi2 
+}
+
+
+//Any mental health 
+ttest age_at_jhu_int, by (has_any_mental_condition)
+
+foreach var in jhu_frail_binary gender_final race3_final education2_final smoke2_final bmi3_final soc_4_categories_final adl_cat_final moca2_final fesi_cat_final fall_risk_final er_stay_final hospital_stay_final {
+tab `var' has_any_mental_condition,chi2 
+}
+
+//regression outcomes - fesi 
+gen fesi2_final = .
+replace fesi2_final = 0 if fesi_cat_final == 0   // Low Fear
+replace fesi2_final = 1 if inlist(fesi_cat_final,1,2)   // Moderate/High Fear
+label define fesi2 0 "Low Fear" 1 "Moderate/High Fear"
+label values fesi2_final fesi2
+tab fesi2_final
+
+encode gender_final, gen(gender_final_num)
+drop gender_final
+rename gender_final_num gender_final
+
+
+*model1 
+logistic fesi2_final i.jhu_frail_binary##i.has_any_cert_final
+
+*model2 
+logistic fesi2_final i.jhu_frail_binary##i.has_any_cert_final age_at_jhu_int i.gender_final i.race3_final i.education2_final
+
+encode soc_4_categories_final, gen(x)
+drop soc_4_categories_final
+rename x soc_4_categories_final
+
+*model3 
+logistic fesi2_final i.jhu_frail_binary##i.has_any_cert_final age_at_jhu_int i.gender_final i.race3_final i.education2_final i.smoke2_final i.bmi3_final i.soc_4_categories_final i.adl_cat_final i.moca2_final i.fall_risk_final i.er_stay_final i.hospital_stay_final
+
+//regression outcomes - fall risk 
+*model1 
+logistic fall_risk_final i.jhu_frail_binary##i.has_any_cert_final
+
+*model2 
+logistic fall_risk_final i.jhu_frail_binary##i.has_any_cert_final age_at_jhu_int i.gender_final i.race3_final i.education2_final
+
+*model3 
+logistic fall_risk_final i.jhu_frail_binary##i.has_any_cert_final age_at_jhu_int i.gender_final i.race3_final i.education2_final i.smoke2_final i.bmi3_final i.soc_4_categories_final i.adl_cat_final i.moca2_final i.fesi_cat_final i.er_stay_final i.hospital_stay_final
+
+
+//regression outcomes - ER or hospital stay 
+
+gen er_hos_final = 0
+replace er_hos_final = 1 if er_stay_final == 1 | hospital_stay_final == 1
+
+*model1 
+logistic er_hos_final i.jhu_frail_binary##i.has_any_cert_final
+
+*model2 
+logistic er_hos_final i.jhu_frail_binary##i.has_any_cert_final age_at_jhu_int i.gender_final i.race3_final i.education2_final
+
+*model3 
+logistic er_hos_final i.jhu_frail_binary##i.has_any_cert_final age_at_jhu_int i.gender_final i.race3_final i.education2_final i.smoke2_final i.bmi3_final i.soc_4_categories_final i.adl_cat_final i.moca2_final i.fesi_cat_final i.fall_risk_final
+
+
+H="certification revise will "
+log using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\output\output 1203.smcl",replace 
+
+
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\all done 0919.dta",clear 
+keep if !missing(jhu_source)
+
+gen has_any_mental_condition = has_certPTSD_final == 1 | has_certANX_final == 1 | has_certDEP_final == 1
+
+//recode 3 category race 
+gen race3_final = .
+
+replace race3_final = 1 if race_final == "White"
+replace race3_final = 2 if race_final == "Black"
+replace race3_final = 3 if inlist(race_final, "Asian", "Other", "Unknown")
+
+label define race3lab 1 "White" 2 "Black" 3 "Other"
+label values race3_final race3lab
+
+tab race3_final
+
+replace adl_cat_final = . if adl_cat_final == 2
+
+//recode binary education 
+gen education2_final = .
+
+* < college
+replace education2_final = 1 if inlist(education_final, "<HS Grad", "HS Grad", "<BA/BS")
+
+* College or more
+replace education2_final = 2 if inlist(education_final, "BA/BS", "Grad Sch")
+
+* Unknown
+replace education2_final = 3 if education_final == "Unknown"
+
+* Label the categories
+label define edu2lab 1 "<College" 2 "College or more" 3 "Unknown"
+label values education2_final edu2lab
+
+tab education2_final
+
+//recode binary smoking status 
+gen smoke2_final = . 
+replace smoke2_final = 1 if inlist(smoking_status_final, "Current smoker", "Former smoker")
+replace smoke2_final = 0 if smoking_status_final == "Never smoker"
+label define smoke2lab 1 "Current/Former smoker" 0 "Never smoker"
+label values smoke2_final smoke2lab
+
+tab smoke2_final
+
+//recode BMI to 3 category 
+gen bmi3_final = .
+replace bmi3_final = 1 if inlist(bmi_Group_final, "Normal", "Underweight")
+replace bmi3_final = 2 if bmi_Group_final == "Overweight"
+replace bmi3_final = 3 if bmi_Group_final == "Obese"
+label define bmi3lab 1 "Normal/Underweight" 2 "Overweight" 3 "Obese"
+label values bmi3_final bmi3lab
+
+tab bmi3_final
+
+//recode binary MOCA 
+gen moca2_final = .
+replace moca2_final = 0 if moca_cat_final == 0
+replace moca2_final = 1 if inlist(moca_cat_final, 1, 2)
+label define moca2lab 0 "Normal" 1 "Mild/Moderate/Severe"
+label values moca2_final moca2lab
+
+tab moca2_final
+
+//recode binary jhu 
+gen jhu_frail_binary = .
+replace jhu_frail_binary = 0 if jhu_cat_final == 0
+replace jhu_frail_binary = 1 if inlist(jhu_cat_final, 1, 2)
+
+tab jhu_frail_binary
+
+//Cancer 
+ttest age_at_jhu_int, by (has_certCancer_final)
+
+foreach var in jhu_frail_binary jhu_frail_binary gender_final race3_final education2_final smoke2_final bmi3_final soc_4_categories_final adl_cat_final moca2_final fesi_cat_final fall_risk_final er_stay_final hospital_stay_final {
+tab `var' has_certCancer_final,chi2 
+}
+
+//GERD 
+ttest age_at_jhu_int, by (has_certGERD_final)
+
+foreach var in jhu_frail_binary gender_final race3_final education2_final smoke2_final bmi3_final soc_4_categories_final adl_cat_final moca2_final fesi_cat_final fall_risk_final er_stay_final hospital_stay_final {
+tab `var' has_certGERD_final,chi2 
+}
+
+//OAD
+ttest age_at_jhu_int, by (has_certOAD_final)
+
+foreach var in jhu_frail_binary gender_final race3_final education2_final smoke2_final bmi3_final soc_4_categories_final adl_cat_final moca2_final fesi_cat_final fall_risk_final er_stay_final hospital_stay_final {
+tab `var' has_certOAD_final,chi2 
+}
+
+//URD
+ttest age_at_jhu_int, by (has_certURD_final)
+
+foreach var in jhu_frail_binary gender_final race3_final education2_final smoke2_final bmi3_final soc_4_categories_final adl_cat_final moca2_final fesi_cat_final fall_risk_final er_stay_final hospital_stay_final {
+tab `var' has_certURD_final,chi2 
+}
+
+//Any certificate 
+ttest age_at_jhu_int, by (has_any_cert_final)
+
+foreach var in jhu_frail_binary gender_final race3_final education2_final smoke2_final bmi3_final soc_4_categories_final adl_cat_final moca2_final fesi_cat_final fall_risk_final er_stay_final hospital_stay_final {
+tab `var' has_any_cert_final,chi2 
+}
+
+//PTSD 
+ttest age_at_jhu_int, by (has_certPTSD_final)
+
+foreach var in jhu_frail_binary gender_final race3_final education2_final smoke2_final bmi3_final soc_4_categories_final adl_cat_final moca2_final fesi_cat_final fall_risk_final er_stay_final hospital_stay_final {
+tab `var' has_certPTSD_final,chi2 
+}
+
+
+//Any mental health 
+ttest age_at_jhu_int, by (has_any_mental_condition)
+
+foreach var in jhu_frail_binary gender_final race3_final education2_final smoke2_final bmi3_final soc_4_categories_final adl_cat_final moca2_final fesi_cat_final fall_risk_final er_stay_final hospital_stay_final {
+tab `var' has_any_mental_condition,chi2 
+}
+
+//regression outcomes - fesi 
+gen fesi2_final = .
+replace fesi2_final = 0 if fesi_cat_final == 0   // Low Fear
+replace fesi2_final = 1 if inlist(fesi_cat_final,1,2)   // Moderate/High Fear
+label define fesi2 0 "Low Fear" 1 "Moderate/High Fear"
+label values fesi2_final fesi2
+tab fesi2_final
+
+encode gender_final, gen(gender_final_num)
+drop gender_final
+rename gender_final_num gender_final
+
+replace education2_final = . if education2_final == 3
+
+*model1 
+logistic fesi2_final has_any_cert_final
+
+*model2 
+logistic fesi2_final i.jhu_frail_binary i.has_any_cert_final
+
+*model3 
+logistic fesi2_final i.jhu_frail_binary i.has_any_cert_final age_at_jhu_int i.gender_final i.race3_final i.education2_final i.adl_cat_final i.moca2_final i.er_stay_final i.hospital_stay_final i.falls_year_final
+
+//regression outcomes - fall risk 
+
+*model1 
+logistic falls_year_final has_any_cert_final
+
+*model2 
+logistic falls_year_final i.jhu_frail_binary i.has_any_cert_final
+
+*model3 
+logistic falls_year_final i.jhu_frail_binary i.has_any_cert_final age_at_jhu_int i.gender_final i.race3_final i.education2_final i.adl_cat_final i.fesi2_final i.moca2_final i.er_stay_final i.hospital_stay_final
+
+//regression outcomes - ER or hospital stay 
+gen er_hos_final = 0
+replace er_hos_final = 1 if er_stay_final == 1 | hospital_stay_final == 1
+
+
+*model1 
+logistic er_hos_final has_any_cert_final
+
+*model2 
+logistic er_hos_final i.jhu_frail_binary i.has_any_cert_final
+
+*model3 
+logistic er_hos_final i.jhu_frail_binary i.has_any_cert_final age_at_jhu_int i.gender_final i.race3_final i.education2_final i.adl_cat_final i.moca2_final i.falls_year_final
+
+translate "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\output\output 1203.smcl" "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\output\output 1203.pdf"
+
+log close 
+
+H="add n390"
+import delimited "\\mssm2\mssm2$\wangy63\Personal\DesktopFiles\n390_ids.csv", clear varnames(nonames)
+rename v1 patient_id
+
+gen prefix = substr(patient_id,1,strpos(patient_id,"_")-1)
+gen idnum  = real(substr(patient_id,strpos(patient_id,"_")+1,.))
+
+tempfile main pilot
+
+preserve
+keep if prefix=="WTCII"
+keep idnum
+rename idnum record_id_main
+duplicates drop
+save `main'
+restore
+
+preserve
+keep if prefix=="WTCI"
+keep idnum
+rename idnum record_id_pilot
+duplicates drop
+save `pilot'
+restore
+
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\all done 0919.dta", clear
+
+gen in_n390 = 0
+
+drop _merge
+merge m:1 record_id_main using `main'
+replace in_n390 = 1 if _merge==3
+drop _merge
+
+merge m:1 record_id_pilot using `pilot'
+replace in_n390 = 1 if _merge==3 | in_n390==1
+drop _merge
+
+keep if in_n390==1
+
+gen moca_total_final = .
+replace moca_total_final = moca_total_b   if jhu_source=="baseline" & moca_total_b   <.
+replace moca_total_final = moca_total_fu1 if jhu_source=="fu1"      & moca_total_fu1 <.
+replace moca_total_final = moca_total_fu2 if jhu_source=="fu2"      & moca_total_fu2 <.
+replace moca_total_final = moca_total   if jhu_source=="pilot"    & moca_total   <.
+tab moca_total_final
+
+summarize moca_total_final if moca_total_final < 26
+
+save "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\all done 0919_with390flag.dta", replace
+
+
+H="certification count&specific"
+log using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\output\output 1216.smcl",replace 
+
+
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\all done 0919.dta",clear 
+keep if !missing(jhu_source)
+
+gen has_any_mental_condition = has_certPTSD_final == 1 | has_certANX_final == 1 | has_certDEP_final == 1
+
+//recode 3 category race 
+gen race3_final = .
+
+replace race3_final = 1 if race_final == "White"
+replace race3_final = 2 if race_final == "Black"
+replace race3_final = 3 if inlist(race_final, "Asian", "Other", "Unknown")
+
+label define race3lab 1 "White" 2 "Black" 3 "Other"
+label values race3_final race3lab
+
+tab race3_final
+
+replace adl_cat_final = . if adl_cat_final == 2
+
+//recode binary education 
+gen education2_final = .
+
+* < college
+replace education2_final = 1 if inlist(education_final, "<HS Grad", "HS Grad", "<BA/BS")
+
+* College or more
+replace education2_final = 2 if inlist(education_final, "BA/BS", "Grad Sch")
+
+* Unknown
+replace education2_final = 3 if education_final == "Unknown"
+
+* Label the categories
+label define edu2lab 1 "<College" 2 "College or more" 3 "Unknown"
+label values education2_final edu2lab
+
+tab education2_final
+
+//recode binary smoking status 
+gen smoke2_final = . 
+replace smoke2_final = 1 if inlist(smoking_status_final, "Current smoker", "Former smoker")
+replace smoke2_final = 0 if smoking_status_final == "Never smoker"
+label define smoke2lab 1 "Current/Former smoker" 0 "Never smoker"
+label values smoke2_final smoke2lab
+
+tab smoke2_final
+
+//recode BMI to 3 category 
+gen bmi3_final = .
+replace bmi3_final = 1 if inlist(bmi_Group_final, "Normal", "Underweight")
+replace bmi3_final = 2 if bmi_Group_final == "Overweight"
+replace bmi3_final = 3 if bmi_Group_final == "Obese"
+label define bmi3lab 1 "Normal/Underweight" 2 "Overweight" 3 "Obese"
+label values bmi3_final bmi3lab
+
+tab bmi3_final
+
+//recode binary MOCA 
+gen moca2_final = .
+replace moca2_final = 0 if moca_cat_final == 0
+replace moca2_final = 1 if inlist(moca_cat_final, 1, 2)
+label define moca2lab 0 "Normal" 1 "Mild/Moderate/Severe"
+label values moca2_final moca2lab
+
+tab moca2_final
+
+//recode binary jhu 
+gen jhu_frail_binary = .
+replace jhu_frail_binary = 0 if jhu_cat_final == 0
+replace jhu_frail_binary = 1 if inlist(jhu_cat_final, 1, 2)
+
+tab jhu_frail_binary
+
+foreach var in has_certANX_final has_certCancer_final has_certDEP_final has_certEXT_final has_certGERD_final has_certILD_final has_certOAD_final has_certPTSD_final has_certSA_final has_certSP_final has_certSRC_final has_certURD_final has_any_cert_final has_any_mental_condition {
+	tab `var'
+}
+
+//regression outcomes - ER or hospital stay 
+gen er_hos_final = 0
+replace er_hos_final = 1 if er_stay_final == 1 | hospital_stay_final == 1
+
+encode gender_final, gen(_gender_tmp)
+drop gender_final
+rename _gender_tmp gender_final
+
+egen counts_certification = rowtotal(has_certANX_final has_certCancer_final has_certDEP_final has_certEXT_final has_certGERD_final has_certILD_final has_certOAD_final has_certPTSD_final has_certSA_final has_certSP_final has_certSRC_final has_certURD_final)
+
+replace education2_final = . if education2_final == 3
+
+
+*----------------------------
+* Model 1) Cancer certification
+*----------------------------
+logistic er_hos_final i.has_certCancer_final ///
+    i.jhu_frail_binary age_at_jhu_int ///
+    i.gender_final i.race3_final i.education2_final ///
+    i.adl_cat_final i.moca2_final i.falls_year_final
+
+*----------------------------
+* Model 2) GERD certification
+*----------------------------
+logistic er_hos_final i.has_certGERD_final ///
+    i.jhu_frail_binary age_at_jhu_int ///
+    i.gender_final i.race3_final i.education2_final ///
+    i.adl_cat_final i.moca2_final i.falls_year_final
+
+*----------------------------
+* Model 3) OAD certification
+*----------------------------
+logistic er_hos_final i.has_certOAD_final ///
+    i.jhu_frail_binary age_at_jhu_int ///
+    i.gender_final i.race3_final i.education2_final ///
+    i.adl_cat_final i.moca2_final i.falls_year_final
+
+*----------------------------
+* Model 4) URD certification
+*----------------------------
+logistic er_hos_final i.has_certURD_final ///
+    i.jhu_frail_binary age_at_jhu_int ///
+    i.gender_final i.race3_final i.education2_final ///
+    i.adl_cat_final i.moca2_final i.falls_year_final
+
+*----------------------------
+* Model 5) Any certification
+*----------------------------
+logistic er_hos_final i.has_any_cert_final ///
+    i.jhu_frail_binary age_at_jhu_int ///
+    i.gender_final i.race3_final i.education2_final ///
+    i.adl_cat_final i.moca2_final i.falls_year_final
+
+*----------------------------
+* Model 6) Any mental health certification
+*----------------------------
+logistic er_hos_final i.has_any_mental_condition ///
+    i.jhu_frail_binary age_at_jhu_int ///
+    i.gender_final i.race3_final i.education2_final ///
+    i.adl_cat_final i.moca2_final i.falls_year_final
+
+*----------------------------
+* Model 7) Count of certifications
+*----------------------------
+logistic er_hos_final counts_certification ///
+    i.jhu_frail_binary age_at_jhu_int ///
+    i.gender_final i.race3_final i.education2_final ///
+    i.adl_cat_final i.moca2_final i.falls_year_final
+
+
+translate "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\output\output 1216.smcl" "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\output\output 1216.pdf"
+
+log close 
+
+H="tables for Hannah manuscript"
+log using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\output\output 012626.smcl",replace 
+
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\all done 0919.dta",clear 
+
+gen bmi_Group_combined = bmi_Group_final
+replace bmi_Group_combined = "Normal/Underweight" if inlist(bmi_Group_final, "Normal", "Underweight")
+drop bmi_Group_final
+rename bmi_Group_combined bmi_Group_final
+
+gen exposure_combined = exposure_final
+replace exposure_combined = "High/Very High" if inlist(exposure_final, "High", "Very High")
+drop exposure_final
+rename exposure_combined exposure_final
+
+gen education_recode = education_final
+
+replace education_recode = "<=High school" if inlist(education_final, "<HS Grad", "HS Grad")
+replace education_recode = "Some college"  if education_final == "<BA/BS"
+replace education_recode = "College"       if inlist(education_final, "BA/BS", "Grad Sch")
+replace education_recode = ""               if education_final == "Unknown"
+
+drop education_final
+rename education_recode education_final
+
+replace race_final = "" if race_final == "Unknown"
+
+
+
+keep if !missing(jhu_source)
+
+//Overall - demo +grdc data 
+tab jhu_cat_final,m
+tab frail_cat_final,m
+tab gender_final,m
+tab age_group,m
+tab race_final,m
+tab smoking_status_final,m
+tab bmi_Group_final,m
+tab soc_4_categories_final,m
+tab education_final,m
+tab exposure_final,m
+
+tab adl_cat_final,m	
+tab callahan_cat_final,m
+tab moca_cat_final,m
+tab fesi_cat_final,m
+tab fall_risk_final,m
+tab er_stay_6month_final,m
+tab er_stay_final,m
+tab hospital_stay_6month_final,m
+tab hospital_stay_final,m
+
+ds has_*_final
+foreach v of varlist `r(varlist)' {
+    di "=============================="
+    di "Tabulation of `v' vs jhu_cat_final"
+    tab `v', missing
+}
+
+//certification 
+
+foreach v in has_certANX_final has_certCancer_final has_certDEP_final ///
+            has_certEXT_final has_certGERD_final has_certILD_final ///
+            has_certOAD_final has_certPTSD_final has_certSA_final ///
+            has_certSP_final has_certSRC_final has_certURD_final has_any_cert_final {
+    tab `v', m
+}
+
+//stratify by er & hospital stay 
+
+gen any_er_hos_final = .
+replace any_er_hos_final = 1 if hospital_stay_final == 1 | er_stay_final == 1
+replace any_er_hos_final = 0 if hospital_stay_final == 0 & er_stay_final == 0
+
+tab any_er_hos_final, m
+
+*========================
+* Table 1 stratified by any_er_hos_final
+*========================
+
+tab any_er_hos_final, m
+
+foreach v in jhu_cat_final frail_cat_final gender_final age_group ///
+            race_final smoking_status_final bmi_Group_final ///
+            soc_4_categories_final education_final exposure_final ///
+            adl_cat_final callahan_cat_final moca_cat_final ///
+            fesi_cat_final fall_risk_final ///
+            er_stay_6month_final er_stay_final ///
+            hospital_stay_6month_final hospital_stay_final {
+    
+    di "======================================"
+    di "Variable: `v' by any_er_hos_final"
+    tab `v' any_er_hos_final, chi2 exact
+}
+
+*========================
+* Certification variables
+*========================
+foreach v in has_certANX_final has_certCancer_final has_certDEP_final ///
+            has_certEXT_final has_certGERD_final has_certILD_final ///
+            has_certOAD_final has_certPTSD_final has_certSA_final ///
+            has_certSP_final has_certSRC_final has_certURD_final ///
+            has_any_cert_final {
+    
+    di "======================================"
+    di "Variable: `v' by any_er_hos_final"
+    tab `v' any_er_hos_final, chi2 exact
+}
+
+//table2 
+foreach v in has_certANX_final has_certCancer_final has_certDEP_final ///
+            has_certEXT_final has_certGERD_final has_certILD_final ///
+            has_certOAD_final has_certPTSD_final has_certSA_final ///
+            has_certSP_final has_certSRC_final has_certURD_final ///
+            has_any_cert_final any_er_hos_final {
+
+    di "======================================"
+    di "Variable: `v' by jhu_cat_final"
+    tab `v' jhu_cat_final, chi2 exact
+}
+
+//chart for certifications 
+preserve
+
+local certs has_certANX_final has_certCancer_final has_certDEP_final ///
+            has_certEXT_final has_certGERD_final has_certILD_final ///
+            has_certOAD_final has_certPTSD_final has_certSA_final ///
+            has_certSP_final has_certSRC_final has_certURD_final ///
+            has_any_cert_final
+
+keep `certs'
+gen id = _n
+reshape long has_, i(id) j(cert) string
+
+collapse (mean) pct_yes = has_, by(cert)
+replace pct_yes = 100*pct_yes
+
+replace cert = subinstr(cert,"has_cert","",.)
+replace cert = subinstr(cert,"_final","",.)
+
+graph hbar pct_yes, over(cert, sort(1) descending) ///
+    ytitle("Percent (%)") ///
+    title("Certification prevalence") ///
+    blabel(bar, format(%4.1f) position(outside))
+	
+
+restore
+
+
+//table3 logistic regression 
+//model1 demographics + WTC 
+foreach v in gender_final race_final education_final bmi_Group_final ///
+            smoking_status_final exposure_final {
+    encode `v', gen(`v'_num)
+    drop `v'
+    rename `v'_num `v'
+}
+
+fvset base 3 exposure_final
+fvset base 3 smoking_status_final
+fvset base 4 race_final
+fvset base 2 gender_final
+
+
+//imputation 
+
+gen jhu_binary_final = .
+replace jhu_binary_final = 0 if jhu_cat_final == 0
+replace jhu_binary_final = 1 if inlist(jhu_cat_final, 1, 2)
+
+label define jhu_bin 0 "Not frail" 1 "Pre-frail/Frail"
+label values jhu_binary_final jhu_bin
+tab jhu_binary_final,m
+
+
+set seed 12345
+
+mi set mlong
+
+mi register regular any_er_hos_final gender_final jhu_binary_final
+mi register imputed age_at_jhu_int race_final education_final bmi_Group_final ///
+                    smoking_status_final exposure_final has_any_cert_final
+
+
+mi impute chained ///
+    (regress) age_at_jhu_int ///
+    (mlogit, augment) race_final smoking_status_final ///
+    (ologit) education_final bmi_Group_final exposure_final ///
+    (logit) has_any_cert_final ///
+    = i.gender_final any_er_hos_final i.jhu_binary_final, ///
+    add(20) rseed(12345) force
+
+mi estimate, or: logistic any_er_hos_final ///
+    i.gender_final age_at_jhu_int ///
+    i.race_final i.education_final i.bmi_Group_final ///
+    i.smoking_status_final i.exposure_final ///
+    i.has_any_cert_final
+
+mi estimate, or: logistic any_er_hos_final ///
+    i.gender_final age_at_jhu_int ///
+    i.race_final i.education_final i.bmi_Group_final ///
+    i.smoking_status_final i.exposure_final ///
+    i.jhu_binary_final
+
+mi estimate, or: logistic any_er_hos_final ///
+    i.gender_final age_at_jhu_int ///
+    i.race_final i.education_final i.bmi_Group_final ///
+    i.smoking_status_final i.exposure_final ///
+    i.has_any_cert_final##i.jhu_binary_final
+
+	
+
+******************************************************
+//subgroup 
+
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\all done 0919.dta",clear 
+
+gen bmi_Group_combined = bmi_Group_final
+replace bmi_Group_combined = "Normal/Underweight" if inlist(bmi_Group_final, "Normal", "Underweight")
+drop bmi_Group_final
+rename bmi_Group_combined bmi_Group_final
+
+gen exposure_combined = exposure_final
+replace exposure_combined = "High/Very High" if inlist(exposure_final, "High", "Very High")
+drop exposure_final
+rename exposure_combined exposure_final
+
+gen education_recode = education_final
+
+replace education_recode = "<=High school" if inlist(education_final, "<HS Grad", "HS Grad")
+replace education_recode = "Some college"  if education_final == "<BA/BS"
+replace education_recode = "College"       if inlist(education_final, "BA/BS", "Grad Sch")
+replace education_recode = ""               if education_final == "Unknown"
+
+drop education_final
+rename education_recode education_final
+
+replace race_final = "" if race_final == "Unknown"
+
+keep if !missing(jhu_source)
+
+gen any_er_hos_final = .
+replace any_er_hos_final = 1 if hospital_stay_final == 1 | er_stay_final == 1
+replace any_er_hos_final = 0 if hospital_stay_final == 0 & er_stay_final == 0
+
+tab any_er_hos_final, m
+
+
+gen jhu_binary_final = .
+replace jhu_binary_final = 0 if jhu_cat_final == 0
+replace jhu_binary_final = 1 if inlist(jhu_cat_final, 1, 2)
+
+label define jhu_bin 0 "Not frail" 1 "Pre-frail/Frail"
+label values jhu_binary_final jhu_bin
+tab jhu_binary_final,m
+
+gen has_any_mental_condition_final = has_certPTSD_final == 1 | has_certANX_final == 1 | has_certDEP_final == 1 | has_certSA_final
+rename has_any_mental_condition_final has_any_ment_cond
+
+gen has_any_BUT_mentalhealth = has_any_cert_final == 1 & has_any_ment_cond == 0
+
+
+
+foreach v in gender_final race_final education_final bmi_Group_final ///
+            smoking_status_final exposure_final {
+    encode `v', gen(`v'_num)
+    drop `v'
+    rename `v'_num `v'
+}
+
+fvset base 3 exposure_final
+fvset base 3 smoking_status_final
+fvset base 4 race_final
+fvset base 2 gender_final
+
+
+//imputation 
+mi set mlong
+
+mi register regular any_er_hos_final gender_final has_any_ment_cond has_any_BUT_mentalhealth has_certURD_final has_certPTSD_final has_certCancer_final has_certGERD_final
+mi register imputed age_at_jhu_int race_final education_final bmi_Group_final ///
+                    smoking_status_final exposure_final 
+
+mi impute chained ///
+    (regress) age_at_jhu_int ///
+    (mlogit, augment) race_final smoking_status_final ///
+    (ologit) education_final bmi_Group_final exposure_final ///
+    = i.gender_final i.any_er_hos_final i.has_any_ment_cond i.has_any_BUT_mentalhealth i.has_certURD_final i.has_certPTSD_final i.has_certCancer_final i.has_certGERD_final, ///
+    add(20) rseed(12345) force
+
+mi estimate, or: logistic any_er_hos_final i.gender_final age_at_jhu_int i.race_final i.education_final i.bmi_Group_final i.smoking_status_final i.exposure_final i.jhu_binary_final i.has_certCancer_final
+
+mi estimate, or: logistic any_er_hos_final i.gender_final age_at_jhu_int i.race_final i.education_final i.bmi_Group_final i.smoking_status_final i.exposure_final i.jhu_binary_final i.has_certGERD_final
+
+mi estimate, or: logistic any_er_hos_final i.gender_final age_at_jhu_int i.race_final i.education_final i.bmi_Group_final i.smoking_status_final i.exposure_final i.jhu_binary_final i.has_certPTSD_final
+
+mi estimate, or: logistic any_er_hos_final i.gender_final age_at_jhu_int i.race_final i.education_final i.bmi_Group_final i.smoking_status_final i.exposure_final i.jhu_binary_final i.has_certURD_final
+
+mi estimate, or: logistic any_er_hos_final i.gender_final age_at_jhu_int i.race_final i.education_final i.bmi_Group_final i.smoking_status_final i.exposure_final i.jhu_binary_final i.has_any_ment_cond
+
+mi estimate, or: logistic any_er_hos_final i.gender_final age_at_jhu_int i.race_final i.education_final i.bmi_Group_final i.smoking_status_final i.exposure_final i.jhu_binary_final i.has_any_BUT_mentalhealth
+
+
+//event rates 
+
+foreach v in has_any_ment_cond has_any_BUT_mentalhealth has_any_cert_final has_certURD_final ///
+has_certSRC_final has_certSP_final has_certSA_final has_certPTSD_final ///
+has_certOAD_final has_certILD_final has_certGERD_final has_certEXT_final ///
+has_certDEP_final has_certCancer_final has_certANX_final {
+
+    di "-----------------------------"
+    di "`v'"
+    tab any_er_hos_final `v', row
+}
+
+foreach cert in Cancer GERD PTSD URD {
+    mi estimate, or: logistic any_er_hos_final ///
+        i.gender_final age_at_jhu_int ///
+        i.race_final i.education_final i.bmi_Group_final ///
+        i.smoking_status_final i.exposure_final ///
+        i.has_any_cert_final i.jhu_binary_final ///
+        i.has_cert`cert'_final
+}
+
+mi estimate, or: logistic any_er_hos_final ///
+    i.gender_final age_at_jhu_int ///
+    i.race_final i.education_final i.bmi_Group_final ///
+    i.smoking_status_final i.exposure_final ///
+    i.has_any_cert_final i.jhu_binary_final ///
+    i.has_any_ment_cond
+
+
+translate "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\output\output 012626.smcl" "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\output\output 012626.pdf"
+
+log close 
+
+
+
+
+
+
+
+
+
+H="+ JHU frailty outcome & certifications"
+
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\all done 0919.dta",clear 
+
+gen bmi_Group_combined = bmi_Group_final
+replace bmi_Group_combined = "Normal/Underweight" if inlist(bmi_Group_final, "Normal", "Underweight")
+drop bmi_Group_final
+rename bmi_Group_combined bmi_Group_final
+
+gen exposure_combined = exposure_final
+replace exposure_combined = "High/Very High" if inlist(exposure_final, "High", "Very High")
+drop exposure_final
+rename exposure_combined exposure_final
+
+gen education_recode = education_final
+
+replace education_recode = "<=High school" if inlist(education_final, "<HS Grad", "HS Grad")
+replace education_recode = "Some college"  if education_final == "<BA/BS"
+replace education_recode = "College"       if inlist(education_final, "BA/BS", "Grad Sch")
+replace education_recode = ""               if education_final == "Unknown"
+
+drop education_final
+rename education_recode education_final
+
+replace race_final = "" if race_final == "Unknown"
+
+
+
+keep if !missing(jhu_source)
+
+//Overall - demo +grdc data 
+tab jhu_cat_final,m
+tab frail_cat_final,m
+tab gender_final,m
+tab age_group,m
+tab race_final,m
+tab smoking_status_final,m
+tab bmi_Group_final,m
+tab soc_4_categories_final,m
+tab education_final,m
+tab exposure_final,m
+
+tab adl_cat_final,m	
+tab callahan_cat_final,m
+tab moca_cat_final,m
+tab fesi_cat_final,m
+tab fall_risk_final,m
+tab er_stay_6month_final,m
+tab er_stay_final,m
+tab hospital_stay_6month_final,m
+tab hospital_stay_final,m
+
+ds has_*_final
+foreach v of varlist `r(varlist)' {
+    di "=============================="
+    di "Tabulation of `v' vs jhu_cat_final"
+    tab `v', missing
+}
+
+//certification 
+
+foreach v in has_certANX_final has_certCancer_final has_certDEP_final ///
+            has_certEXT_final has_certGERD_final has_certILD_final ///
+            has_certOAD_final has_certPTSD_final has_certSA_final ///
+            has_certSP_final has_certSRC_final has_certURD_final has_any_cert_final {
+    tab `v', m
+}
+
+//stratify by er & hospital stay 
+
+gen any_er_hos_final = .
+replace any_er_hos_final = 1 if hospital_stay_final == 1 | er_stay_final == 1
+replace any_er_hos_final = 0 if hospital_stay_final == 0 & er_stay_final == 0
+
+tab any_er_hos_final, m
+
+*========================
+* Table 1 stratified by any_er_hos_final
+*========================
+
+tab any_er_hos_final, m
+
+foreach v in jhu_cat_final frail_cat_final gender_final age_group ///
+            race_final smoking_status_final bmi_Group_final ///
+            soc_4_categories_final education_final exposure_final ///
+            adl_cat_final callahan_cat_final moca_cat_final ///
+            fesi_cat_final fall_risk_final ///
+            er_stay_6month_final er_stay_final ///
+            hospital_stay_6month_final hospital_stay_final {
+    
+    di "======================================"
+    di "Variable: `v' by any_er_hos_final"
+    tab `v' any_er_hos_final, chi2 exact
+}
+
+*========================
+* Certification variables
+*========================
+foreach v in has_certANX_final has_certCancer_final has_certDEP_final ///
+            has_certEXT_final has_certGERD_final has_certILD_final ///
+            has_certOAD_final has_certPTSD_final has_certSA_final ///
+            has_certSP_final has_certSRC_final has_certURD_final ///
+            has_any_cert_final {
+    
+    di "======================================"
+    di "Variable: `v' by any_er_hos_final"
+    tab `v' any_er_hos_final, chi2 exact
+}
+
+//table2 
+foreach v in has_certANX_final has_certCancer_final has_certDEP_final ///
+            has_certEXT_final has_certGERD_final has_certILD_final ///
+            has_certOAD_final has_certPTSD_final has_certSA_final ///
+            has_certSP_final has_certSRC_final has_certURD_final ///
+            has_any_cert_final any_er_hos_final {
+
+    di "======================================"
+    di "Variable: `v' by jhu_cat_final"
+    tab `v' jhu_cat_final, chi2 exact
+}
+
+//chart for certifications 
+preserve
+
+local certs has_certANX_final has_certCancer_final has_certDEP_final ///
+            has_certEXT_final has_certGERD_final has_certILD_final ///
+            has_certOAD_final has_certPTSD_final has_certSA_final ///
+            has_certSP_final has_certSRC_final has_certURD_final ///
+            has_any_cert_final
+
+keep `certs'
+gen id = _n
+reshape long has_, i(id) j(cert) string
+
+collapse (mean) pct_yes = has_, by(cert)
+replace pct_yes = 100*pct_yes
+
+replace cert = subinstr(cert,"has_cert","",.)
+replace cert = subinstr(cert,"_final","",.)
+
+graph hbar pct_yes, over(cert, sort(1) descending) ///
+    ytitle("Percent (%)") ///
+    title("Certification prevalence") ///
+    blabel(bar, format(%4.1f) position(outside))
+	
+
+restore
+
+
+	
+
+******************************************************
+//subgroup 
+
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\all done 0919.dta",clear 
+
+gen bmi_Group_combined = bmi_Group_final
+replace bmi_Group_combined = "Normal/Underweight" if inlist(bmi_Group_final, "Normal", "Underweight")
+drop bmi_Group_final
+rename bmi_Group_combined bmi_Group_final
+
+gen exposure_combined = exposure_final
+replace exposure_combined = "High/Very High" if inlist(exposure_final, "High", "Very High")
+drop exposure_final
+rename exposure_combined exposure_final
+
+gen education_recode = education_final
+
+replace education_recode = "<=High school" if inlist(education_final, "<HS Grad", "HS Grad")
+replace education_recode = "Some college"  if education_final == "<BA/BS"
+replace education_recode = "College"       if inlist(education_final, "BA/BS", "Grad Sch")
+replace education_recode = ""               if education_final == "Unknown"
+
+drop education_final
+rename education_recode education_final
+
+replace race_final = "" if race_final == "Unknown"
+
+keep if !missing(jhu_source)
+
+gen any_er_hos_final = .
+replace any_er_hos_final = 1 if hospital_stay_final == 1 | er_stay_final == 1
+replace any_er_hos_final = 0 if hospital_stay_final == 0 & er_stay_final == 0
+
+tab any_er_hos_final, m
+
+
+gen jhu_binary_final = .
+replace jhu_binary_final = 0 if jhu_cat_final == 0
+replace jhu_binary_final = 1 if inlist(jhu_cat_final, 1, 2)
+
+label define jhu_bin 0 "Not frail" 1 "Pre-frail/Frail"
+label values jhu_binary_final jhu_bin
+tab jhu_binary_final,m
+
+gen has_any_mental_condition_final = has_certPTSD_final == 1 | has_certANX_final == 1 | has_certDEP_final == 1 | has_certSA_final
+rename has_any_mental_condition_final has_any_ment_cond
+
+gen has_any_BUT_mentalhealth = has_any_cert_final == 1 & has_any_ment_cond == 0
+
+
+
+foreach v in gender_final race_final education_final bmi_Group_final ///
+            smoking_status_final exposure_final {
+    encode `v', gen(`v'_num)
+    drop `v'
+    rename `v'_num `v'
+}
+
+fvset base 3 exposure_final
+fvset base 3 smoking_status_final
+fvset base 4 race_final
+fvset base 2 gender_final
+
+
+//imputation 
+mi set mlong
+
+mi register regular jhu_binary_final gender_final has_any_ment_cond has_any_BUT_mentalhealth has_certURD_final has_certPTSD_final has_certCancer_final has_certGERD_final
+mi register imputed age_at_jhu_int race_final education_final bmi_Group_final ///
+                    smoking_status_final exposure_final 
+
+mi impute chained ///
+    (regress) age_at_jhu_int ///
+    (mlogit, augment) race_final smoking_status_final ///
+    (ologit) education_final bmi_Group_final exposure_final ///
+    = i.gender_final i.jhu_binary_final i.has_any_ment_cond i.has_any_BUT_mentalhealth i.has_certURD_final i.has_certPTSD_final i.has_certCancer_final i.has_certGERD_final, ///
+    add(20) rseed(12345) force
+
+mi estimate, or: logistic jhu_binary_final i.gender_final age_at_jhu_int i.race_final i.education_final i.bmi_Group_final i.smoking_status_final i.exposure_final i.has_certCancer_final
+
+mi estimate, or: logistic jhu_binary_final i.gender_final age_at_jhu_int i.race_final i.education_final i.bmi_Group_final i.smoking_status_final i.exposure_final i.has_certGERD_final
+
+mi estimate, or: logistic jhu_binary_final i.gender_final age_at_jhu_int i.race_final i.education_final i.bmi_Group_final i.smoking_status_final i.exposure_final i.has_certPTSD_final
+
+mi estimate, or: logistic jhu_binary_final i.gender_final age_at_jhu_int i.race_final i.education_final i.bmi_Group_final i.smoking_status_final i.exposure_final i.has_certURD_final
+
+mi estimate, or: logistic jhu_binary_final i.gender_final age_at_jhu_int i.race_final i.education_final i.bmi_Group_final i.smoking_status_final i.exposure_final i.has_any_ment_cond
+
+mi estimate, or: logistic jhu_binary_final i.gender_final age_at_jhu_int i.race_final i.education_final i.bmi_Group_final i.smoking_status_final i.exposure_final i.has_any_BUT_mentalhealth
+
+
+
+
+
+
+
+
+
+
+
+H="conference poster"
+log using "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\output\output 021326.smcl",replace 
+
+use "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\int data\all done 0919.dta",clear 
+
+gen bmi_Group_combined = bmi_Group_final
+replace bmi_Group_combined = "Normal/Underweight" if inlist(bmi_Group_final, "Normal", "Underweight")
+drop bmi_Group_final
+rename bmi_Group_combined bmi_Group_final
+
+gen exposure_combined = exposure_final
+replace exposure_combined = "High/Very High" if inlist(exposure_final, "High", "Very High")
+drop exposure_final
+rename exposure_combined exposure_final
+
+gen education_recode = education_final
+
+replace education_recode = "<=High school" if inlist(education_final, "<HS Grad", "HS Grad")
+replace education_recode = "Some college"  if education_final == "<BA/BS"
+replace education_recode = "College"       if inlist(education_final, "BA/BS", "Grad Sch")
+replace education_recode = ""               if education_final == "Unknown"
+
+drop education_final
+rename education_recode education_final
+
+replace race_final = "" if race_final == "Unknown"
+
+
+
+keep if !missing(jhu_source)
+
+gen jhu_binary_final = .
+replace jhu_binary_final = 0 if jhu_cat_final == 0
+replace jhu_binary_final = 1 if inlist(jhu_cat_final, 1, 2)
+
+label define frailbin 0 "Not Frail" 1 "Pre-Frail/Frail"
+label values jhu_binary_final frailbin
+tab jhu_binary_final
+
+
+
+//table 1 
+tab jhu_cat_final jhu_binary_final, col missing chi2
+tab frail_cat_final jhu_binary_final, col missing chi2
+tab gender_final jhu_binary_final, col missing chi2
+tab age_group jhu_binary_final, col missing chi2
+tab race_final jhu_binary_final, col missing chi2
+tab smoking_status_final jhu_binary_final, col missing chi2
+tab bmi_Group_final jhu_binary_final, col missing chi2
+tab soc_4_categories_final jhu_binary_final, col missing chi2
+tab education_final jhu_binary_final, col missing chi2
+tab exposure_final jhu_binary_final, col missing chi2
+
+tab adl_cat_final jhu_binary_final, col missing chi2
+tab callahan_cat_final jhu_binary_final, col missing chi2
+tab moca_cat_final jhu_binary_final, col missing chi2
+tab fesi_cat_final jhu_binary_final, col missing chi2
+
+replace fall_risk_final = 1 if inlist(record_id_main, ///
+    67, 81, 91, 2095, 3559, 4411, 4839, 4858, 107)
+
+replace fall_risk_final = 0 if record_id_main == 39
+
+tab fall_risk_final jhu_binary_final, col missing chi2
+tab er_stay_6month_final jhu_binary_final, col missing chi2
+tab er_stay_final jhu_binary_final, col missing chi2
+tab hospital_stay_6month_final jhu_binary_final, col missing chi2
+tab hospital_stay_final jhu_binary_final, col missing chi2
+
+ds has_*_final
+foreach v of varlist `r(varlist)' {
+    di "=============================="
+    di "Tabulation of `v' by jhu_binary_final"
+    tab `v' jhu_binary_final, col missing chi2
+}
+
+//table2 
+
+ds gender_final race_final education_final bmi_Group_final smoking_status_final exposure_final has_any_cert_final, has(type string)
+di "`r(varlist)'"
+
+foreach v in gender_final race_final education_final bmi_Group_final smoking_status_final exposure_final has_any_cert_final soc_4_categories_final {
+    capture confirm string variable `v'
+    if !_rc {
+        encode `v', gen(`v'_n)
+        drop `v'
+        rename `v'_n `v'
+    }
+}
+
+fvset base 3 exposure_final
+fvset base 3 smoking_status_final
+fvset base 4 race_final
+fvset base 2 gender_final
+set seed 12345
+
+mi set mlong
+
+mi register regular gender_final jhu_binary_final soc_4_categories_final
+mi register imputed age_at_jhu_int race_final education_final bmi_Group_final ///
+                    smoking_status_final exposure_final 
+
+mi impute chained ///
+    (regress) age_at_jhu_int ///
+    (mlogit, augment) race_final smoking_status_final ///
+    (ologit) education_final bmi_Group_final exposure_final ///
+    = i.gender_final i.jhu_binary_final has_any_cert_final soc_4_categories_final, add(20) rseed(12345) force
+
+	
+
+
+
+mi estimate, or: logistic jhu_binary_final i.gender_final age_at_jhu_int ///
+    i.race_final i.education_final i.bmi_Group_final ///
+    i.smoking_status_final i.exposure_final i.has_any_cert_final i.adl_cat_final ///
+	i.moca_cat_final i.fall_risk_final i.soc_4_categories_final
+
+estimates store m1
+
+coefplot m1, eform drop(_cons) ///
+    xscale(log) ///
+    xline(1, lpattern(dash) lcolor(gs8)) ///
+    ciopts(recast(rcap) lwidth(medthin)) ///
+    msymbol(D) msize(medium) ///
+    xlabel(0.25 0.5 1 2 4 8, grid format(%3.2f)) ///
+    xtitle("Adjusted Odds Ratio (95% CI)") ///
+    title("Factors Associated with Pre-Frailty/Frailty") ///
+    yscale(reverse) ///
+    coeflabels( ///
+        1.gender_final = "Sex – Female" ///
+        age_at_jhu_int = "Age" ///
+        1.race_final = "Race – Asian" ///
+        2.race_final = "Race – Black" ///
+        3.race_final = "Race – Other" ///
+        2.education_final = "Education – College" ///
+        3.education_final = "Education – Some college" ///
+        2.bmi_Group_final = "BMI – Obese" ///
+        3.bmi_Group_final = "BMI – Overweight" ///
+        1.smoking_status_final = "Smoking – Current" ///
+        2.smoking_status_final = "Smoking – Former" ///
+        1.exposure_final = "Exposure – High/Very High" ///
+        2.exposure_final = "Exposure – Intermediate" ///
+        1.has_any_cert_final = "Any certification" ///
+        1.adl_cat_final = "ADL category 1" ///
+        2.adl_cat_final = "ADL category 2" ///
+        1.moca_cat_final = "MoCA category 1" ///
+        2.moca_cat_final = "MoCA category 2" ///
+        1.fall_risk_final = "Fall risk" ///
+        1.soc_4_categories_final = "Occupation – Protective" ///
+        2.soc_4_categories_final = "Occupation – SOC37&49" ///
+        3.soc_4_categories_final = "Occupation – Residual" ///
+    )
+
+
+
+translate "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\output\output 021326.smcl" "J:\Geriatrics\Research\Active Studies\Ko, WTC II\Data Analysis\Files from Yihan\output\output 021326.pdf"
+
+log close 
