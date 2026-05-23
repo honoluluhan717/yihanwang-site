@@ -1,5 +1,75 @@
 [
   {
+    "objectID": "wtc-frailty.html",
+    "href": "wtc-frailty.html",
+    "title": "WTC First Responders Frailty Study",
+    "section": "",
+    "text": "This ongoing study examines frailty trajectories among World Trade Center (WTC) first responders — a unique cohort with well-characterized environmental exposures and long-term health monitoring. As lead biostatistician, I am responsible for the full statistical analysis plan, modeling strategy, and results interpretation."
+  },
+  {
+    "objectID": "wtc-frailty.html#overview",
+    "href": "wtc-frailty.html#overview",
+    "title": "WTC First Responders Frailty Study",
+    "section": "",
+    "text": "This ongoing study examines frailty trajectories among World Trade Center (WTC) first responders — a unique cohort with well-characterized environmental exposures and long-term health monitoring. As lead biostatistician, I am responsible for the full statistical analysis plan, modeling strategy, and results interpretation."
+  },
+  {
+    "objectID": "wtc-frailty.html#research-questions",
+    "href": "wtc-frailty.html#research-questions",
+    "title": "WTC First Responders Frailty Study",
+    "section": "Research Questions",
+    "text": "Research Questions\n\nWhat is the prevalence of frailty in WTC first responders, and how has it changed over time?\nWhat are the key predictors and risk factors for frailty in this population?\nHow does frailty relate to downstream health outcomes including hospitalizations, functional decline, and mortality?"
+  },
+  {
+    "objectID": "wtc-frailty.html#study-design",
+    "href": "wtc-frailty.html#study-design",
+    "title": "WTC First Responders Frailty Study",
+    "section": "Study Design",
+    "text": "Study Design\nLongitudinal / repeated measures — participants assessed at multiple time points, enabling analysis of frailty onset, progression, and reversal over time."
+  },
+  {
+    "objectID": "wtc-frailty.html#statistical-methods",
+    "href": "wtc-frailty.html#statistical-methods",
+    "title": "WTC First Responders Frailty Study",
+    "section": "Statistical Methods",
+    "text": "Statistical Methods\n\n\n\n\n\n\n\nMethod\nPurpose\n\n\n\n\nDescriptive statistics\nFrailty prevalence and sample characteristics at each wave\n\n\nLongitudinal regression\nFrailty trajectories over time, adjusting for covariates\n\n\nMixed effects models\nWithin-person change accounting for repeated measures\n\n\nSurvival analysis\nTime to frailty onset and frailty-related outcomes\n\n\nCausal inference\nEstimating effect of WTC exposures on frailty risk"
+  },
+  {
+    "objectID": "wtc-frailty.html#my-role",
+    "href": "wtc-frailty.html#my-role",
+    "title": "WTC First Responders Frailty Study",
+    "section": "My Role",
+    "text": "My Role\n\nDesigned and wrote the statistical analysis plan (SAP)\nBuilt and maintained all Stata analysis pipelines\nConducted all primary and sensitivity analyses\nInterpreted and communicated results to clinical collaborators\nContributed to manuscript writing for methods sections"
+  },
+  {
+    "objectID": "wtc-frailty.html#tools-software",
+    "href": "wtc-frailty.html#tools-software",
+    "title": "WTC First Responders Frailty Study",
+    "section": "Tools & Software",
+    "text": "Tools & Software\n\nStata — primary analysis environment\nData cleaning, harmonization, and longitudinal linkage of clinical assessment data"
+  },
+  {
+    "objectID": "wtc-frailty.html#code",
+    "href": "wtc-frailty.html#code",
+    "title": "WTC First Responders Frailty Study",
+    "section": "Code",
+    "text": "Code\nCode will be added as the study progresses toward publication. All scripts include inline comments explaining analytical decisions.\n📂 View Repository on GitHub"
+  },
+  {
+    "objectID": "wtc-frailty.html#status",
+    "href": "wtc-frailty.html#status",
+    "title": "WTC First Responders Frailty Study",
+    "section": "Status",
+    "text": "Status\n🟡 Ongoing — analyses done, manuscript in preparation."
+  },
+  {
+    "objectID": "wtc-frailty.html#notes-analytical-decisions",
+    "href": "wtc-frailty.html#notes-analytical-decisions",
+    "title": "WTC First Responders Frailty Study",
+    "section": "Notes & Analytical Decisions",
+    "text": "Notes & Analytical Decisions\n\nFrailty operationalization: (add your frailty definition/index here — e.g. Fried phenotype, deficit accumulation index)\nMissing data approach: (multiple imputation)\nCovariate selection: (note key confounders included and rationale)"
+  },
+  {
     "objectID": "slides.html",
     "href": "slides.html",
     "title": "Slides & Presentations",
@@ -119,10 +189,73 @@
     "text": "Teaching & Workshop Materials\n\nBase R for Beginners\nLecture notes developed for the China House data camp — introduces R fundamentals to students with no prior programming experience.\n\nView on GitHub\n\n\n\nHarvard IQSS Data Science Workshops\nWorkshop materials from the Institute for Quantitative Social Science.\n\nView on GitHub"
   },
   {
+    "objectID": "research.html#ongoing-projects",
+    "href": "research.html#ongoing-projects",
+    "title": "Research & Code",
+    "section": "Ongoing Projects",
+    "text": "Ongoing Projects\n\nWTC First Responders Frailty Study\nLongitudinal study of frailty prevalence, predictors, risk factors, and health outcomes in World Trade Center first responders. Lead biostatistician — responsible for statistical analysis plan, all Stata pipelines, and results interpretation.\n\nMethods: Mixed effects models, survival analysis, causal inference, longitudinal regression\nTools: Stata\nStatus: 🟡 Ongoing — manuscript in preparation\nView Full Project Page\n\n\n\nADRD Drug Repurposing Study\nUsing large-scale CMS Medicare & Medicaid claims data to identify candidate drugs for Alzheimer’s Disease and Related Dementias (ADRD) repurposing. Lead analyst applying causal inference methods to observational claims data.\n\nMethods: Causal inference, pharmacoepidemiology, claims data analysis\nTools: Stata, SQL\nStatus: 🟡 In progress\n\n\n\nPalliative Care at Home RCT\nRandomized controlled trial evaluating a home-based palliative care intervention. Responsible for research database management, CONSORT diagram design, and statistical analysis planning.\n\nMethods: RCT design, CONSORT reporting, longitudinal outcomes\nTools: Stata, R\nStatus: 🟡 Recruitment ongoing"
+  },
+  {
     "objectID": "research.html#in-progress",
     "href": "research.html#in-progress",
     "title": "Research & Code",
     "section": "In Progress",
     "text": "In Progress\n\nPython reimplementation of CMS survival analysis pipeline\nXGBoost model for healthcare utilization prediction\nSHAP explainability walkthrough for clinical ML models"
+  },
+  {
+    "objectID": "wtc-frailty-README.html",
+    "href": "wtc-frailty-README.html",
+    "title": "WTC First Responders Frailty Study",
+    "section": "",
+    "text": "Status: Ongoing | Role: Lead Biostatistician | Software: Stata\n\n\nThis repository contains the statistical analysis code for a longitudinal study examining frailty trajectories among World Trade Center (WTC) first responders. The study investigates frailty prevalence, predictors, risk factors, and health outcomes in this well-characterized cohort with long-term follow-up data.\n\n\n\n\nWhat is the prevalence of frailty in WTC first responders, and how has it changed over time?\nWhat are the key predictors and risk factors for frailty in this population?\nHow does frailty relate to downstream health outcomes including hospitalizations, functional decline, and mortality?\n\n\n\n\nLongitudinal / repeated measures — participants assessed at multiple time points enabling analysis of frailty onset, progression, and reversal over time.\n\n\n\n\nDescriptive statistics (frailty prevalence and sample characteristics)\nLongitudinal regression (frailty trajectories over time)\nMixed effects models (within-person change)\nSurvival analysis (time to frailty onset and outcomes)\nCausal inference (effect of WTC exposures on frailty risk)\n\n\n\n\nwtc-frailty/\n├── 01_data_cleaning/       # Data harmonization and cleaning scripts\n├── 02_descriptive/         # Descriptive statistics and tables\n├── 03_longitudinal/        # Mixed effects and trajectory models\n├── 04_survival/            # Time-to-event analyses\n├── 05_causal/              # Causal inference models\n├── 06_sensitivity/         # Sensitivity and robustness analyses\n└── notes/                  # Analytical decision notes and SAP\n\n\n\nAll scripts are written in Stata. Run in order (01 → 06). Each script includes inline comments explaining analytical decisions and model specifications.\n\n\n\nYihan Wang, PhD · honoluluhan717.github.io/yihanwang-site · LinkedIn"
+  },
+  {
+    "objectID": "wtc-frailty-README.html#overview",
+    "href": "wtc-frailty-README.html#overview",
+    "title": "WTC First Responders Frailty Study",
+    "section": "",
+    "text": "This repository contains the statistical analysis code for a longitudinal study examining frailty trajectories among World Trade Center (WTC) first responders. The study investigates frailty prevalence, predictors, risk factors, and health outcomes in this well-characterized cohort with long-term follow-up data."
+  },
+  {
+    "objectID": "wtc-frailty-README.html#research-questions",
+    "href": "wtc-frailty-README.html#research-questions",
+    "title": "WTC First Responders Frailty Study",
+    "section": "",
+    "text": "What is the prevalence of frailty in WTC first responders, and how has it changed over time?\nWhat are the key predictors and risk factors for frailty in this population?\nHow does frailty relate to downstream health outcomes including hospitalizations, functional decline, and mortality?"
+  },
+  {
+    "objectID": "wtc-frailty-README.html#study-design",
+    "href": "wtc-frailty-README.html#study-design",
+    "title": "WTC First Responders Frailty Study",
+    "section": "",
+    "text": "Longitudinal / repeated measures — participants assessed at multiple time points enabling analysis of frailty onset, progression, and reversal over time."
+  },
+  {
+    "objectID": "wtc-frailty-README.html#statistical-methods",
+    "href": "wtc-frailty-README.html#statistical-methods",
+    "title": "WTC First Responders Frailty Study",
+    "section": "",
+    "text": "Descriptive statistics (frailty prevalence and sample characteristics)\nLongitudinal regression (frailty trajectories over time)\nMixed effects models (within-person change)\nSurvival analysis (time to frailty onset and outcomes)\nCausal inference (effect of WTC exposures on frailty risk)"
+  },
+  {
+    "objectID": "wtc-frailty-README.html#repository-structure",
+    "href": "wtc-frailty-README.html#repository-structure",
+    "title": "WTC First Responders Frailty Study",
+    "section": "",
+    "text": "wtc-frailty/\n├── 01_data_cleaning/       # Data harmonization and cleaning scripts\n├── 02_descriptive/         # Descriptive statistics and tables\n├── 03_longitudinal/        # Mixed effects and trajectory models\n├── 04_survival/            # Time-to-event analyses\n├── 05_causal/              # Causal inference models\n├── 06_sensitivity/         # Sensitivity and robustness analyses\n└── notes/                  # Analytical decision notes and SAP"
+  },
+  {
+    "objectID": "wtc-frailty-README.html#how-to-use",
+    "href": "wtc-frailty-README.html#how-to-use",
+    "title": "WTC First Responders Frailty Study",
+    "section": "",
+    "text": "All scripts are written in Stata. Run in order (01 → 06). Each script includes inline comments explaining analytical decisions and model specifications."
+  },
+  {
+    "objectID": "wtc-frailty-README.html#contact",
+    "href": "wtc-frailty-README.html#contact",
+    "title": "WTC First Responders Frailty Study",
+    "section": "",
+    "text": "Yihan Wang, PhD · honoluluhan717.github.io/yihanwang-site · LinkedIn"
   }
 ]
