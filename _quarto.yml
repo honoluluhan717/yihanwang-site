@@ -13,8 +13,6 @@ website:
         text: Slides
       - href: about.qmd
         text: About
-      - href: wtc-frailty.qmd
-        text: WTC Frailty Study
   page-footer:
     center: "© 2026 Yihan Wang · Mount Sinai Hospital"
 
