@@ -161,6 +161,76 @@
     "text": "Contact\n\n💼 LinkedIn\n💻 GitHub\n📧 honoluluhan717@gmail.com\n\n\nI’m open to roles in health data science, real-world evidence, and applied ML in clinical or payer settings."
   },
   {
+    "objectID": "adrd-repurposing.html",
+    "href": "adrd-repurposing.html",
+    "title": "ADRD Drug Repurposing Study",
+    "section": "",
+    "text": "This ongoing study leverages large-scale CMS Medicare claims data to identify candidate drugs for repurposing in Alzheimer’s Disease and Related Dementias (ADRD). As lead analyst, I am responsible for the full analytical pipeline — from data extraction and harmonization through causal inference modeling and results interpretation.\nDrug repurposing using real-world claims data offers a powerful, cost-effective approach to identifying existing medications that may slow cognitive decline or reduce ADRD-related outcomes in older adults."
+  },
+  {
+    "objectID": "adrd-repurposing.html#overview",
+    "href": "adrd-repurposing.html#overview",
+    "title": "ADRD Drug Repurposing Study",
+    "section": "",
+    "text": "This ongoing study leverages large-scale CMS Medicare claims data to identify candidate drugs for repurposing in Alzheimer’s Disease and Related Dementias (ADRD). As lead analyst, I am responsible for the full analytical pipeline — from data extraction and harmonization through causal inference modeling and results interpretation.\nDrug repurposing using real-world claims data offers a powerful, cost-effective approach to identifying existing medications that may slow cognitive decline or reduce ADRD-related outcomes in older adults."
+  },
+  {
+    "objectID": "adrd-repurposing.html#research-questions",
+    "href": "adrd-repurposing.html#research-questions",
+    "title": "ADRD Drug Repurposing Study",
+    "section": "Research Questions",
+    "text": "Research Questions\n\nWhich existing medications are associated with reduced ADRD incidence or progression in Medicare beneficiaries?\nCan causal inference methods applied to observational claims data provide credible evidence for drug repurposing candidates?\nWhat is the role of comorbidities and polypharmacy in moderating these associations?"
+  },
+  {
+    "objectID": "adrd-repurposing.html#data",
+    "href": "adrd-repurposing.html#data",
+    "title": "ADRD Drug Repurposing Study",
+    "section": "Data",
+    "text": "Data\nCMS Medicare Claims Data - Large-scale administrative claims covering Medicare beneficiaries - Includes inpatient, outpatient, carrier, and prescription drug (Part D) claims - Data harmonization, linkage, and cleaning performed as part of analytical pipeline"
+  },
+  {
+    "objectID": "adrd-repurposing.html#statistical-methods",
+    "href": "adrd-repurposing.html#statistical-methods",
+    "title": "ADRD Drug Repurposing Study",
+    "section": "Statistical Methods",
+    "text": "Statistical Methods\n\n\n\n\n\n\n\nMethod\nPurpose\n\n\n\n\nCausal inference\nEstimating drug effects using observational claims data\n\n\nPropensity score methods\nControlling for confounding by indication\n\n\nSurvival analysis\nTime to ADRD diagnosis or progression\n\n\nComorbidity adjustment\nBynum algorithm for comorbidity classification\n\n\nRegression modeling\nAssociation between drug exposure and outcomes"
+  },
+  {
+    "objectID": "adrd-repurposing.html#my-role",
+    "href": "adrd-repurposing.html#my-role",
+    "title": "ADRD Drug Repurposing Study",
+    "section": "My Role",
+    "text": "My Role\n\nLead analyst — full responsibility for analytical pipeline and results\nData extraction, harmonization, and cleaning from CMS Medicare claims\nStatistical analysis plan design and execution\nComorbidity classification using the Bynum algorithm\nResults interpretation and manuscript contribution"
+  },
+  {
+    "objectID": "adrd-repurposing.html#tools-software",
+    "href": "adrd-repurposing.html#tools-software",
+    "title": "ADRD Drug Repurposing Study",
+    "section": "Tools & Software",
+    "text": "Tools & Software\n\nStata · R · SAS — multiple tools used across pipeline stages\nCMS Medicare claims data infrastructure\nBynum comorbidity algorithm implementation"
+  },
+  {
+    "objectID": "adrd-repurposing.html#repository-structure",
+    "href": "adrd-repurposing.html#repository-structure",
+    "title": "ADRD Drug Repurposing Study",
+    "section": "Repository Structure",
+    "text": "Repository Structure\nadrd-drug-repurposing/\n├── Background/       # Study background and aims\n├── Bynum Algo/       # Comorbidity classification algorithm\n├── Code/             # Primary analysis scripts\n├── Codebook/         # Variable definitions and data dictionary\n├── Comorbidities/    # Comorbidity analysis files\n├── Misc/             # Supplementary materials\n├── Output/           # Results and output tables\n└── Paper/            # Manuscript drafts\n📂 View Repository on GitHub"
+  },
+  {
+    "objectID": "adrd-repurposing.html#status",
+    "href": "adrd-repurposing.html#status",
+    "title": "ADRD Drug Repurposing Study",
+    "section": "Status",
+    "text": "Status\n🟡 In Progress — analyses ongoing, manuscript in preparation."
+  },
+  {
+    "objectID": "adrd-repurposing.html#notes-analytical-decisions",
+    "href": "adrd-repurposing.html#notes-analytical-decisions",
+    "title": "ADRD Drug Repurposing Study",
+    "section": "Notes & Analytical Decisions",
+    "text": "Notes & Analytical Decisions\nKey methodological choices documented for collaborators and technical reviewers.\n\nDrug exposure definition: (add your exposure definition here)\nADRD outcome definition: (add your outcome definition — ICD codes, etc.)\nComorbidity approach: Bynum algorithm applied to Medicare claims\nMissing data approach: (add your approach)\nSensitivity analyses planned: (list robustness checks)"
+  },
+  {
     "objectID": "research.html",
     "href": "research.html",
     "title": "Research & Code",
@@ -193,7 +263,7 @@
     "href": "research.html#ongoing-projects",
     "title": "Research & Code",
     "section": "Ongoing Projects",
-    "text": "Ongoing Projects\n\nWTC First Responders Frailty Study\nLongitudinal study of frailty prevalence, predictors, risk factors, and health outcomes in World Trade Center first responders. Lead biostatistician — responsible for statistical analysis plan, all Stata pipelines, and results interpretation.\n\nMethods: Mixed effects models, survival analysis, causal inference, longitudinal regression\nTools: Stata\nStatus: 🟡 Ongoing — manuscript in preparation\nView Full Project Page\n\n\n\nADRD Drug Repurposing Study\nUsing large-scale CMS Medicare & Medicaid claims data to identify candidate drugs for Alzheimer’s Disease and Related Dementias (ADRD) repurposing. Lead analyst applying causal inference methods to observational claims data.\n\nMethods: Causal inference, pharmacoepidemiology, claims data analysis\nTools: Stata, SQL\nStatus: 🟡 In progress\n\n\n\nPalliative Care at Home RCT\nRandomized controlled trial evaluating a home-based palliative care intervention. Responsible for research database management, CONSORT diagram design, and statistical analysis planning.\n\nMethods: RCT design, CONSORT reporting, longitudinal outcomes\nTools: Stata, R\nStatus: 🟡 Recruitment ongoing"
+    "text": "Ongoing Projects\n\nWTC First Responders Frailty Study\nLongitudinal study of frailty prevalence, predictors, risk factors, and health outcomes in World Trade Center first responders. Lead biostatistician — responsible for statistical analysis plan, all Stata pipelines, and results interpretation.\n\nMethods: Mixed effects models, survival analysis, causal inference, longitudinal regression\nTools: Stata\nStatus: 🟡 Ongoing — manuscript in preparation\nView Full Project Page\n\n\n\nADRD Drug Repurposing Study\nUsing large-scale CMS Medicare & Medicaid claims data to identify candidate drugs for Alzheimer’s Disease and Related Dementias (ADRD) repurposing. Lead analyst applying causal inference methods to observational claims data.\n\nMethods: Causal inference, pharmacoepidemiology, claims data analysis\nTools: Stata, SQL\nView Full Project Page\n\n\n\nPalliative Care at Home RCT\nRandomized controlled trial evaluating a home-based palliative care intervention. Responsible for research database management, CONSORT diagram design, and statistical analysis planning.\n\nMethods: RCT design, CONSORT reporting, longitudinal outcomes\nTools: Stata, R\nStatus: 🟡 Recruitment ongoing"
   },
   {
     "objectID": "research.html#in-progress",
