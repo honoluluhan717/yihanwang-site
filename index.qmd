@@ -58,7 +58,7 @@ Geriatrics · ADRD · Emergency & Hospital Visit Outcomes · Health Services Res
 
 **[WTC First Responders Frailty Study](wtc-frailty.qmd)** *(Ongoing)* — Lead biostatistician on a clinical study examining frailty trajectories in World Trade Center first responders. Responsible for statistical analysis plan, modeling, and results interpretation.
 
-**ADRD Drug Repurposing Study** *(In Progress)* — Lead analyst using large-scale CMS claims data to identify candidate drugs for Alzheimer's Disease and Related Dementias (ADRD) repurposing. Applying causal inference methods to observational claims data.
+**[ADRD Drug Repurposing Study](adrd-repurposing.qmd)** *(In Progress)* — Lead analyst using large-scale CMS claims data to identify candidate drugs for Alzheimer's Disease and Related Dementias (ADRD) repurposing. Applying causal inference methods to observational claims data.
 
 **Palliative Care at Home RCT** *(Recruitment Ongoing)* — Biostatistician on a randomized controlled trial evaluating a home-based palliative care intervention. Responsible for research database management, CONSORT diagram design, and statistical analysis planning.
 

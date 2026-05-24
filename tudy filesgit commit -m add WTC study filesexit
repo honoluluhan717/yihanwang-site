@@ -1,0 +1,134 @@
+[33mf1037b1[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m add all WTC frailty study files
+ _site/sitemap.xml      | 2 [32m+[m[31m-[m
+ _site/wtc-frailty.html | 2 [32m+[m[31m-[m
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+[33m5e1a55a[m link WTC project to github repo
+ wtc-frailty.qmd | 2 [32m+[m[31m-[m
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+[33mfc8011d[m initial WTC frailty study files
+ _site/about.html              | 8 [32m+++++++[m[31m-[m
+ _site/index.html              | 8 [32m+++++++[m[31m-[m
+ _site/research.html           | 8 [32m+++++++[m[31m-[m
+ _site/slides.html             | 8 [32m+++++++[m[31m-[m
+ _site/wtc-frailty-README.html | 8 [32m+++++++[m[31m-[m
+ _site/wtc-frailty.html        | 8 [32m+++++++[m[31m-[m
+ 6 files changed, 42 insertions(+), 6 deletions(-)
+[33m6fae06a[m add WTC frailty project files
+ .quarto/idx/index.qmd.json    | 2 [32m+[m[31m-[m
+ _quarto.yml                   | 7 [32m+++++[m[31m--[m
+ _site/about.html              | 4 [31m----[m
+ _site/index.html              | 8 [32m++[m[31m------[m
+ _site/research.html           | 4 [31m----[m
+ _site/search.json             | 2 [32m+[m[31m-[m
+ _site/sitemap.xml             | 2 [32m+[m[31m-[m
+ _site/slides.html             | 4 [31m----[m
+ _site/wtc-frailty-README.html | 4 [31m----[m
+ _site/wtc-frailty.html        | 4 [31m----[m
+ 10 files changed, 10 insertions(+), 31 deletions(-)
+[33m5fd9a36[m add WTC frailty project files
+ .quarto/idx/index.qmd.json | 2 [32m+[m[31m-[m
+ _quarto.yml                | 2 [31m--[m
+ _site/index.html           | 2 [32m+[m[31m-[m
+ _site/sitemap.xml          | 2 [32m+[m[31m-[m
+ index.qmd                  | 4 [32m++[m[31m--[m
+ 5 files changed, 5 insertions(+), 7 deletions(-)
+[33maa530bb[m add WTC frailty project files
+ .quarto/idx/research.qmd.json |   2 [32m+[m[31m-[m
+ .quarto/xref/INDEX            |   6 [32m+[m
+ .quarto/xref/ff40550b         |   2 [32m+[m[31m-[m
+ _site/about.html              |  12 [32m+[m[31m-[m
+ _site/index.html              |  12 [32m+[m[31m-[m
+ _site/research.html           |  44 [32m++[m[31m-[m
+ _site/search.json             | 133 [32m+++++++++[m
+ _site/sitemap.xml             |  10 [32m+[m[31m-[m
+ _site/slides.html             |  12 [32m+[m[31m-[m
+ _site/wtc-frailty-README.html | 604 [32m++++++++++++++++++++++++++++++++++++++[m
+ _site/wtc-frailty.html        | 666 [32m++++++++++++++++++++++++++++++++++++++++++[m
+ index.qmd                     |   2 [32m+[m[31m-[m
+ 12 files changed, 1473 insertions(+), 32 deletions(-)
+[33m3ee4568[m add WTC frailty project files
+ _quarto.yml                                        |    9 [32m+[m[31m-[m
+ _site/about.html                                   |    6 [32m+[m
+ _site/index.html                                   |    6 [32m+[m
+ _site/preview.png                                  |  Bin [31m0[m -> [32m52424[m bytes
+ _site/research.html                                |    6 [32m+[m
+ _site/slides.html                                  |    6 [32m+[m
+ research.qmd                                       |   26 [32m+[m
+ wtc-frailty-README.md                              |   46 [32m+[m
+ wtc-frailty.qmd                                    |   72 [32m+[m
+ wtc-frailty/analyses/WTC merged to pilot.otl       | 4025 [32m++++++++++++++++++++[m
+ wtc-frailty/analyses/ags_analyses.otl              |  775 [32m++++[m
+ wtc-frailty/analyses/data pull Jan 2026.otl        | 3191 [32m++++++++++++++++[m
+ wtc-frailty/analyses/poly-pharmacy analyses.otl    |  326 [32m++[m
+ wtc-frailty/background/WTC aims FINAL.docx         |  Bin [31m0[m -> [32m49850[m bytes
+ .../WTC analytic sample consort diagram 0924.xlsx  |  Bin [31m0[m -> [32m25766[m bytes
+ ...ssociated with frailty within the World (1).pdf |  Bin [31m0[m -> [32m574388[m bytes
+ ...cumentation - Data from REDCAP - AS (1).sas.pdf |  Bin [31m0[m -> [32m367664[m bytes
+ ...ect documentation - Data from GRDC - AS.sas.pdf |  Bin [31m0[m -> [32m1189031[m bytes
+ wtc-frailty/source/longit_frailty_index_calc.R     |  241 [32m++[m
+ 19 files changed, 8730 insertions(+), 5 deletions(-)
+[33m489ae9c[m add preview image
+ _quarto.yml | 8 [32m++[m[31m------[m
+ 1 file changed, 2 insertions(+), 6 deletions(-)
+[33mf5873f8[m add preview image
+ Screenshot 2026-05-22 140320.png => preview.png | Bin
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+[33m562a621[m add preview image
+ _quarto.yml | 4 [32m++[m[31m--[m
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+[33m92b8d1b[m fix linkedin opens in new tab
+ _quarto.yml | 7 [32m++++++[m[31m-[m
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+[33mb646ffc[m add preview image
+ .quarto/idx/index.qmd.json       |   2 [32m+[m[31m-[m
+ Screenshot 2026-05-22 140320.png | Bin [31m0[m -> [32m52424[m bytes
+ _quarto.yml                      |   4 [32m+++[m[31m-[m
+ _site/index.html                 |   2 [32m+[m[31m-[m
+ _site/sitemap.xml                |   2 [32m+[m[31m-[m
+ 5 files changed, 6 insertions(+), 4 deletions(-)
+[33maafbad2[m fix linkedin opens in new tab
+ .quarto/idx/index.qmd.json | 2 [32m+[m[31m-[m
+ _site/index.html           | 2 [32m+[m[31m-[m
+ _site/sitemap.xml          | 2 [32m+[m[31m-[m
+ index.qmd                  | 2 [32m+[m[31m-[m
+ 4 files changed, 4 insertions(+), 4 deletions(-)
+[33m9491369[m fix linkedin link
+ .gitignore                             |   2 [32m++[m
+ .quarto/project-cache/deno-kv-file-shm | Bin [31m32768[m -> [32m0[m bytes
+ .quarto/project-cache/deno-kv-file-wal |   0
+ _site/about.html                       |   2 [32m+[m[31m-[m
+ _site/index.html                       |   2 [32m+[m[31m-[m
+ _site/research.html                    |   4 [32m++[m[31m--[m
+ _site/robots.txt                       |   1 [32m+[m
+ _site/search.json                      |  15 [32m++++[m[31m-----------[m
+ _site/sitemap.xml                      |  19 [32m+++++++++++++++++++[m
+ _site/slides.html                      |   2 [32m+[m[31m-[m
+ index.qmd                              |   2 [32m+[m[31m-[m
+ 11 files changed, 32 insertions(+), 17 deletions(-)
+[33m65242d2[m initial site setup
+ .quarto/files/about.qmd                            |    54 [32m+[m
+ .quarto/files/index.qmd                            |    73 [32m+[m
+ .quarto/idx/about.qmd.json                         |     1 [32m+[m
+ .quarto/idx/index.qmd.json                         |     1 [32m+[m
+ .quarto/idx/research.qmd.json                      |     1 [32m+[m
+ .quarto/idx/slides.qmd.json                        |     1 [32m+[m
+ .quarto/preview/lock                               |     1 [32m+[m
+ .../project-cache/bf5b60f8e59b047f99413e09fb957aba |     2 [32m+[m
+ .quarto/project-cache/deno-kv-file                 |   Bin [31m0[m -> [32m36864[m bytes
+ .quarto/project-cache/deno-kv-file-shm             |   Bin [31m0[m -> [32m32768[m bytes
+ .quarto/project-cache/deno-kv-file-wal             |     0
+ .../project-cache/efb0c620c38ca7c31075f463c90f647b |   461 [32m+[m
+ ...fcd0df5eb3-a0f9fd0d421825b736dc1bbcbcba2219.css |    12 [32m+[m
+ .../1fc6bb4f891ff85f.json                          |     1 [32m+[m
+ .../2e875144db6cef4f.json                          |     1 [32m+[m
+ .../3ce95f5e813e1fce                               |     1 [32m+[m
+ .../434cd24416dc8246.json                          |     1 [32m+[m
+ .../56df47e6b957d650                               |     1 [32m+[m
+ .../66543fce32e9c440                               |     1 [32m+[m
+ .../70d76b547d1d8ce6.scss                          | 13410 [32m+++++++++++++++++++[m
+ ...fcb7119191-a0f9fd0d421825b736dc1bbcbcba2219.css |    12 [32m+[m
+ ...eefd08378c-a0f9fd0d421825b736dc1bbcbcba2219.css |    12 [32m+[m
+ .../ce46848bbe5dac80                               |     1 [32m+[m
+ ...42b0071ca7-a0f9fd0d421825b736dc1bbcbcba2219.css |    12 [32m+[m
+ .../f6f0ee49a5b56c10.json                          |     1 [32m+[m
+ .../sass/4a53dfcff7a450820d54ac4ae7bfbee2.css      |    12 [32m+[m

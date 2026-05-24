@@ -1,0 +1,92 @@
+---
+title: "ADRD Drug Repurposing Study"
+---
+
+## Overview
+
+This ongoing study leverages large-scale **CMS Medicare claims data** to identify candidate drugs for repurposing in Alzheimer's Disease and Related Dementias (ADRD). As **lead analyst**, I am responsible for the full analytical pipeline — from data extraction and harmonization through causal inference modeling and results interpretation.
+
+Drug repurposing using real-world claims data offers a powerful, cost-effective approach to identifying existing medications that may slow cognitive decline or reduce ADRD-related outcomes in older adults.
+
+---
+
+## Research Questions
+
+- Which existing medications are associated with reduced ADRD incidence or progression in Medicare beneficiaries?
+- Can causal inference methods applied to observational claims data provide credible evidence for drug repurposing candidates?
+- What is the role of comorbidities and polypharmacy in moderating these associations?
+
+---
+
+## Data
+
+**CMS Medicare Claims Data**
+- Large-scale administrative claims covering Medicare beneficiaries
+- Includes inpatient, outpatient, carrier, and prescription drug (Part D) claims
+- Data harmonization, linkage, and cleaning performed as part of analytical pipeline
+
+---
+
+## Statistical Methods
+
+| Method | Purpose |
+|---|---|
+| Causal inference | Estimating drug effects using observational claims data |
+| Propensity score methods | Controlling for confounding by indication |
+| Survival analysis | Time to ADRD diagnosis or progression |
+| Comorbidity adjustment | Bynum algorithm for comorbidity classification |
+| Regression modeling | Association between drug exposure and outcomes |
+
+---
+
+## My Role
+
+- **Lead analyst** — full responsibility for analytical pipeline and results
+- Data extraction, harmonization, and cleaning from CMS Medicare claims
+- Statistical analysis plan design and execution
+- Comorbidity classification using the **Bynum algorithm**
+- Results interpretation and manuscript contribution
+
+---
+
+## Tools & Software
+
+- **Stata** · **R** · **SAS** — multiple tools used across pipeline stages
+- CMS Medicare claims data infrastructure
+- Bynum comorbidity algorithm implementation
+
+---
+
+## Repository Structure
+
+```
+adrd-drug-repurposing/
+├── Background/       # Study background and aims
+├── Bynum Algo/       # Comorbidity classification algorithm
+├── Code/             # Primary analysis scripts
+├── Codebook/         # Variable definitions and data dictionary
+├── Comorbidities/    # Comorbidity analysis files
+├── Misc/             # Supplementary materials
+├── Output/           # Results and output tables
+└── Paper/            # Manuscript drafts
+```
+
+📂 [View Repository on GitHub](https://github.com/honoluluhan717/adrd-drug-repurposing){target="_blank"}
+
+---
+
+## Status
+
+🟡 **In Progress** — analyses ongoing, manuscript in preparation.
+
+---
+
+## Notes & Analytical Decisions
+
+*Key methodological choices documented for collaborators and technical reviewers.*
+
+- **Drug exposure definition:** *(add your exposure definition here)*
+- **ADRD outcome definition:** *(add your outcome definition — ICD codes, etc.)*
+- **Comorbidity approach:** Bynum algorithm applied to Medicare claims
+- **Missing data approach:** *(add your approach)*
+- **Sensitivity analyses planned:** *(list robustness checks)*

@@ -60,7 +60,7 @@ Using large-scale CMS Medicare & Medicaid claims data to identify candidate drug
 
 - **Methods:** Causal inference, pharmacoepidemiology, claims data analysis
 - **Tools:** Stata, SQL
-- **Status:** 🟡 In progress
+- **[View Full Project Page](adrd-repurposing.qmd)**
 
 ### Palliative Care at Home RCT
 Randomized controlled trial evaluating a home-based palliative care intervention. Responsible for research database management, CONSORT diagram design, and statistical analysis planning.
