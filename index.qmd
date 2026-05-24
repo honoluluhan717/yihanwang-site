@@ -45,7 +45,7 @@ Stata · R · Python · SQL
 
 ::: {.g-col-4}
 ### 🏥 Domain
-Geriatrics · ADRD · Emergency & Hospital Visit Outcomes · Palliative Medicine & Health Services Research · Social Gerontology
+Geriatrics · ADRD · Emergency & Hospital Visit Outcomes · Health Services Research
 :::
 
 :::
