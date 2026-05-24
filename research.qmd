@@ -31,19 +31,7 @@ Topics will include:
 
 ---
 
-## Teaching & Workshop Materials
 
-### Base R for Beginners
-Lecture notes developed for the China House data camp — introduces R fundamentals to students with no prior programming experience.
-
-- **[View on GitHub](https://github.com/honoluluhan717/China-House-class-example)**
-
-### Harvard IQSS Data Science Workshops
-Workshop materials from the Institute for Quantitative Social Science.
-
-- **[View on GitHub](https://github.com/honoluluhan717/Harvard-IQSS-DSS-workshops)**
-
----
 
 ## Ongoing Projects
 
@@ -63,9 +51,9 @@ Using large-scale CMS Medicare & Medicaid claims data to identify candidate drug
 - **[View Full Project Page](adrd-repurposing.qmd)**
 
 ### Palliative Care at Home RCT
-Randomized controlled trial evaluating a home-based palliative care intervention. Responsible for research database management, CONSORT diagram design, and statistical analysis planning.
+Randomized controlled trial evaluating a home-based palliative care intervention. Responsible for research database management, consort diagram design, and statistical analysis planning.
 
-- **Methods:** RCT design, CONSORT reporting, longitudinal outcomes
+- **Methods:** RCT design, consort reporting, longitudinal outcomes
 - **Tools:** Stata, R
 - **Status:** 🟡 Recruitment ongoing
 - **[View Full Project Page](palliative-care-rct.qmd)**

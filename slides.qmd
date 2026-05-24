@@ -26,11 +26,11 @@ An overview of CMS Medicare Part D Prescription Drug Event data — what it capt
 
 ---
 
-## Weekly Huddle Statistics Workshops
+## Huddle Statistics Workshops
 
 **Mount Sinai Hospital — Geriatrics & Palliative Care**
 
-I run weekly statistics workshops ("huddles") for the research team at Mount Sinai, covering practical applied biostatistics using Stata. Topics are driven by real analytical challenges encountered in our research projects.
+I run statistics workshops ("huddles") for the research team at Mount Sinai, covering practical applied biostatistics using Stata. Topics are driven by real analytical challenges encountered in our research projects.
 
 📂 [View All Workshop Materials on GitHub](https://github.com/honoluluhan717/huddle-workshops){target="_blank"}
 
