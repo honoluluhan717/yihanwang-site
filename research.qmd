@@ -68,6 +68,7 @@ Randomized controlled trial evaluating a home-based palliative care intervention
 - **Methods:** RCT design, CONSORT reporting, longitudinal outcomes
 - **Tools:** Stata, R
 - **Status:** 🟡 Recruitment ongoing
+- **[View Full Project Page](palliative-care-rct.qmd)**
 
 ---
 

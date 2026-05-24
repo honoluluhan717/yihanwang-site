@@ -1,0 +1,74 @@
+---
+title: "Palliative Care at Home RCT"
+---
+
+## Overview
+
+This randomized controlled trial (RCT) evaluates a **home-based palliative care intervention program** for patients with serious illness. As **biostatistician on the team**, I am responsible for research database management, CONSORT diagram design, and statistical analysis planning.
+
+The study aims to assess whether a structured palliative care program delivered at home improves patient and caregiver outcomes compared to usual care.
+
+---
+
+## Research Questions
+
+- Does the palliative care at home intervention improve outcomes compared to usual care?
+- What is the enrollment pattern and retention rate across study sites?
+- How does the intervention affect program-level evaluation metrics?
+
+---
+
+## Study Design
+
+**Randomized Controlled Trial (RCT)**
+- Participants randomized to intervention (palliative care at home) vs. control (usual care)
+- Recruitment ongoing across multiple sites
+- Data collected and managed via **REDCap**
+
+---
+
+## My Role
+
+- **Biostatistician** — statistical analysis planning and execution
+- **Research database management** — maintaining and cleaning REDCap data
+- **CONSORT diagram design** — tracking enrollment, randomization, and attrition
+- **SOP development** — standard operating procedures for data management workflows
+
+---
+
+## Tools & Software
+
+- **REDCap** — research database and data collection
+- **Stata · R · SAS** — statistical analyses
+- **CONSORT reporting** — enrollment and flow diagrams
+
+---
+
+## Repository Contents
+
+```
+palliative-care-rct/
+├── Dementia R01 Enrollment Presentation v2   # Enrollment status and progress
+├── SOP - REDCap CROMS report                 # Data management SOP
+└── Consort Diagram 050726                    # CONSORT diagram (May 2026)
+```
+
+📂 [View Repository on GitHub](https://github.com/honoluluhan717/palliative-care-rct){target="_blank"}
+
+---
+
+## Status
+
+🟡 **Recruitment Ongoing** — data collection in progress, analysis planned post-recruitment.
+
+---
+
+## Notes & Analytical Decisions
+
+*Key methodological choices documented for collaborators and technical reviewers.*
+
+- **Primary outcome:** Program evaluation metrics
+- **Randomization approach:** *(add details — block, stratified, etc.)*
+- **Analysis population:** *(ITT, per-protocol, or both)*
+- **Missing data approach:** *(add your approach)*
+- **Pre-specified subgroup analyses:** *(list if any)*

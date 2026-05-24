@@ -60,7 +60,7 @@ Geriatrics · ADRD · Emergency & Hospital Visit Outcomes · Health Services Res
 
 **[ADRD Drug Repurposing Study](adrd-repurposing.qmd)** *(In Progress)* — Lead analyst using large-scale CMS claims data to identify candidate drugs for Alzheimer's Disease and Related Dementias (ADRD) repurposing. Applying causal inference methods to observational claims data.
 
-**Palliative Care at Home RCT** *(Recruitment Ongoing)* — Biostatistician on a randomized controlled trial evaluating a home-based palliative care intervention. Responsible for research database management, CONSORT diagram design, and statistical analysis planning.
+**[Palliative Care at Home RCT](palliative-care-rct.qmd)** *(Recruitment Ongoing)* — Biostatistician on a randomized controlled trial evaluating a home-based palliative care intervention. Responsible for research database management, CONSORT diagram design, and statistical analysis planning.
 
 ---
 
