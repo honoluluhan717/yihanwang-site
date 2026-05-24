@@ -91,74 +91,67 @@
     "text": "How These Are Built\nSlides on this site are built using Quarto with Reveal.js — meaning they run in your browser, no PowerPoint needed. Source .qmd files are available on GitHub."
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Yihan Wang, PhD",
+    "objectID": "palliative-care-rct.html",
+    "href": "palliative-care-rct.html",
+    "title": "Palliative Care at Home RCT",
     "section": "",
-    "text": "Health Data Scientist · Senior Research Scientist, Mount Sinai Hospital\n5+ years working with Medicare & Medicaid claims data — causal inference, survival analysis, and longitudinal modeling in aging, ADRD, and emergency and hospital visit outcomes. Currently expanding into machine learning methods for healthcare.\nView My Work   GitHub   LinkedIn"
+    "text": "This randomized controlled trial (RCT) evaluates a home-based palliative care intervention program for patients with serious illness. As biostatistician on the team, I am responsible for research database management, CONSORT diagram design, and statistical analysis planning.\nThe study aims to assess whether a structured palliative care program delivered at home improves patient and caregiver outcomes compared to usual care."
   },
   {
-    "objectID": "index.html#research",
-    "href": "index.html#research",
-    "title": "Yihan Wang, PhD",
-    "section": "What I Work On",
-    "text": "What I Work On\n\n\n📋 CMS Claims Data\nLarge-scale Medicare & Medicaid data — harmonization, linkage, and analytics across millions of beneficiaries.\n\n\n🔗 Causal Inference\nPropensity scoring, instrumental variables, and difference-in-differences to answer real-world treatment questions.\n\n\n📈 Survival & Longitudinal Analysis\nTime-to-event modeling, competing risks, and repeated measures in aging populations.\n\n\n🤖 Machine Learning (In Progress)\nExpanding into gradient boosting, survival ML, and NLP for clinical text — applied to claims and EHR data.\n\n\n🛠️ Tools\nStata · R · Python (learning) · SQL\n\n\n🏥 Domain\nGeriatrics · ADRD · Emergency & Hospital Visit Outcomes · Health Services Research"
-  },
-  {
-    "objectID": "index.html#featured-projects",
-    "href": "index.html#featured-projects",
-    "title": "Yihan Wang, PhD",
-    "section": "Featured Projects",
-    "text": "Featured Projects\nJapan Loneliness Study — Stata code and analysis pipeline for a published mediation analysis examining mobile phone use and loneliness among older Japanese adults. Innovation in Aging, 2020.\nWTC First Responders Frailty Study (Ongoing) — Lead biostatistician on a clinical study examining frailty trajectories in World Trade Center first responders. Responsible for statistical analysis plan, modeling, and results interpretation.\nADRD Drug Repurposing Study (In Progress) — Lead analyst using large-scale CMS claims data to identify candidate drugs for Alzheimer’s Disease and Related Dementias (ADRD) repurposing. Applying causal inference methods to observational claims data.\nPalliative Care at Home RCT (Recruitment Ongoing) — Biostatistician on a randomized controlled trial evaluating a home-based palliative care intervention. Responsible for research database management, CONSORT diagram design, and statistical analysis planning."
-  },
-  {
-    "objectID": "index.html#currently-learning",
-    "href": "index.html#currently-learning",
-    "title": "Yihan Wang, PhD",
-    "section": "Currently Learning",
-    "text": "Currently Learning\nI’m actively building toward health data science and applied ML roles — redoing past analyses in Python, working through survival ML methods, and developing explainability skills (SHAP) for clinical model deployment.\n\nOpen to roles in health data science, real-world evidence (RWE), and applied ML in clinical settings."
-  },
-  {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
+    "objectID": "palliative-care-rct.html#overview",
+    "href": "palliative-care-rct.html#overview",
+    "title": "Palliative Care at Home RCT",
     "section": "",
-    "text": "I’m a senior research scientist in the Brookdale Department of Geriatrics and Palliative Care at Mount Sinai Hospital, where I’ve spent 5+ years working with large-scale CMS Medicare and Medicaid claims data to study aging, ADRD, and emergency and hospital visit outcomes.\nMy core expertise is in CMS Medicare and Medicaid data — from raw claims ingestion and harmonization through to analysis and results interpretation. I’ve built pipelines and models using Stata and R, applying methods including regression, longitudinal analysis, survival modeling, and causal inference frameworks.\nI currently serve as lead biostatistician on a WTC first responders frailty study, lead analyst on an ADRD drug repurposing project using CMS claims, and biostatistician on a randomized controlled trial of a palliative care at home intervention.\nI’m currently in a deliberate transition toward health data science and applied machine learning — combining my domain expertise and analytical rigor with modern ML methods. I’m actively building Python skills, exploring gradient boosting and survival ML models, and developing literacy in explainability tools for clinical deployment contexts."
+    "text": "This randomized controlled trial (RCT) evaluates a home-based palliative care intervention program for patients with serious illness. As biostatistician on the team, I am responsible for research database management, CONSORT diagram design, and statistical analysis planning.\nThe study aims to assess whether a structured palliative care program delivered at home improves patient and caregiver outcomes compared to usual care."
   },
   {
-    "objectID": "about.html#yihan-wang-phd",
-    "href": "about.html#yihan-wang-phd",
-    "title": "About",
-    "section": "",
-    "text": "I’m a senior research scientist in the Brookdale Department of Geriatrics and Palliative Care at Mount Sinai Hospital, where I’ve spent 5+ years working with large-scale CMS Medicare and Medicaid claims data to study aging, ADRD, and emergency and hospital visit outcomes.\nMy core expertise is in CMS Medicare and Medicaid data — from raw claims ingestion and harmonization through to analysis and results interpretation. I’ve built pipelines and models using Stata and R, applying methods including regression, longitudinal analysis, survival modeling, and causal inference frameworks.\nI currently serve as lead biostatistician on a WTC first responders frailty study, lead analyst on an ADRD drug repurposing project using CMS claims, and biostatistician on a randomized controlled trial of a palliative care at home intervention.\nI’m currently in a deliberate transition toward health data science and applied machine learning — combining my domain expertise and analytical rigor with modern ML methods. I’m actively building Python skills, exploring gradient boosting and survival ML models, and developing literacy in explainability tools for clinical deployment contexts."
+    "objectID": "palliative-care-rct.html#research-questions",
+    "href": "palliative-care-rct.html#research-questions",
+    "title": "Palliative Care at Home RCT",
+    "section": "Research Questions",
+    "text": "Research Questions\n\nDoes the palliative care at home intervention improve outcomes compared to usual care?\nWhat is the enrollment pattern and retention rate across study sites?\nHow does the intervention affect program-level evaluation metrics?"
   },
   {
-    "objectID": "about.html#skills",
-    "href": "about.html#skills",
-    "title": "About",
-    "section": "Skills",
-    "text": "Skills\nStatistical Methods Regression · Longitudinal analysis · Survival analysis · Causal inference (PSM, IV, DiD) · Mediation analysis · Multilevel modeling\nData CMS Medicare & Medicaid claims · EHR-linked data · Large-scale data harmonization · Survey data\nTools Stata · R · Python (developing) · SQL · Git/GitHub\nDomain Geriatrics · ADRD · Emergency & Hospital Visit Outcomes · Health Services Research · Palliative Care"
+    "objectID": "palliative-care-rct.html#study-design",
+    "href": "palliative-care-rct.html#study-design",
+    "title": "Palliative Care at Home RCT",
+    "section": "Study Design",
+    "text": "Study Design\nRandomized Controlled Trial (RCT) - Participants randomized to intervention (palliative care at home) vs. control (usual care) - Recruitment ongoing across multiple sites - Data collected and managed via REDCap"
   },
   {
-    "objectID": "about.html#education",
-    "href": "about.html#education",
-    "title": "About",
-    "section": "Education",
-    "text": "Education\nPh.D. Social Work. Boston College\nM.A. Public Administration. University of Maryland, College Park\nB.A. English. China Agricultural University"
+    "objectID": "palliative-care-rct.html#my-role",
+    "href": "palliative-care-rct.html#my-role",
+    "title": "Palliative Care at Home RCT",
+    "section": "My Role",
+    "text": "My Role\n\nBiostatistician — statistical analysis planning and execution\nResearch database management — maintaining and cleaning REDCap data\nCONSORT diagram design — tracking enrollment, randomization, and attrition\nSOP development — standard operating procedures for data management workflows"
   },
   {
-    "objectID": "about.html#selected-publications",
-    "href": "about.html#selected-publications",
-    "title": "About",
-    "section": "Selected Publications",
-    "text": "Selected Publications\nHarada, K., Wang, Y., Shichijo, Y., Doan, J., Hung, W., Rosen, G., Baim-Lance, A., Lerner, S., Apoeso, O., Ko, F., & Chow, S. (2026). The role of geriatric syndromes in kidney transplant decision-making: A domain-based analysis of comprehensive geriatric assessment in older adults. Journal of the American Geriatrics Society. https://doi.org/10.1111/jgs.70324\nWong, J., Wang, Y., Abbas, M., Bollens-Lund, E., Reich, A. J., Ankuda, C., & Cooper, Z. (2024). Long-term changes in pain, depression, function and informal caregiving after major elective surgeries among seriously ill older adults. Annals of Surgery.\nWang, Y. & Gonzales, E. (2019). Examining the prevalence, risk, and protective factors to family caregiving in China: Findings from CHARLS. China Journal of Social Work, 12(9), 3-19. https://doi.org/10.1080/17525098.2019.1591697\nWang, Y., Matz, C., Miller, J., Carr, D. C., & Kohlbacher, F. (2018). Uses and gratifications sought from mobile phones and loneliness among Japanese midlife and older adults: A mediation analysis. Innovation in Aging, 2(3). https://doi.org/10.1093/geroni/igy027\nWang, Y. & Matz, C. (2018). Gender differences in the effect of social resources and social status on the retirement satisfaction and health of retirees. Journal of Gerontological Social Work, 62(1), 86-107. https://doi.org/10.1080/01634372.2018.1474156"
+    "objectID": "palliative-care-rct.html#tools-software",
+    "href": "palliative-care-rct.html#tools-software",
+    "title": "Palliative Care at Home RCT",
+    "section": "Tools & Software",
+    "text": "Tools & Software\n\nREDCap — research database and data collection\nStata · R · SAS — statistical analyses\nCONSORT reporting — enrollment and flow diagrams"
   },
   {
-    "objectID": "about.html#contact",
-    "href": "about.html#contact",
-    "title": "About",
-    "section": "Contact",
-    "text": "Contact\n\n💼 LinkedIn\n💻 GitHub\n📧 honoluluhan717@gmail.com\n\n\nI’m open to roles in health data science, real-world evidence, and applied ML in clinical or payer settings."
+    "objectID": "palliative-care-rct.html#repository-contents",
+    "href": "palliative-care-rct.html#repository-contents",
+    "title": "Palliative Care at Home RCT",
+    "section": "Repository Contents",
+    "text": "Repository Contents\npalliative-care-rct/\n├── Dementia R01 Enrollment Presentation v2   # Enrollment status and progress\n├── SOP - REDCap CROMS report                 # Data management SOP\n└── Consort Diagram 050726                    # CONSORT diagram (May 2026)\n📂 View Repository on GitHub"
+  },
+  {
+    "objectID": "palliative-care-rct.html#status",
+    "href": "palliative-care-rct.html#status",
+    "title": "Palliative Care at Home RCT",
+    "section": "Status",
+    "text": "Status\n🟡 Recruitment Ongoing — data collection in progress, analysis planned post-recruitment."
+  },
+  {
+    "objectID": "palliative-care-rct.html#notes-analytical-decisions",
+    "href": "palliative-care-rct.html#notes-analytical-decisions",
+    "title": "Palliative Care at Home RCT",
+    "section": "Notes & Analytical Decisions",
+    "text": "Notes & Analytical Decisions\nKey methodological choices documented for collaborators and technical reviewers.\n\nPrimary outcome: Program evaluation metrics\nRandomization approach: (add details — block, stratified, etc.)\nAnalysis population: (ITT, per-protocol, or both)\nMissing data approach: (add your approach)\nPre-specified subgroup analyses: (list if any)"
   },
   {
     "objectID": "adrd-repurposing.html",
@@ -231,6 +224,76 @@
     "text": "Notes & Analytical Decisions\nKey methodological choices documented for collaborators and technical reviewers.\n\nDrug exposure definition: (add your exposure definition here)\nADRD outcome definition: (add your outcome definition — ICD codes, etc.)\nComorbidity approach: Bynum algorithm applied to Medicare claims\nMissing data approach: (add your approach)\nSensitivity analyses planned: (list robustness checks)"
   },
   {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "I’m a senior research scientist in the Brookdale Department of Geriatrics and Palliative Care at Mount Sinai Hospital, where I’ve spent 5+ years working with large-scale CMS Medicare and Medicaid claims data to study aging, ADRD, and emergency and hospital visit outcomes.\nMy core expertise is in CMS Medicare and Medicaid data — from raw claims ingestion and harmonization through to analysis and results interpretation. I’ve built pipelines and models using Stata and R, applying methods including regression, longitudinal analysis, survival modeling, and causal inference frameworks.\nI currently serve as lead biostatistician on a WTC first responders frailty study, lead analyst on an ADRD drug repurposing project using CMS claims, and biostatistician on a randomized controlled trial of a palliative care at home intervention.\nI’m currently in a deliberate transition toward health data science and applied machine learning — combining my domain expertise and analytical rigor with modern ML methods. I’m actively building Python skills, exploring gradient boosting and survival ML models, and developing literacy in explainability tools for clinical deployment contexts."
+  },
+  {
+    "objectID": "about.html#yihan-wang-phd",
+    "href": "about.html#yihan-wang-phd",
+    "title": "About",
+    "section": "",
+    "text": "I’m a senior research scientist in the Brookdale Department of Geriatrics and Palliative Care at Mount Sinai Hospital, where I’ve spent 5+ years working with large-scale CMS Medicare and Medicaid claims data to study aging, ADRD, and emergency and hospital visit outcomes.\nMy core expertise is in CMS Medicare and Medicaid data — from raw claims ingestion and harmonization through to analysis and results interpretation. I’ve built pipelines and models using Stata and R, applying methods including regression, longitudinal analysis, survival modeling, and causal inference frameworks.\nI currently serve as lead biostatistician on a WTC first responders frailty study, lead analyst on an ADRD drug repurposing project using CMS claims, and biostatistician on a randomized controlled trial of a palliative care at home intervention.\nI’m currently in a deliberate transition toward health data science and applied machine learning — combining my domain expertise and analytical rigor with modern ML methods. I’m actively building Python skills, exploring gradient boosting and survival ML models, and developing literacy in explainability tools for clinical deployment contexts."
+  },
+  {
+    "objectID": "about.html#skills",
+    "href": "about.html#skills",
+    "title": "About",
+    "section": "Skills",
+    "text": "Skills\nStatistical Methods Regression · Longitudinal analysis · Survival analysis · Causal inference (PSM, IV, DiD) · Mediation analysis · Multilevel modeling\nData CMS Medicare & Medicaid claims · EHR-linked data · Large-scale data harmonization · Survey data\nTools Stata · R · Python (developing) · SQL · Git/GitHub\nDomain Geriatrics · ADRD · Emergency & Hospital Visit Outcomes · Health Services Research · Palliative Care"
+  },
+  {
+    "objectID": "about.html#education",
+    "href": "about.html#education",
+    "title": "About",
+    "section": "Education",
+    "text": "Education\nPh.D. Social Work. Boston College\nM.A. Public Administration. University of Maryland, College Park\nB.A. English. China Agricultural University"
+  },
+  {
+    "objectID": "about.html#selected-publications",
+    "href": "about.html#selected-publications",
+    "title": "About",
+    "section": "Selected Publications",
+    "text": "Selected Publications\nHarada, K., Wang, Y., Shichijo, Y., Doan, J., Hung, W., Rosen, G., Baim-Lance, A., Lerner, S., Apoeso, O., Ko, F., & Chow, S. (2026). The role of geriatric syndromes in kidney transplant decision-making: A domain-based analysis of comprehensive geriatric assessment in older adults. Journal of the American Geriatrics Society. https://doi.org/10.1111/jgs.70324\nWong, J., Wang, Y., Abbas, M., Bollens-Lund, E., Reich, A. J., Ankuda, C., & Cooper, Z. (2024). Long-term changes in pain, depression, function and informal caregiving after major elective surgeries among seriously ill older adults. Annals of Surgery.\nWang, Y. & Gonzales, E. (2019). Examining the prevalence, risk, and protective factors to family caregiving in China: Findings from CHARLS. China Journal of Social Work, 12(9), 3-19. https://doi.org/10.1080/17525098.2019.1591697\nWang, Y., Matz, C., Miller, J., Carr, D. C., & Kohlbacher, F. (2018). Uses and gratifications sought from mobile phones and loneliness among Japanese midlife and older adults: A mediation analysis. Innovation in Aging, 2(3). https://doi.org/10.1093/geroni/igy027\nWang, Y. & Matz, C. (2018). Gender differences in the effect of social resources and social status on the retirement satisfaction and health of retirees. Journal of Gerontological Social Work, 62(1), 86-107. https://doi.org/10.1080/01634372.2018.1474156"
+  },
+  {
+    "objectID": "about.html#contact",
+    "href": "about.html#contact",
+    "title": "About",
+    "section": "Contact",
+    "text": "Contact\n\n💼 LinkedIn\n💻 GitHub\n📧 honoluluhan717@gmail.com\n\n\nI’m open to roles in health data science, real-world evidence, and applied ML in clinical or payer settings."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Yihan Wang, PhD",
+    "section": "",
+    "text": "Health Data Scientist · Senior Research Scientist, Mount Sinai Hospital\n5+ years working with Medicare & Medicaid claims data — causal inference, survival analysis, and longitudinal modeling in aging, ADRD, and emergency and hospital visit outcomes. Currently expanding into machine learning methods for healthcare.\nView My Work   GitHub   LinkedIn"
+  },
+  {
+    "objectID": "index.html#research",
+    "href": "index.html#research",
+    "title": "Yihan Wang, PhD",
+    "section": "What I Work On",
+    "text": "What I Work On\n\n\n📋 CMS Claims Data\nLarge-scale Medicare & Medicaid data — harmonization, linkage, and analytics across millions of beneficiaries.\n\n\n🔗 Causal Inference\nPropensity scoring, instrumental variables, and difference-in-differences to answer real-world treatment questions.\n\n\n📈 Survival & Longitudinal Analysis\nTime-to-event modeling, competing risks, and repeated measures in aging populations.\n\n\n🤖 Machine Learning (In Progress)\nExpanding into gradient boosting, survival ML, and NLP for clinical text — applied to claims and EHR data.\n\n\n🛠️ Tools\nStata · R · Python (learning) · SQL\n\n\n🏥 Domain\nGeriatrics · ADRD · Emergency & Hospital Visit Outcomes · Health Services Research"
+  },
+  {
+    "objectID": "index.html#featured-projects",
+    "href": "index.html#featured-projects",
+    "title": "Yihan Wang, PhD",
+    "section": "Featured Projects",
+    "text": "Featured Projects\nJapan Loneliness Study — Stata code and analysis pipeline for a published mediation analysis examining mobile phone use and loneliness among older Japanese adults. Innovation in Aging, 2020.\nWTC First Responders Frailty Study (Ongoing) — Lead biostatistician on a clinical study examining frailty trajectories in World Trade Center first responders. Responsible for statistical analysis plan, modeling, and results interpretation.\nADRD Drug Repurposing Study (In Progress) — Lead analyst using large-scale CMS claims data to identify candidate drugs for Alzheimer’s Disease and Related Dementias (ADRD) repurposing. Applying causal inference methods to observational claims data.\nPalliative Care at Home RCT (Recruitment Ongoing) — Biostatistician on a randomized controlled trial evaluating a home-based palliative care intervention. Responsible for research database management, CONSORT diagram design, and statistical analysis planning."
+  },
+  {
+    "objectID": "index.html#currently-learning",
+    "href": "index.html#currently-learning",
+    "title": "Yihan Wang, PhD",
+    "section": "Currently Learning",
+    "text": "Currently Learning\nI’m actively building toward health data science and applied ML roles — redoing past analyses in Python, working through survival ML methods, and developing explainability skills (SHAP) for clinical model deployment.\n\nOpen to roles in health data science, real-world evidence (RWE), and applied ML in clinical settings."
+  },
+  {
     "objectID": "research.html",
     "href": "research.html",
     "title": "Research & Code",
@@ -263,7 +326,7 @@
     "href": "research.html#ongoing-projects",
     "title": "Research & Code",
     "section": "Ongoing Projects",
-    "text": "Ongoing Projects\n\nWTC First Responders Frailty Study\nLongitudinal study of frailty prevalence, predictors, risk factors, and health outcomes in World Trade Center first responders. Lead biostatistician — responsible for statistical analysis plan, all Stata pipelines, and results interpretation.\n\nMethods: Mixed effects models, survival analysis, causal inference, longitudinal regression\nTools: Stata\nStatus: 🟡 Ongoing — manuscript in preparation\nView Full Project Page\n\n\n\nADRD Drug Repurposing Study\nUsing large-scale CMS Medicare & Medicaid claims data to identify candidate drugs for Alzheimer’s Disease and Related Dementias (ADRD) repurposing. Lead analyst applying causal inference methods to observational claims data.\n\nMethods: Causal inference, pharmacoepidemiology, claims data analysis\nTools: Stata, SQL\nView Full Project Page\n\n\n\nPalliative Care at Home RCT\nRandomized controlled trial evaluating a home-based palliative care intervention. Responsible for research database management, CONSORT diagram design, and statistical analysis planning.\n\nMethods: RCT design, CONSORT reporting, longitudinal outcomes\nTools: Stata, R\nStatus: 🟡 Recruitment ongoing"
+    "text": "Ongoing Projects\n\nWTC First Responders Frailty Study\nLongitudinal study of frailty prevalence, predictors, risk factors, and health outcomes in World Trade Center first responders. Lead biostatistician — responsible for statistical analysis plan, all Stata pipelines, and results interpretation.\n\nMethods: Mixed effects models, survival analysis, causal inference, longitudinal regression\nTools: Stata\nStatus: 🟡 Ongoing — manuscript in preparation\nView Full Project Page\n\n\n\nADRD Drug Repurposing Study\nUsing large-scale CMS Medicare & Medicaid claims data to identify candidate drugs for Alzheimer’s Disease and Related Dementias (ADRD) repurposing. Lead analyst applying causal inference methods to observational claims data.\n\nMethods: Causal inference, pharmacoepidemiology, claims data analysis\nTools: Stata, SQL\nView Full Project Page\n\n\n\nPalliative Care at Home RCT\nRandomized controlled trial evaluating a home-based palliative care intervention. Responsible for research database management, CONSORT diagram design, and statistical analysis planning.\n\nMethods: RCT design, CONSORT reporting, longitudinal outcomes\nTools: Stata, R\nStatus: 🟡 Recruitment ongoing\nView Full Project Page"
   },
   {
     "objectID": "research.html#in-progress",
