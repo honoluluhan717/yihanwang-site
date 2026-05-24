@@ -14,7 +14,7 @@ website:
       - href: about.qmd
         text: About
   page-footer:
-    center: "© 2026 Yihan Wang · Mount Sinai Hospital"
+    center: "© 2026 Yihan Wang"
 
 format:
   html:
