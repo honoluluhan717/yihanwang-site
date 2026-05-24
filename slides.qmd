@@ -22,7 +22,7 @@ I run weekly statistics workshops ("huddles") for the research team at Mount Sin
 |---|---|---|
 | Exporting Stata Results | Stata `.do` file | [View on GitHub](https://github.com/honoluluhan717/huddle-workshops/blob/main/Exporting%20Stata%20Results.do){target="_blank"} |
 | Multicollinearity | Workshop notes | [View on GitHub](https://github.com/honoluluhan717/huddle-workshops/blob/main/Multicollinearity%2008242022.pdf){target="_blank"} |
-| Sample Size Calculation using G*Power | Workshop notes | [View on GitHub](https://github.com/honoluluhan717/huddle-workshops/blob/main/calculating%20sample%20using%20gpower%20(1).pdf){target="_blank"} |
+| Sample Size Calculation using G*Power | Workshop notes | [View on GitHub](https://github.com/honoluluhan717/huddle-workshops/blob/main/calculating%20sample%20using%20gpower%20.pdf){target="_blank"} |
 | Multiple Imputation using `mi` in Stata | Workshop notes | [View on GitHub](https://github.com/honoluluhan717/huddle-workshops/blob/main/multiple%20imputation%20using%20mi.pdf){target="_blank"} |
 | Learning Points from the Ankuda RP1 Project | Project notes | [View on GitHub](https://github.com/honoluluhan717/huddle-workshops/blob/main/some%20learning%20points%20from%20the%20Ankuda_RP1%20project.pdf){target="_blank"} |
 ---
