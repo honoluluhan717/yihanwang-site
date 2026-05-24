@@ -40,23 +40,21 @@ Longitudinal study of frailty prevalence, predictors, risk factors, and health o
 
 - **Methods:** Mixed effects models, survival analysis, causal inference, longitudinal regression
 - **Tools:** Stata
-- **Status:** 🟡 Ongoing — manuscript in preparation
-- **[View Full Project Page](wtc-frailty.qmd)**
+- **[View Code on GitHub](https://github.com/honoluluhan717/wtc-frailty-study){target="_blank"}**
 
 ### ADRD Drug Repurposing Study
 Using large-scale CMS Medicare & Medicaid claims data to identify candidate drugs for Alzheimer's Disease and Related Dementias (ADRD) repurposing. Lead analyst applying causal inference methods to observational claims data.
 
 - **Methods:** Causal inference, pharmacoepidemiology, claims data analysis
 - **Tools:** Stata, SQL
-- **[View Full Project Page](adrd-repurposing.qmd)**
+- **[View Code on GitHub](https://github.com/honoluluhan717/adrd-drug-repurposing){target="_blank"}**
 
 ### Palliative Care at Home RCT
 Randomized controlled trial evaluating a home-based palliative care intervention. Responsible for research database management, consort diagram design, and statistical analysis planning.
 
 - **Methods:** RCT design, consort reporting, longitudinal outcomes
 - **Tools:** Stata, R
-- **Status:** 🟡 Recruitment ongoing
-- **[View Full Project Page](palliative-care-rct.qmd)**
+- **[View Code on GitHub](https://github.com/honoluluhan717/palliative-care-rct){target="_blank"}**
 
 ---
 
