@@ -1,12 +1,48 @@
 ---
-title: "Slides & Presentations"
+title: "Teaching & Workshops"
 ---
 
-Presentations from conferences, workshops, and invited talks. Slides will be added as they are prepared for sharing.
+This page collects teaching materials, workshop handouts, and instructional resources developed for training junior researchers and clinical staff in biostatistics and data science.
 
 ---
 
-## Presentations
+## Weekly Huddle Statistics Workshops
+
+**Mount Sinai Hospital — Geriatrics & Palliative Care**
+
+I run weekly statistics workshops ("huddles") for the research team at Mount Sinai, covering practical applied biostatistics using Stata. Topics are driven by real analytical challenges encountered in our research projects.
+
+📂 [View All Workshop Materials on GitHub](https://github.com/honoluluhan717/huddle-workshops){target="_blank"}
+
+---
+
+### Workshop Topics
+
+| Topic | Format | Link |
+|---|---|---|
+| Exporting Stata Results | Stata `.do` file | [View on GitHub](https://github.com/honoluluhan717/huddle-workshops/blob/main/Exporting%20Stata%20Results%20(1).do){target="_blank"} |
+| Multicollinearity | Workshop notes | [View on GitHub](https://github.com/honoluluhan717/huddle-workshops/blob/main/Multicollinearity%2008242022.docx){target="_blank"} |
+| Sample Size Calculation using G*Power | Workshop notes | [View on GitHub](https://github.com/honoluluhan717/huddle-workshops/blob/main/calculating%20sample%20using%20gpower%20(1).docx){target="_blank"} |
+| Multiple Imputation using `mi` in Stata | Workshop notes | [View on GitHub](https://github.com/honoluluhan717/huddle-workshops/blob/main/multiple%20imputation%20using%20mi.docx){target="_blank"} |
+| Learning Points from the Ankuda RP1 Project | Project notes | [View on GitHub](https://github.com/honoluluhan717/huddle-workshops/blob/main/some%20learning%20points%20from%20the%20Ankuda_RP1%20project.docx){target="_blank"} |
+
+---
+
+## Other Teaching Materials
+
+### Base R for Beginners
+Lecture notes developed for the China House data camp — introduces R fundamentals to students with no prior programming experience.
+
+📂 [View on GitHub](https://github.com/honoluluhan717/China-House-class-example){target="_blank"}
+
+### Harvard IQSS Data Science Workshops
+Workshop materials from the Institute for Quantitative Social Science.
+
+📂 [View on GitHub](https://github.com/honoluluhan717/Harvard-IQSS-DSS-workshops){target="_blank"}
+
+---
+
+## Slides & Presentations
 
 *Coming soon — converting existing presentations to web format.*
 
@@ -15,9 +51,3 @@ Topics will include:
 - Causal inference methods in health services research
 - Survival analysis in aging populations
 - Machine learning for healthcare: opportunities and challenges
-
----
-
-## How These Are Built
-
-Slides on this site are built using [Quarto](https://quarto.org) with Reveal.js — meaning they run in your browser, no PowerPoint needed. Source `.qmd` files are available on [GitHub](https://github.com/honoluluhan717).

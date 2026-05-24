@@ -3,9 +3,6 @@ project:
 
 website:
   title: "Yihan Wang"
-  description: "Personal research portfolio of Yihan Wang, PhD — Senior Research Scientist specializing in CMS Medicare and Medicaid claims data, causal inference, survival analysis, and machine learning in healthcare."
-  image: "preview.png"
-  open-graph: true
   navbar:
     left:
       - href: index.qmd
@@ -13,11 +10,11 @@ website:
       - href: research.qmd
         text: Research & Code
       - href: slides.qmd
-        text: Slides
+        text: Teaching
       - href: about.qmd
         text: About
   page-footer:
-    center: "© 2026 Yihan Wang"
+    center: "© 2026 Yihan Wang · Mount Sinai Hospital"
 
 format:
   html:
