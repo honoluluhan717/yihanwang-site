@@ -81,7 +81,7 @@
     "href": "slides.html#presentations",
     "title": "Teaching & Workshops",
     "section": "Presentations",
-    "text": "Presentations\n\nMargins in Stata\nApril 2023 · Mount Sinai Hospital\nA practical workshop covering the margins command in Stata — APM, PMM, PMR, AME, MEM, MER, interactions, and dummy variables. Includes worked examples using NHANES II, GSS, and Medicare claims data.\n🖥️ View Presentation"
+    "text": "Presentations\n\nMargins in Stata\nApril 2023 · Mount Sinai Hospital\nA practical workshop covering the margins command in Stata — APM, PMM, PMR, AME, MEM, MER, interactions, and dummy variables. Includes worked examples using NHANES II, GSS, and Medicare claims data.\n🖥️ View Presentation\n\n\n\nResearch Use of Medicare Prescription Drug Event (PDE) Data\nDecember 2025 · Mount Sinai Hospital\nAn overview of CMS Medicare Part D Prescription Drug Event data — what it captures, its limitations, core variables, NDC codes, brand vs. generic naming, and how researchers link PDE with other Medicare files for pharmacoepidemiology and drug utilization research.\n🖥️ View Presentation"
   },
   {
     "objectID": "slides.html#weekly-huddle-statistics-workshops",
@@ -98,207 +98,74 @@
     "text": "Other Teaching Materials\n\nBase R for Beginners\nLecture notes developed for the China House data camp — introduces R fundamentals to students with no prior programming experience.\n📂 View on GitHub\n\n\nHarvard IQSS Data Science Workshops\nWorkshop materials from the Institute for Quantitative Social Science.\n📂 View on GitHub"
   },
   {
-    "objectID": "palliative-care-rct.html",
-    "href": "palliative-care-rct.html",
-    "title": "Palliative Care at Home RCT",
-    "section": "",
-    "text": "This randomized controlled trial (RCT) evaluates a home-based palliative care intervention program for patients with serious illness. As biostatistician on the team, I am responsible for research database management, CONSORT diagram design, and statistical analysis planning.\nThe study aims to assess whether a structured palliative care program delivered at home improves patient and caregiver outcomes compared to usual care."
+    "objectID": "pde-medicare.html#what-is-pde-data",
+    "href": "pde-medicare.html#what-is-pde-data",
+    "title": "Research Use of Medicare Prescription Drug Event (PDE) Data",
+    "section": "What Is PDE Data?",
+    "text": "What Is PDE Data?\nPDE = Prescription Drug Event — the record of prescription-drug fills under Medicare Part D.\n\nWhenever a Part D beneficiary fills a prescription, the plan submits a PDE record summarizing the fill event\nPDE data are standardized — not raw transactional claims but CMS-defined summary extracts"
   },
   {
-    "objectID": "palliative-care-rct.html#overview",
-    "href": "palliative-care-rct.html#overview",
-    "title": "Palliative Care at Home RCT",
-    "section": "",
-    "text": "This randomized controlled trial (RCT) evaluates a home-based palliative care intervention program for patients with serious illness. As biostatistician on the team, I am responsible for research database management, CONSORT diagram design, and statistical analysis planning.\nThe study aims to assess whether a structured palliative care program delivered at home improves patient and caregiver outcomes compared to usual care."
+    "objectID": "pde-medicare.html#why-pde-matters-who-reports-it",
+    "href": "pde-medicare.html#why-pde-matters-who-reports-it",
+    "title": "Research Use of Medicare Prescription Drug Event (PDE) Data",
+    "section": "Why PDE Matters / Who Reports It",
+    "text": "Why PDE Matters / Who Reports It\n\nAll Part D plan sponsors (stand-alone PDPs and Medicare Advantage plans with drug benefits) must report PDE data to CMS for every covered fill\nProvides a comprehensive view of outpatient prescription drug utilization among Medicare beneficiaries under Part D"
   },
   {
-    "objectID": "palliative-care-rct.html#research-questions",
-    "href": "palliative-care-rct.html#research-questions",
-    "title": "Palliative Care at Home RCT",
-    "section": "Research Questions",
-    "text": "Research Questions\n\nDoes the palliative care at home intervention improve outcomes compared to usual care?\nWhat is the enrollment pattern and retention rate across study sites?\nHow does the intervention affect program-level evaluation metrics?"
+    "objectID": "pde-medicare.html#pde-data-contents-core-variables",
+    "href": "pde-medicare.html#pde-data-contents-core-variables",
+    "title": "Research Use of Medicare Prescription Drug Event (PDE) Data",
+    "section": "PDE Data Contents — Core Variables",
+    "text": "PDE Data Contents — Core Variables\nPDE records include many standardized fields. Key ones:\n\n\n\nVariable\nDescription\n\n\n\n\nBeneficiary ID\nEncrypted unique identifier\n\n\nPrescription fill date\nDate the drug was dispensed\n\n\nBrand & generic drug names\nDrug identification\n\n\nDosage form & strength\nFormulation details\n\n\nQuantity & days supply\nUtilization metrics\n\n\nCoverage & payment\nCost and subsidy data"
   },
   {
-    "objectID": "palliative-care-rct.html#study-design",
-    "href": "palliative-care-rct.html#study-design",
-    "title": "Palliative Care at Home RCT",
-    "section": "Study Design",
-    "text": "Study Design\nRandomized Controlled Trial (RCT) - Participants randomized to intervention (palliative care at home) vs. control (usual care) - Recruitment ongoing across multiple sites - Data collected and managed via REDCap"
+    "objectID": "pde-medicare.html#part-d-pde-reconciliation-process",
+    "href": "pde-medicare.html#part-d-pde-reconciliation-process",
+    "title": "Research Use of Medicare Prescription Drug Event (PDE) Data",
+    "section": "Part D PDE Reconciliation Process",
+    "text": "Part D PDE Reconciliation Process\n\n\nBeshearse et al. (2023) — Comparison of outpatient antibiotic prescriptions among older adults in IQVIA Xponent and publicly available Medicare Part D data. Antimicrobial Stewardship & Healthcare Epidemiology."
   },
   {
-    "objectID": "palliative-care-rct.html#my-role",
-    "href": "palliative-care-rct.html#my-role",
-    "title": "Palliative Care at Home RCT",
-    "section": "My Role",
-    "text": "My Role\n\nBiostatistician — statistical analysis planning and execution\nResearch database management — maintaining and cleaning REDCap data\nCONSORT diagram design — tracking enrollment, randomization, and attrition\nSOP development — standard operating procedures for data management workflows"
+    "objectID": "pde-medicare.html#what-pde-captures-and-what-it-doesnt",
+    "href": "pde-medicare.html#what-pde-captures-and-what-it-doesnt",
+    "title": "Research Use of Medicare Prescription Drug Event (PDE) Data",
+    "section": "What PDE Captures — And What It Doesn’t",
+    "text": "What PDE Captures — And What It Doesn’t\n\n\n✅ What it captures:\n\nDetailed outpatient prescription drug fills under Part D\nTiming, drug identity, strength, quantity, payment data\nEnables utilization, adherence, cost, and drug-exposure analyses\n\n\n⚠️ Limitations:\n\nDrugs administered during hospitalizations may not appear\nDispensed ≠ ingested (no guarantee drug was taken)\nLimited clinical context — must link with other Medicare files\nDoesn’t capture drugs not covered by Part D (OTC, hospital-administered)"
   },
   {
-    "objectID": "palliative-care-rct.html#tools-software",
-    "href": "palliative-care-rct.html#tools-software",
-    "title": "Palliative Care at Home RCT",
-    "section": "Tools & Software",
-    "text": "Tools & Software\n\nREDCap — research database and data collection\nStata · R · SAS — statistical analyses\nCONSORT reporting — enrollment and flow diagrams"
+    "objectID": "pde-medicare.html#how-researchers-use-pde-data",
+    "href": "pde-medicare.html#how-researchers-use-pde-data",
+    "title": "Research Use of Medicare Prescription Drug Event (PDE) Data",
+    "section": "How Researchers Use PDE Data",
+    "text": "How Researchers Use PDE Data\n\nDefine medication exposure periods — when a drug was filled, days supply\nStudy drug utilization patterns — adherence (MPR, gaps), polypharmacy\nLink with Medicare claims — inpatient, outpatient, diagnoses for health outcomes, safety, pharmacoepidemiology\nCost and utilization analyses — what drugs, how often, cost burden, subsidies"
   },
   {
-    "objectID": "palliative-care-rct.html#repository-contents",
-    "href": "palliative-care-rct.html#repository-contents",
-    "title": "Palliative Care at Home RCT",
-    "section": "Repository Contents",
-    "text": "Repository Contents\npalliative-care-rct/\n├── Dementia R01 Enrollment Presentation v2   # Enrollment status and progress\n├── SOP - REDCap CROMS report                 # Data management SOP\n└── Consort Diagram 050726                    # CONSORT diagram (May 2026)\n📂 View Repository on GitHub"
+    "objectID": "pde-medicare.html#why-request-the-part-d-drug-characteristics-file",
+    "href": "pde-medicare.html#why-request-the-part-d-drug-characteristics-file",
+    "title": "Research Use of Medicare Prescription Drug Event (PDE) Data",
+    "section": "Why Request the Part D Drug Characteristics File",
+    "text": "Why Request the Part D Drug Characteristics File\n\n\n\n\n\n\n\n\n\nPDE File Only\nPDE + Drug Characteristics File\n\n\n\n\nDrug ID\nNDC code only\nBrand + generic name\n\n\nStrength\n❌ None\n✅ Exact (e.g., 10 mg, 20 mg)\n\n\nDosage form\n❌ None\n✅ Tablet, capsule, solution\n\n\nBrand vs. generic\n❌ Cannot distinguish\n✅ Enables comparison\n\n\nDrug exposure\nLimited clinical definition\n✅ Clinically meaningful\n\n\nDose analyses\n❌ Not sufficient\n✅ Dose-response supported"
   },
   {
-    "objectID": "palliative-care-rct.html#status",
-    "href": "palliative-care-rct.html#status",
-    "title": "Palliative Care at Home RCT",
-    "section": "Status",
-    "text": "Status\n🟡 Recruitment Ongoing — data collection in progress, analysis planned post-recruitment."
+    "objectID": "pde-medicare.html#national-drug-codes-ndc-explained",
+    "href": "pde-medicare.html#national-drug-codes-ndc-explained",
+    "title": "Research Use of Medicare Prescription Drug Event (PDE) Data",
+    "section": "National Drug Codes (NDC) Explained",
+    "text": "National Drug Codes (NDC) Explained\nExample: NDC for a 100-count bottle of Prozac 20 mg → 0777-3105-02\n\n\n\n\n\n\n\n\nSegment\nCode\nMeaning\n\n\n\n\nLabeler code\n0777\nDista Products Co. (manufacturer of Prozac)\n\n\nProduct code\n3105\nIdentifies strength, dosage form (capsule)\n\n\nPackage code\n02\nPackage size (100 capsules per bottle)"
   },
   {
-    "objectID": "palliative-care-rct.html#notes-analytical-decisions",
-    "href": "palliative-care-rct.html#notes-analytical-decisions",
-    "title": "Palliative Care at Home RCT",
-    "section": "Notes & Analytical Decisions",
-    "text": "Notes & Analytical Decisions\nKey methodological choices documented for collaborators and technical reviewers.\n\nPrimary outcome: Program evaluation metrics\nRandomization approach: (add details — block, stratified, etc.)\nAnalysis population: (ITT, per-protocol, or both)\nMissing data approach: (add your approach)\nPre-specified subgroup analyses: (list if any)"
+    "objectID": "pde-medicare.html#brand-name-vs.-generic-name-in-pde",
+    "href": "pde-medicare.html#brand-name-vs.-generic-name-in-pde",
+    "title": "Research Use of Medicare Prescription Drug Event (PDE) Data",
+    "section": "Brand Name vs. Generic Name in PDE",
+    "text": "Brand Name vs. Generic Name in PDE\n\nGeneric name = scientific/chemical name (used in datasets, PDE, research)\nBrand name = marketing name from the drug company\nOne generic can have multiple brand names\n\n\n\n\nGeneric Name\nBrand Name\nMain Use\n\n\n\n\nAtorvastatin\nLipitor\nCholesterol\n\n\nMetformin\nGlucophage\nType 2 Diabetes\n\n\nLisinopril\nPrinivil / Zestril\nBlood pressure\n\n\nAmlodipine\nNorvasc\nBlood pressure\n\n\nOmeprazole\nPrilosec\nAcid reflux"
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Yihan Wang, PhD",
-    "section": "",
-    "text": "Health Data Scientist · Senior Research Scientist, Mount Sinai Hospital\n5+ years working with Medicare & Medicaid claims data — causal inference, survival analysis, and longitudinal modeling in aging, ADRD, and emergency and hospital visit outcomes. Currently expanding into machine learning methods for healthcare.\nView My Work   GitHub   LinkedIn"
-  },
-  {
-    "objectID": "index.html#research",
-    "href": "index.html#research",
-    "title": "Yihan Wang, PhD",
-    "section": "What I Work On",
-    "text": "What I Work On\n\n\n📋 CMS Claims Data\nLarge-scale Medicare & Medicaid data — harmonization, linkage, and analytics across millions of beneficiaries.\n\n\n🔗 Causal Inference\nPropensity scoring, instrumental variables, and difference-in-differences to answer real-world treatment questions.\n\n\n📈 Survival & Longitudinal Analysis\nTime-to-event modeling, competing risks, and repeated measures in aging populations.\n\n\n🤖 Machine Learning (In Progress)\nExpanding into gradient boosting, survival ML, and NLP for clinical text — applied to claims and EHR data.\n\n\n🛠️ Tools\nStata · R · Python (learning) · SQL\n\n\n🏥 Domain\nGeriatrics · ADRD · Emergency & Hospital Visit Outcomes · Health Services Research"
-  },
-  {
-    "objectID": "index.html#featured-projects",
-    "href": "index.html#featured-projects",
-    "title": "Yihan Wang, PhD",
-    "section": "Featured Projects",
-    "text": "Featured Projects\nJapan Loneliness Study — Stata code and analysis pipeline for a published mediation analysis examining mobile phone use and loneliness among older Japanese adults. Innovation in Aging, 2020.\nWTC First Responders Frailty Study (Ongoing) — Lead biostatistician on a clinical study examining frailty trajectories in World Trade Center first responders. Responsible for statistical analysis plan, modeling, and results interpretation.\nADRD Drug Repurposing Study (In Progress) — Lead analyst using large-scale CMS claims data to identify candidate drugs for Alzheimer’s Disease and Related Dementias (ADRD) repurposing. Applying causal inference methods to observational claims data.\nPalliative Care at Home RCT (Recruitment Ongoing) — Biostatistician on a randomized controlled trial evaluating a home-based palliative care intervention. Responsible for research database management, CONSORT diagram design, and statistical analysis planning."
-  },
-  {
-    "objectID": "index.html#currently-learning",
-    "href": "index.html#currently-learning",
-    "title": "Yihan Wang, PhD",
-    "section": "Currently Learning",
-    "text": "Currently Learning\nI’m actively building toward health data science and applied ML roles — redoing past analyses in Python, working through survival ML methods, and developing explainability skills (SHAP) for clinical model deployment.\n\nOpen to roles in health data science, real-world evidence (RWE), and applied ML in clinical settings."
-  },
-  {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
-    "section": "",
-    "text": "I’m a senior research scientist in the Brookdale Department of Geriatrics and Palliative Care at Mount Sinai Hospital, where I’ve spent 5+ years working with large-scale CMS Medicare and Medicaid claims data to study aging, ADRD, and emergency and hospital visit outcomes.\nMy core expertise is in CMS Medicare and Medicaid data — from raw claims ingestion and harmonization through to analysis and results interpretation. I’ve built pipelines and models using Stata and R, applying methods including regression, longitudinal analysis, survival modeling, and causal inference frameworks.\nI currently serve as lead biostatistician on a WTC first responders frailty study, lead analyst on an ADRD drug repurposing project using CMS claims, and biostatistician on a randomized controlled trial of a palliative care at home intervention.\nI’m currently in a deliberate transition toward health data science and applied machine learning — combining my domain expertise and analytical rigor with modern ML methods. I’m actively building Python skills, exploring gradient boosting and survival ML models, and developing literacy in explainability tools for clinical deployment contexts."
-  },
-  {
-    "objectID": "about.html#yihan-wang-phd",
-    "href": "about.html#yihan-wang-phd",
-    "title": "About",
-    "section": "",
-    "text": "I’m a senior research scientist in the Brookdale Department of Geriatrics and Palliative Care at Mount Sinai Hospital, where I’ve spent 5+ years working with large-scale CMS Medicare and Medicaid claims data to study aging, ADRD, and emergency and hospital visit outcomes.\nMy core expertise is in CMS Medicare and Medicaid data — from raw claims ingestion and harmonization through to analysis and results interpretation. I’ve built pipelines and models using Stata and R, applying methods including regression, longitudinal analysis, survival modeling, and causal inference frameworks.\nI currently serve as lead biostatistician on a WTC first responders frailty study, lead analyst on an ADRD drug repurposing project using CMS claims, and biostatistician on a randomized controlled trial of a palliative care at home intervention.\nI’m currently in a deliberate transition toward health data science and applied machine learning — combining my domain expertise and analytical rigor with modern ML methods. I’m actively building Python skills, exploring gradient boosting and survival ML models, and developing literacy in explainability tools for clinical deployment contexts."
-  },
-  {
-    "objectID": "about.html#skills",
-    "href": "about.html#skills",
-    "title": "About",
-    "section": "Skills",
-    "text": "Skills\nStatistical Methods Regression · Longitudinal analysis · Survival analysis · Causal inference (PSM, IV, DiD) · Mediation analysis · Multilevel modeling\nData CMS Medicare & Medicaid claims · EHR-linked data · Large-scale data harmonization · Survey data\nTools Stata · R · Python (developing) · SQL · Git/GitHub\nDomain Geriatrics · ADRD · Emergency & Hospital Visit Outcomes · Health Services Research · Palliative Care"
-  },
-  {
-    "objectID": "about.html#education",
-    "href": "about.html#education",
-    "title": "About",
-    "section": "Education",
-    "text": "Education\nPh.D. Social Work. Boston College\nM.A. Public Administration. University of Maryland, College Park\nB.A. English. China Agricultural University"
-  },
-  {
-    "objectID": "about.html#selected-publications",
-    "href": "about.html#selected-publications",
-    "title": "About",
-    "section": "Selected Publications",
-    "text": "Selected Publications\nHarada, K., Wang, Y., Shichijo, Y., Doan, J., Hung, W., Rosen, G., Baim-Lance, A., Lerner, S., Apoeso, O., Ko, F., & Chow, S. (2026). The role of geriatric syndromes in kidney transplant decision-making: A domain-based analysis of comprehensive geriatric assessment in older adults. Journal of the American Geriatrics Society. https://doi.org/10.1111/jgs.70324\nWong, J., Wang, Y., Abbas, M., Bollens-Lund, E., Reich, A. J., Ankuda, C., & Cooper, Z. (2024). Long-term changes in pain, depression, function and informal caregiving after major elective surgeries among seriously ill older adults. Annals of Surgery.\nWang, Y. & Gonzales, E. (2019). Examining the prevalence, risk, and protective factors to family caregiving in China: Findings from CHARLS. China Journal of Social Work, 12(9), 3-19. https://doi.org/10.1080/17525098.2019.1591697\nWang, Y., Matz, C., Miller, J., Carr, D. C., & Kohlbacher, F. (2018). Uses and gratifications sought from mobile phones and loneliness among Japanese midlife and older adults: A mediation analysis. Innovation in Aging, 2(3). https://doi.org/10.1093/geroni/igy027\nWang, Y. & Matz, C. (2018). Gender differences in the effect of social resources and social status on the retirement satisfaction and health of retirees. Journal of Gerontological Social Work, 62(1), 86-107. https://doi.org/10.1080/01634372.2018.1474156"
-  },
-  {
-    "objectID": "about.html#contact",
-    "href": "about.html#contact",
-    "title": "About",
-    "section": "Contact",
-    "text": "Contact\n\n💼 LinkedIn\n💻 GitHub\n📧 honoluluhan717@gmail.com\n\n\nI’m open to roles in health data science, real-world evidence, and applied ML in clinical or payer settings."
-  },
-  {
-    "objectID": "adrd-repurposing.html",
-    "href": "adrd-repurposing.html",
-    "title": "ADRD Drug Repurposing Study",
-    "section": "",
-    "text": "This ongoing study leverages large-scale CMS Medicare claims data to identify candidate drugs for repurposing in Alzheimer’s Disease and Related Dementias (ADRD). As lead analyst, I am responsible for the full analytical pipeline — from data extraction and harmonization through causal inference modeling and results interpretation.\nDrug repurposing using real-world claims data offers a powerful, cost-effective approach to identifying existing medications that may slow cognitive decline or reduce ADRD-related outcomes in older adults."
-  },
-  {
-    "objectID": "adrd-repurposing.html#overview",
-    "href": "adrd-repurposing.html#overview",
-    "title": "ADRD Drug Repurposing Study",
-    "section": "",
-    "text": "This ongoing study leverages large-scale CMS Medicare claims data to identify candidate drugs for repurposing in Alzheimer’s Disease and Related Dementias (ADRD). As lead analyst, I am responsible for the full analytical pipeline — from data extraction and harmonization through causal inference modeling and results interpretation.\nDrug repurposing using real-world claims data offers a powerful, cost-effective approach to identifying existing medications that may slow cognitive decline or reduce ADRD-related outcomes in older adults."
-  },
-  {
-    "objectID": "adrd-repurposing.html#research-questions",
-    "href": "adrd-repurposing.html#research-questions",
-    "title": "ADRD Drug Repurposing Study",
-    "section": "Research Questions",
-    "text": "Research Questions\n\nWhich existing medications are associated with reduced ADRD incidence or progression in Medicare beneficiaries?\nCan causal inference methods applied to observational claims data provide credible evidence for drug repurposing candidates?\nWhat is the role of comorbidities and polypharmacy in moderating these associations?"
-  },
-  {
-    "objectID": "adrd-repurposing.html#data",
-    "href": "adrd-repurposing.html#data",
-    "title": "ADRD Drug Repurposing Study",
-    "section": "Data",
-    "text": "Data\nCMS Medicare Claims Data - Large-scale administrative claims covering Medicare beneficiaries - Includes inpatient, outpatient, carrier, and prescription drug (Part D) claims - Data harmonization, linkage, and cleaning performed as part of analytical pipeline"
-  },
-  {
-    "objectID": "adrd-repurposing.html#statistical-methods",
-    "href": "adrd-repurposing.html#statistical-methods",
-    "title": "ADRD Drug Repurposing Study",
-    "section": "Statistical Methods",
-    "text": "Statistical Methods\n\n\n\n\n\n\n\nMethod\nPurpose\n\n\n\n\nCausal inference\nEstimating drug effects using observational claims data\n\n\nPropensity score methods\nControlling for confounding by indication\n\n\nSurvival analysis\nTime to ADRD diagnosis or progression\n\n\nComorbidity adjustment\nBynum algorithm for comorbidity classification\n\n\nRegression modeling\nAssociation between drug exposure and outcomes"
-  },
-  {
-    "objectID": "adrd-repurposing.html#my-role",
-    "href": "adrd-repurposing.html#my-role",
-    "title": "ADRD Drug Repurposing Study",
-    "section": "My Role",
-    "text": "My Role\n\nLead analyst — full responsibility for analytical pipeline and results\nData extraction, harmonization, and cleaning from CMS Medicare claims\nStatistical analysis plan design and execution\nComorbidity classification using the Bynum algorithm\nResults interpretation and manuscript contribution"
-  },
-  {
-    "objectID": "adrd-repurposing.html#tools-software",
-    "href": "adrd-repurposing.html#tools-software",
-    "title": "ADRD Drug Repurposing Study",
-    "section": "Tools & Software",
-    "text": "Tools & Software\n\nStata · R · SAS — multiple tools used across pipeline stages\nCMS Medicare claims data infrastructure\nBynum comorbidity algorithm implementation"
-  },
-  {
-    "objectID": "adrd-repurposing.html#repository-structure",
-    "href": "adrd-repurposing.html#repository-structure",
-    "title": "ADRD Drug Repurposing Study",
-    "section": "Repository Structure",
-    "text": "Repository Structure\nadrd-drug-repurposing/\n├── Background/       # Study background and aims\n├── Bynum Algo/       # Comorbidity classification algorithm\n├── Code/             # Primary analysis scripts\n├── Codebook/         # Variable definitions and data dictionary\n├── Comorbidities/    # Comorbidity analysis files\n├── Misc/             # Supplementary materials\n├── Output/           # Results and output tables\n└── Paper/            # Manuscript drafts\n📂 View Repository on GitHub"
-  },
-  {
-    "objectID": "adrd-repurposing.html#status",
-    "href": "adrd-repurposing.html#status",
-    "title": "ADRD Drug Repurposing Study",
-    "section": "Status",
-    "text": "Status\n🟡 In Progress — analyses ongoing, manuscript in preparation."
-  },
-  {
-    "objectID": "adrd-repurposing.html#notes-analytical-decisions",
-    "href": "adrd-repurposing.html#notes-analytical-decisions",
-    "title": "ADRD Drug Repurposing Study",
-    "section": "Notes & Analytical Decisions",
-    "text": "Notes & Analytical Decisions\nKey methodological choices documented for collaborators and technical reviewers.\n\nDrug exposure definition: (add your exposure definition here)\nADRD outcome definition: (add your outcome definition — ICD codes, etc.)\nComorbidity approach: Bynum algorithm applied to Medicare claims\nMissing data approach: (add your approach)\nSensitivity analyses planned: (list robustness checks)"
+    "objectID": "pde-medicare.html#references",
+    "href": "pde-medicare.html#references",
+    "title": "Research Use of Medicare Prescription Drug Event (PDE) Data",
+    "section": "References",
+    "text": "References\n\nCenters for Medicare & Medicaid Services (CMS) — Medicare Part D Prescription Drug Event (PDE) Data Documentation\nResearch Data Assistance Center (ResDAC) — Prescription Drug Event (PDE) Data: Source and Processing (April 2024)\nCMS Chronic Conditions Data Warehouse (CCW) — Medicare Part D Data Dictionary & Technical Guides\nMedicare Part D Prescription Drug Benefit Manual — CMS Policy & Reporting Requirements\nDrugs.com — National Drug Code (NDC) Directory. drugs.com/ndc.html\nBeshearse et al. (2023) — Comparison of outpatient antibiotic prescriptions among older adults in IQVIA Xponent and publicly available Medicare Part D data. Antimicrobial Stewardship & Healthcare Epidemiology."
   },
   {
     "objectID": "margins-stata.html#when-to-use-the-margins-command",
@@ -432,6 +299,209 @@
     "title": "A Powerful Post-Estimation Tool in Stata: Margins",
     "section": "References",
     "text": "References\n\nStata Regression Models | Harvard IQSS Data Science Workshops\nGSS General Social Survey | NORC\nExploring Regression Results using Margins | UW-Madison\nNHANES II | CDC"
+  },
+  {
+    "objectID": "adrd-repurposing.html",
+    "href": "adrd-repurposing.html",
+    "title": "ADRD Drug Repurposing Study",
+    "section": "",
+    "text": "This ongoing study leverages large-scale CMS Medicare claims data to identify candidate drugs for repurposing in Alzheimer’s Disease and Related Dementias (ADRD). As lead analyst, I am responsible for the full analytical pipeline — from data extraction and harmonization through causal inference modeling and results interpretation.\nDrug repurposing using real-world claims data offers a powerful, cost-effective approach to identifying existing medications that may slow cognitive decline or reduce ADRD-related outcomes in older adults."
+  },
+  {
+    "objectID": "adrd-repurposing.html#overview",
+    "href": "adrd-repurposing.html#overview",
+    "title": "ADRD Drug Repurposing Study",
+    "section": "",
+    "text": "This ongoing study leverages large-scale CMS Medicare claims data to identify candidate drugs for repurposing in Alzheimer’s Disease and Related Dementias (ADRD). As lead analyst, I am responsible for the full analytical pipeline — from data extraction and harmonization through causal inference modeling and results interpretation.\nDrug repurposing using real-world claims data offers a powerful, cost-effective approach to identifying existing medications that may slow cognitive decline or reduce ADRD-related outcomes in older adults."
+  },
+  {
+    "objectID": "adrd-repurposing.html#research-questions",
+    "href": "adrd-repurposing.html#research-questions",
+    "title": "ADRD Drug Repurposing Study",
+    "section": "Research Questions",
+    "text": "Research Questions\n\nWhich existing medications are associated with reduced ADRD incidence or progression in Medicare beneficiaries?\nCan causal inference methods applied to observational claims data provide credible evidence for drug repurposing candidates?\nWhat is the role of comorbidities and polypharmacy in moderating these associations?"
+  },
+  {
+    "objectID": "adrd-repurposing.html#data",
+    "href": "adrd-repurposing.html#data",
+    "title": "ADRD Drug Repurposing Study",
+    "section": "Data",
+    "text": "Data\nCMS Medicare Claims Data - Large-scale administrative claims covering Medicare beneficiaries - Includes inpatient, outpatient, carrier, and prescription drug (Part D) claims - Data harmonization, linkage, and cleaning performed as part of analytical pipeline"
+  },
+  {
+    "objectID": "adrd-repurposing.html#statistical-methods",
+    "href": "adrd-repurposing.html#statistical-methods",
+    "title": "ADRD Drug Repurposing Study",
+    "section": "Statistical Methods",
+    "text": "Statistical Methods\n\n\n\n\n\n\n\nMethod\nPurpose\n\n\n\n\nCausal inference\nEstimating drug effects using observational claims data\n\n\nPropensity score methods\nControlling for confounding by indication\n\n\nSurvival analysis\nTime to ADRD diagnosis or progression\n\n\nComorbidity adjustment\nBynum algorithm for comorbidity classification\n\n\nRegression modeling\nAssociation between drug exposure and outcomes"
+  },
+  {
+    "objectID": "adrd-repurposing.html#my-role",
+    "href": "adrd-repurposing.html#my-role",
+    "title": "ADRD Drug Repurposing Study",
+    "section": "My Role",
+    "text": "My Role\n\nLead analyst — full responsibility for analytical pipeline and results\nData extraction, harmonization, and cleaning from CMS Medicare claims\nStatistical analysis plan design and execution\nComorbidity classification using the Bynum algorithm\nResults interpretation and manuscript contribution"
+  },
+  {
+    "objectID": "adrd-repurposing.html#tools-software",
+    "href": "adrd-repurposing.html#tools-software",
+    "title": "ADRD Drug Repurposing Study",
+    "section": "Tools & Software",
+    "text": "Tools & Software\n\nStata · R · SAS — multiple tools used across pipeline stages\nCMS Medicare claims data infrastructure\nBynum comorbidity algorithm implementation"
+  },
+  {
+    "objectID": "adrd-repurposing.html#repository-structure",
+    "href": "adrd-repurposing.html#repository-structure",
+    "title": "ADRD Drug Repurposing Study",
+    "section": "Repository Structure",
+    "text": "Repository Structure\nadrd-drug-repurposing/\n├── Background/       # Study background and aims\n├── Bynum Algo/       # Comorbidity classification algorithm\n├── Code/             # Primary analysis scripts\n├── Codebook/         # Variable definitions and data dictionary\n├── Comorbidities/    # Comorbidity analysis files\n├── Misc/             # Supplementary materials\n├── Output/           # Results and output tables\n└── Paper/            # Manuscript drafts\n📂 View Repository on GitHub"
+  },
+  {
+    "objectID": "adrd-repurposing.html#status",
+    "href": "adrd-repurposing.html#status",
+    "title": "ADRD Drug Repurposing Study",
+    "section": "Status",
+    "text": "Status\n🟡 In Progress — analyses ongoing, manuscript in preparation."
+  },
+  {
+    "objectID": "adrd-repurposing.html#notes-analytical-decisions",
+    "href": "adrd-repurposing.html#notes-analytical-decisions",
+    "title": "ADRD Drug Repurposing Study",
+    "section": "Notes & Analytical Decisions",
+    "text": "Notes & Analytical Decisions\nKey methodological choices documented for collaborators and technical reviewers.\n\nDrug exposure definition: (add your exposure definition here)\nADRD outcome definition: (add your outcome definition — ICD codes, etc.)\nComorbidity approach: Bynum algorithm applied to Medicare claims\nMissing data approach: (add your approach)\nSensitivity analyses planned: (list robustness checks)"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "I’m a senior research scientist in the Brookdale Department of Geriatrics and Palliative Care at Mount Sinai Hospital, where I’ve spent 5+ years working with large-scale CMS Medicare and Medicaid claims data to study aging, ADRD, and emergency and hospital visit outcomes.\nMy core expertise is in CMS Medicare and Medicaid data — from raw claims ingestion and harmonization through to analysis and results interpretation. I’ve built pipelines and models using Stata and R, applying methods including regression, longitudinal analysis, survival modeling, and causal inference frameworks.\nI currently serve as lead biostatistician on a WTC first responders frailty study, lead analyst on an ADRD drug repurposing project using CMS claims, and biostatistician on a randomized controlled trial of a palliative care at home intervention.\nI’m currently in a deliberate transition toward health data science and applied machine learning — combining my domain expertise and analytical rigor with modern ML methods. I’m actively building Python skills, exploring gradient boosting and survival ML models, and developing literacy in explainability tools for clinical deployment contexts."
+  },
+  {
+    "objectID": "about.html#yihan-wang-phd",
+    "href": "about.html#yihan-wang-phd",
+    "title": "About",
+    "section": "",
+    "text": "I’m a senior research scientist in the Brookdale Department of Geriatrics and Palliative Care at Mount Sinai Hospital, where I’ve spent 5+ years working with large-scale CMS Medicare and Medicaid claims data to study aging, ADRD, and emergency and hospital visit outcomes.\nMy core expertise is in CMS Medicare and Medicaid data — from raw claims ingestion and harmonization through to analysis and results interpretation. I’ve built pipelines and models using Stata and R, applying methods including regression, longitudinal analysis, survival modeling, and causal inference frameworks.\nI currently serve as lead biostatistician on a WTC first responders frailty study, lead analyst on an ADRD drug repurposing project using CMS claims, and biostatistician on a randomized controlled trial of a palliative care at home intervention.\nI’m currently in a deliberate transition toward health data science and applied machine learning — combining my domain expertise and analytical rigor with modern ML methods. I’m actively building Python skills, exploring gradient boosting and survival ML models, and developing literacy in explainability tools for clinical deployment contexts."
+  },
+  {
+    "objectID": "about.html#skills",
+    "href": "about.html#skills",
+    "title": "About",
+    "section": "Skills",
+    "text": "Skills\nStatistical Methods Regression · Longitudinal analysis · Survival analysis · Causal inference (PSM, IV, DiD) · Mediation analysis · Multilevel modeling\nData CMS Medicare & Medicaid claims · EHR-linked data · Large-scale data harmonization · Survey data\nTools Stata · R · Python (developing) · SQL · Git/GitHub\nDomain Geriatrics · ADRD · Emergency & Hospital Visit Outcomes · Health Services Research · Palliative Care"
+  },
+  {
+    "objectID": "about.html#education",
+    "href": "about.html#education",
+    "title": "About",
+    "section": "Education",
+    "text": "Education\nPh.D. Social Work. Boston College\nM.A. Public Administration. University of Maryland, College Park\nB.A. English. China Agricultural University"
+  },
+  {
+    "objectID": "about.html#selected-publications",
+    "href": "about.html#selected-publications",
+    "title": "About",
+    "section": "Selected Publications",
+    "text": "Selected Publications\nHarada, K., Wang, Y., Shichijo, Y., Doan, J., Hung, W., Rosen, G., Baim-Lance, A., Lerner, S., Apoeso, O., Ko, F., & Chow, S. (2026). The role of geriatric syndromes in kidney transplant decision-making: A domain-based analysis of comprehensive geriatric assessment in older adults. Journal of the American Geriatrics Society. https://doi.org/10.1111/jgs.70324\nWong, J., Wang, Y., Abbas, M., Bollens-Lund, E., Reich, A. J., Ankuda, C., & Cooper, Z. (2024). Long-term changes in pain, depression, function and informal caregiving after major elective surgeries among seriously ill older adults. Annals of Surgery.\nWang, Y. & Gonzales, E. (2019). Examining the prevalence, risk, and protective factors to family caregiving in China: Findings from CHARLS. China Journal of Social Work, 12(9), 3-19. https://doi.org/10.1080/17525098.2019.1591697\nWang, Y., Matz, C., Miller, J., Carr, D. C., & Kohlbacher, F. (2018). Uses and gratifications sought from mobile phones and loneliness among Japanese midlife and older adults: A mediation analysis. Innovation in Aging, 2(3). https://doi.org/10.1093/geroni/igy027\nWang, Y. & Matz, C. (2018). Gender differences in the effect of social resources and social status on the retirement satisfaction and health of retirees. Journal of Gerontological Social Work, 62(1), 86-107. https://doi.org/10.1080/01634372.2018.1474156"
+  },
+  {
+    "objectID": "about.html#contact",
+    "href": "about.html#contact",
+    "title": "About",
+    "section": "Contact",
+    "text": "Contact\n\n💼 LinkedIn\n💻 GitHub\n📧 honoluluhan717@gmail.com\n\n\nI’m open to roles in health data science, real-world evidence, and applied ML in clinical or payer settings."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Yihan Wang, PhD",
+    "section": "",
+    "text": "Health Data Scientist · Senior Research Scientist, Mount Sinai Hospital\n5+ years working with Medicare & Medicaid claims data — causal inference, survival analysis, and longitudinal modeling in aging, ADRD, and emergency and hospital visit outcomes. Currently expanding into machine learning methods for healthcare.\nView My Work   GitHub   LinkedIn"
+  },
+  {
+    "objectID": "index.html#research",
+    "href": "index.html#research",
+    "title": "Yihan Wang, PhD",
+    "section": "What I Work On",
+    "text": "What I Work On\n\n\n📋 CMS Claims Data\nLarge-scale Medicare & Medicaid data — harmonization, linkage, and analytics across millions of beneficiaries.\n\n\n🔗 Causal Inference\nPropensity scoring, instrumental variables, and difference-in-differences to answer real-world treatment questions.\n\n\n📈 Survival & Longitudinal Analysis\nTime-to-event modeling, competing risks, and repeated measures in aging populations.\n\n\n🤖 Machine Learning (In Progress)\nExpanding into gradient boosting, survival ML, and NLP for clinical text — applied to claims and EHR data.\n\n\n🛠️ Tools\nStata · R · Python (learning) · SQL\n\n\n🏥 Domain\nGeriatrics · ADRD · Emergency & Hospital Visit Outcomes · Health Services Research"
+  },
+  {
+    "objectID": "index.html#featured-projects",
+    "href": "index.html#featured-projects",
+    "title": "Yihan Wang, PhD",
+    "section": "Featured Projects",
+    "text": "Featured Projects\nJapan Loneliness Study — Stata code and analysis pipeline for a published mediation analysis examining mobile phone use and loneliness among older Japanese adults. Innovation in Aging, 2020.\nWTC First Responders Frailty Study (Ongoing) — Lead biostatistician on a clinical study examining frailty trajectories in World Trade Center first responders. Responsible for statistical analysis plan, modeling, and results interpretation.\nADRD Drug Repurposing Study (In Progress) — Lead analyst using large-scale CMS claims data to identify candidate drugs for Alzheimer’s Disease and Related Dementias (ADRD) repurposing. Applying causal inference methods to observational claims data.\nPalliative Care at Home RCT (Recruitment Ongoing) — Biostatistician on a randomized controlled trial evaluating a home-based palliative care intervention. Responsible for research database management, CONSORT diagram design, and statistical analysis planning."
+  },
+  {
+    "objectID": "index.html#currently-learning",
+    "href": "index.html#currently-learning",
+    "title": "Yihan Wang, PhD",
+    "section": "Currently Learning",
+    "text": "Currently Learning\nI’m actively building toward health data science and applied ML roles — redoing past analyses in Python, working through survival ML methods, and developing explainability skills (SHAP) for clinical model deployment.\n\nOpen to roles in health data science, real-world evidence (RWE), and applied ML in clinical settings."
+  },
+  {
+    "objectID": "palliative-care-rct.html",
+    "href": "palliative-care-rct.html",
+    "title": "Palliative Care at Home RCT",
+    "section": "",
+    "text": "This randomized controlled trial (RCT) evaluates a home-based palliative care intervention program for patients with serious illness. As biostatistician on the team, I am responsible for research database management, CONSORT diagram design, and statistical analysis planning.\nThe study aims to assess whether a structured palliative care program delivered at home improves patient and caregiver outcomes compared to usual care."
+  },
+  {
+    "objectID": "palliative-care-rct.html#overview",
+    "href": "palliative-care-rct.html#overview",
+    "title": "Palliative Care at Home RCT",
+    "section": "",
+    "text": "This randomized controlled trial (RCT) evaluates a home-based palliative care intervention program for patients with serious illness. As biostatistician on the team, I am responsible for research database management, CONSORT diagram design, and statistical analysis planning.\nThe study aims to assess whether a structured palliative care program delivered at home improves patient and caregiver outcomes compared to usual care."
+  },
+  {
+    "objectID": "palliative-care-rct.html#research-questions",
+    "href": "palliative-care-rct.html#research-questions",
+    "title": "Palliative Care at Home RCT",
+    "section": "Research Questions",
+    "text": "Research Questions\n\nDoes the palliative care at home intervention improve outcomes compared to usual care?\nWhat is the enrollment pattern and retention rate across study sites?\nHow does the intervention affect program-level evaluation metrics?"
+  },
+  {
+    "objectID": "palliative-care-rct.html#study-design",
+    "href": "palliative-care-rct.html#study-design",
+    "title": "Palliative Care at Home RCT",
+    "section": "Study Design",
+    "text": "Study Design\nRandomized Controlled Trial (RCT) - Participants randomized to intervention (palliative care at home) vs. control (usual care) - Recruitment ongoing across multiple sites - Data collected and managed via REDCap"
+  },
+  {
+    "objectID": "palliative-care-rct.html#my-role",
+    "href": "palliative-care-rct.html#my-role",
+    "title": "Palliative Care at Home RCT",
+    "section": "My Role",
+    "text": "My Role\n\nBiostatistician — statistical analysis planning and execution\nResearch database management — maintaining and cleaning REDCap data\nCONSORT diagram design — tracking enrollment, randomization, and attrition\nSOP development — standard operating procedures for data management workflows"
+  },
+  {
+    "objectID": "palliative-care-rct.html#tools-software",
+    "href": "palliative-care-rct.html#tools-software",
+    "title": "Palliative Care at Home RCT",
+    "section": "Tools & Software",
+    "text": "Tools & Software\n\nREDCap — research database and data collection\nStata · R · SAS — statistical analyses\nCONSORT reporting — enrollment and flow diagrams"
+  },
+  {
+    "objectID": "palliative-care-rct.html#repository-contents",
+    "href": "palliative-care-rct.html#repository-contents",
+    "title": "Palliative Care at Home RCT",
+    "section": "Repository Contents",
+    "text": "Repository Contents\npalliative-care-rct/\n├── Dementia R01 Enrollment Presentation v2   # Enrollment status and progress\n├── SOP - REDCap CROMS report                 # Data management SOP\n└── Consort Diagram 050726                    # CONSORT diagram (May 2026)\n📂 View Repository on GitHub"
+  },
+  {
+    "objectID": "palliative-care-rct.html#status",
+    "href": "palliative-care-rct.html#status",
+    "title": "Palliative Care at Home RCT",
+    "section": "Status",
+    "text": "Status\n🟡 Recruitment Ongoing — data collection in progress, analysis planned post-recruitment."
+  },
+  {
+    "objectID": "palliative-care-rct.html#notes-analytical-decisions",
+    "href": "palliative-care-rct.html#notes-analytical-decisions",
+    "title": "Palliative Care at Home RCT",
+    "section": "Notes & Analytical Decisions",
+    "text": "Notes & Analytical Decisions\nKey methodological choices documented for collaborators and technical reviewers.\n\nPrimary outcome: Program evaluation metrics\nRandomization approach: (add details — block, stratified, etc.)\nAnalysis population: (ITT, per-protocol, or both)\nMissing data approach: (add your approach)\nPre-specified subgroup analyses: (list if any)"
   },
   {
     "objectID": "research.html",
