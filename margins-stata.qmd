@@ -1,0 +1,259 @@
+---
+title: "A Powerful Post-Estimation Tool in Stata: Margins"
+author: "Yihan Wang, PhD"
+date: "April 5, 2023"
+format:
+  revealjs:
+    theme: simple
+    slide-number: true
+    toc: false
+    incremental: false
+    code-block-background: true
+    highlight-style: github
+    footer: "Yihan Wang | Mount Sinai Hospital | Margins in Stata"
+---
+
+## When to Use the `margins` Command?
+
+For more complex models in Stata, it is often easier to interpret **margins** — specifically, margins of responses or margins of changes in responses.
+
+> Margins are statistics calculated from predictions of a previously fit model at fixed values of some covariates and averaging over the remaining covariates.
+
+**Margins answers:** *"What does my model have to say about such-and-such a group or such-and-such a person?"*
+
+---
+
+## Types of Margins of Responses
+
+| Abbreviation | Name | Description |
+|---|---|---|
+| **APM** | Average Predictive Margins | Average of responses among actual people in the data |
+| **PMM** | Predictive Margins at the Means | Expected response for a person with average characteristics |
+| **PMR** | Predictive Margins at Representative Values | Expected response across a range of covariate values |
+
+---
+
+## Types of Margins of Changes in Responses
+
+| Abbreviation | Name | Description |
+|---|---|---|
+| **AME** | Average Marginal Effects | Average of changes in responses among actual people |
+| **MEM** | Marginal Effects at the Means | Expected change for a person with average characteristics |
+| **MER** | Marginal Effects at Representative Values | Expected change across a range of covariate values |
+
+---
+
+## Where to Use the `margins` Command?
+
+- The `margins` command can only be used **after running a regression** — it acts on the most recent regression results
+
+- The `marginsplot` command graphs any margins or comparisons of margins — it acts on the most recent `margins` results
+
+```stata
+regress y x1 x2 x3
+margins
+marginsplot
+```
+
+---
+
+## Example Data: NHANES II
+
+**Margins of Responses Example**
+
+Predicting continuous **systolic blood pressure** (`bpsystol`) as a function of:
+
+- Age (`age`)
+- Diabetes status (`diabetes`)
+- Geographic region (`region`)
+
+Using **OLS regression**
+
+> Dataset: NHANES II (Second National Health and Nutrition Examination Survey, mid-to-late 1970s)
+> [wwwn.cdc.gov/nchs/nhanes/nhanes2](https://wwwn.cdc.gov/nchs/nhanes/nhanes2/)
+
+---
+
+## Average Predictive Margins (APM)
+
+The **mean predicted value** of systolic blood pressure is **130.89**, based on each observation in the data.
+
+```stata
+regress bpsystol age i.diabetes i.region
+margins
+```
+
+> APM gives the average of the predicted values across all actual observations.
+
+---
+
+## APM: Dummy & Categorical Variables
+
+```stata
+margins diabetes
+margins region
+```
+
+| Group | Mean Predicted SBP |
+|---|---|
+| No diabetes | 130.51 |
+| Northeast region | 131.28 |
+| West region | 130.47 |
+
+---
+
+## Predictive Margins at the Means (PMM)
+
+```stata
+margins, atmeans
+margins diabetes, atmeans
+```
+
+The predicted systolic blood pressure for a person **with diabetes** is **138.31**, holding all other covariates at their **mean values**.
+
+> PMM answers: "What is the predicted outcome for a person with perfectly average characteristics?"
+
+---
+
+## Predictive Margins at Representative Values (PMR)
+
+```stata
+margins, at(age=80)
+margins, at(age=(20 30 40 50 60 70 80))
+```
+
+- Mean predicted SBP with age set to **80** is **151.52**
+- Mean predicted SBP across age range **20–80** ranges from **132–152**
+
+---
+
+## Example: Margins of Changes in Responses
+
+**Predicting probability of diabetes** (`diabetes`) as a function of:
+
+- Race (`black`)
+- Sex (`female`)
+- Age (`age`)
+
+Using **logistic regression** with the same NHANES II dataset
+
+```stata
+logit diabetes i.black i.female age
+margins
+```
+
+---
+
+## Average Marginal Effects (AME)
+
+```stata
+margins, dydx(*)
+```
+
+| Group | Avg Predicted Probability of Diabetes |
+|---|---|
+| Black | 8.44% |
+| Non-Black | 4.43% |
+| Female | 5.15% |
+| Male | 4.47% |
+
+> The average marginal effect of sex: **+0.68 percentage points** (female vs. male)
+
+---
+
+## Marginal Effects at the Means (MEM)
+
+```stata
+margins, dydx(*) atmeans
+```
+
+- Calculate marginal effects with all other covariates **fixed at their sample means**
+- Gives the predicted probability for each group, holding other variables constant
+- Gives the change in probability when group membership changes from *a* to *b*, holding other variables at the mean
+
+---
+
+## Marginal Effects at Representative Values (MER)
+
+```stata
+margins, dydx(*) at(age=70 black=1)
+```
+
+For a **70-year-old Black person**, their predicted probability of diabetes is **19.12%**, holding all other variables at their original values.
+
+---
+
+## MER: Across a Range
+
+```stata
+margins black female, at(age=(20 30 40 50 60 70))
+marginsplot
+```
+
+| Group | Age 20 | Age 70 |
+|---|---|---|
+| Black | 0.61% | 8.78% |
+| Female | 0.10% | 1.53% |
+
+---
+
+## Margins with Interactions
+
+**Research question:** Does marital status (`marital`) affect the relationship between sex and general happiness (`happy`), controlling for income (`rincome`) and education (`educ`)?
+
+```stata
+mlogit happy i.sex##i.marital rincome educ
+margins marital, at(sex=(0 1))
+marginsplot
+```
+
+> Dataset: General Social Survey (GSS) — [gss.norc.org](https://gss.norc.org)
+
+> ⚠️ Interpretation of interactions in multinomial logit models can be tricky — use `margins` to make results interpretable.
+
+---
+
+## Margins with Interactions: Results
+
+Fixing income and education at specific levels:
+
+- Different marital statuses have **different predicted probabilities of happiness** compared to the base category
+- `marginsplot` visualizes these predicted probabilities across groups
+
+---
+
+## Example: Margins with Dummy Variables
+
+**Research question:** Does depression affect the relationship between serious illness and 90-day Medicare expenditure post-surgery?
+
+```stata
+glm tot_paid_by_mc_p90 i.ind_depression##i.ind_si_any, family(gamma) link(log)
+margins ind_depression#ind_si_any
+```
+
+> Project work using **Medpar data** linked to **HRS data**
+
+> ⚠️ Default regression output coefficients do not directly translate to dollar amounts — use `margins` to get interpretable results
+
+---
+
+## Margins with Dummy Variables: Results
+
+```stata
+margins ind_depression#ind_si_any
+marginsplot, recast(bar) by(ind_si_any)
+```
+
+| Group | Avg Predicted 90-day Medicare Expenditure |
+|---|---|
+| No depression, no serious illness | $6,401.18 |
+| Depression, no serious illness | $8,611.21 |
+
+---
+
+## References
+
+- [Stata Regression Models | Harvard IQSS Data Science Workshops](https://iqss.github.io)
+- [GSS General Social Survey | NORC](https://gss.norc.org)
+- [Exploring Regression Results using Margins | UW-Madison](https://sscc.wisc.edu)
+- [NHANES II | CDC](https://wwwn.cdc.gov/nchs/nhanes/nhanes2/)

@@ -2,7 +2,18 @@
 title: "Teaching & Workshops"
 ---
 
-This page collects teaching materials, workshop handouts, and instructional resources developed for training junior researchers and clinical staff in biostatistics and data science.
+This page collects teaching materials, workshop handouts, presentations, and instructional resources developed for training junior researchers and clinical staff in biostatistics and data science.
+
+---
+
+## Presentations
+
+### Margins in Stata
+*April 2023 · Mount Sinai Hospital*
+
+A practical workshop covering the `margins` command in Stata — APM, PMM, PMR, AME, MEM, MER, interactions, and dummy variables. Includes worked examples using NHANES II, GSS, and Medicare claims data.
+
+🖥️ **[View Presentation](margins-stata.qmd)**
 
 ---
 
@@ -14,17 +25,13 @@ I run weekly statistics workshops ("huddles") for the research team at Mount Sin
 
 📂 [View All Workshop Materials on GitHub](https://github.com/honoluluhan717/huddle-workshops){target="_blank"}
 
----
-
-### Workshop Topics
-
 | Topic | Format | Link |
 |---|---|---|
 | Exporting Stata Results | Stata `.do` file | [View on GitHub](https://github.com/honoluluhan717/huddle-workshops/blob/main/Exporting%20Stata%20Results.do){target="_blank"} |
-| Multicollinearity | Workshop notes | [View on GitHub](https://github.com/honoluluhan717/huddle-workshops/blob/main/Multicollinearity%2008242022.pdf){target="_blank"} |
-| Sample Size Calculation using G*Power | Workshop notes | [View on GitHub](https://github.com/honoluluhan717/huddle-workshops/blob/main/calculating%20sample%20using%20gpower.pdf){target="_blank"} |
-| Multiple Imputation using `mi` in Stata | Workshop notes | [View on GitHub](https://github.com/honoluluhan717/huddle-workshops/blob/main/multiple%20imputation%20using%20mi.pdf){target="_blank"} |
-| Learning Points from the Ankuda RP1 Project | Project notes | [View on GitHub](https://github.com/honoluluhan717/huddle-workshops/blob/main/some%20learning%20points%20from%20the%20Ankuda_RP1%20project.pdf){target="_blank"} |
+| Multicollinearity | PDF | [View on GitHub](https://github.com/honoluluhan717/huddle-workshops/blob/main/Multicollinearity%2008242022.pdf){target="_blank"} |
+| Sample Size Calculation using G*Power | PDF | [View on GitHub](https://github.com/honoluluhan717/huddle-workshops/blob/main/calculating%20sample%20using%20gpower.pdf){target="_blank"} |
+| Multiple Imputation using `mi` in Stata | PDF | [View on GitHub](https://github.com/honoluluhan717/huddle-workshops/blob/main/multiple%20imputation%20using%20mi.pdf){target="_blank"} |
+| Learning Points from the Ankuda RP1 Project | PDF | [View on GitHub](https://github.com/honoluluhan717/huddle-workshops/blob/main/some%20learning%20points%20from%20the%20Ankuda_RP1%20project.pdf){target="_blank"} |
 
 ---
 
