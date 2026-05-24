@@ -1,0 +1,137 @@
+---
+title: "Research Use of Medicare Prescription Drug Event (PDE) Data"
+author: "Yihan Wang"
+date: "December 9, 2025"
+format:
+  revealjs:
+    theme: simple
+    slide-number: true
+    toc: false
+    incremental: false
+    code-block-background: true
+    highlight-style: github
+    footer: "Yihan Wang | Mount Sinai Hospital | Medicare PDE Data"
+---
+
+## What Is PDE Data?
+
+**PDE = Prescription Drug Event** — the record of prescription-drug fills under Medicare Part D.
+
+- Whenever a Part D beneficiary fills a prescription, the plan submits a PDE record summarizing the fill event
+- PDE data are **standardized** — not raw transactional claims but CMS-defined summary extracts
+
+---
+
+## Why PDE Matters / Who Reports It
+
+- All Part D plan sponsors (stand-alone PDPs and Medicare Advantage plans with drug benefits) must report PDE data to CMS for **every covered fill**
+- Provides a **comprehensive view** of outpatient prescription drug utilization among Medicare beneficiaries under Part D
+
+---
+
+## PDE Data Contents — Core Variables
+
+PDE records include many standardized fields. Key ones:
+
+| Variable | Description |
+|---|---|
+| Beneficiary ID | Encrypted unique identifier |
+| Prescription fill date | Date the drug was dispensed |
+| Brand & generic drug names | Drug identification |
+| Dosage form & strength | Formulation details |
+| Quantity & days supply | Utilization metrics |
+| Coverage & payment | Cost and subsidy data |
+
+---
+
+## Part D PDE Reconciliation Process
+
+![](https://via.placeholder.com/800x400?text=PDE+Reconciliation+Process)
+
+> Beshearse et al. (2023) — Comparison of outpatient antibiotic prescriptions among older adults in IQVIA Xponent and publicly available Medicare Part D data. *Antimicrobial Stewardship & Healthcare Epidemiology.*
+
+---
+
+## What PDE Captures — And What It Doesn't
+
+::: {.columns}
+
+::: {.column width="50%"}
+**✅ What it captures:**
+
+- Detailed outpatient prescription drug fills under Part D
+- Timing, drug identity, strength, quantity, payment data
+- Enables utilization, adherence, cost, and drug-exposure analyses
+:::
+
+::: {.column width="50%"}
+**⚠️ Limitations:**
+
+- Drugs administered during hospitalizations may not appear
+- Dispensed ≠ ingested (no guarantee drug was taken)
+- Limited clinical context — must link with other Medicare files
+- Doesn't capture drugs not covered by Part D (OTC, hospital-administered)
+:::
+
+:::
+
+---
+
+## How Researchers Use PDE Data
+
+1. **Define medication exposure periods** — when a drug was filled, days supply
+2. **Study drug utilization patterns** — adherence (MPR, gaps), polypharmacy
+3. **Link with Medicare claims** — inpatient, outpatient, diagnoses for health outcomes, safety, pharmacoepidemiology
+4. **Cost and utilization analyses** — what drugs, how often, cost burden, subsidies
+
+---
+
+## Why Request the Part D Drug Characteristics File
+
+| | PDE File Only | PDE + Drug Characteristics File |
+|---|---|---|
+| Drug ID | NDC code only | Brand + generic name |
+| Strength | ❌ None | ✅ Exact (e.g., 10 mg, 20 mg) |
+| Dosage form | ❌ None | ✅ Tablet, capsule, solution |
+| Brand vs. generic | ❌ Cannot distinguish | ✅ Enables comparison |
+| Drug exposure | Limited clinical definition | ✅ Clinically meaningful |
+| Dose analyses | ❌ Not sufficient | ✅ Dose-response supported |
+
+---
+
+## National Drug Codes (NDC) Explained
+
+**Example:** NDC for a 100-count bottle of Prozac 20 mg → `0777-3105-02`
+
+| Segment | Code | Meaning |
+|---|---|---|
+| **Labeler code** | `0777` | Dista Products Co. (manufacturer of Prozac) |
+| **Product code** | `3105` | Identifies strength, dosage form (capsule) |
+| **Package code** | `02` | Package size (100 capsules per bottle) |
+
+---
+
+## Brand Name vs. Generic Name in PDE
+
+- **Generic name** = scientific/chemical name (used in datasets, PDE, research)
+- **Brand name** = marketing name from the drug company
+- One generic can have **multiple brand names**
+
+| Generic Name | Brand Name | Main Use |
+|---|---|---|
+| Atorvastatin | Lipitor | Cholesterol |
+| Metformin | Glucophage | Type 2 Diabetes |
+| Lisinopril | Prinivil / Zestril | Blood pressure |
+| Amlodipine | Norvasc | Blood pressure |
+| Omeprazole | Prilosec | Acid reflux |
+
+---
+
+## References
+
+1. **Centers for Medicare & Medicaid Services (CMS)** — Medicare Part D Prescription Drug Event (PDE) Data Documentation
+2. **Research Data Assistance Center (ResDAC)** — Prescription Drug Event (PDE) Data: Source and Processing (April 2024)
+3. **CMS Chronic Conditions Data Warehouse (CCW)** — Medicare Part D Data Dictionary & Technical Guides
+4. **Medicare Part D Prescription Drug Benefit Manual** — CMS Policy & Reporting Requirements
+5. **Drugs.com** — National Drug Code (NDC) Directory. [drugs.com/ndc.html](https://www.drugs.com/ndc.html)
+6. **Beshearse et al. (2023)** — Comparison of outpatient antibiotic prescriptions among older adults in IQVIA Xponent and publicly available Medicare Part D data. *Antimicrobial Stewardship & Healthcare Epidemiology.*

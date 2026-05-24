@@ -74,14 +74,21 @@
     "href": "slides.html",
     "title": "Teaching & Workshops",
     "section": "",
-    "text": "This page collects teaching materials, workshop handouts, and instructional resources developed for training junior researchers and clinical staff in biostatistics and data science."
+    "text": "This page collects teaching materials, workshop handouts, presentations, and instructional resources developed for training junior researchers and clinical staff in biostatistics and data science."
+  },
+  {
+    "objectID": "slides.html#presentations",
+    "href": "slides.html#presentations",
+    "title": "Teaching & Workshops",
+    "section": "Presentations",
+    "text": "Presentations\n\nMargins in Stata\nApril 2023 · Mount Sinai Hospital\nA practical workshop covering the margins command in Stata — APM, PMM, PMR, AME, MEM, MER, interactions, and dummy variables. Includes worked examples using NHANES II, GSS, and Medicare claims data.\n🖥️ View Presentation"
   },
   {
     "objectID": "slides.html#weekly-huddle-statistics-workshops",
     "href": "slides.html#weekly-huddle-statistics-workshops",
     "title": "Teaching & Workshops",
     "section": "Weekly Huddle Statistics Workshops",
-    "text": "Weekly Huddle Statistics Workshops\nMount Sinai Hospital — Geriatrics & Palliative Care\nI run weekly statistics workshops (“huddles”) for the research team at Mount Sinai, covering practical applied biostatistics using Stata. Topics are driven by real analytical challenges encountered in our research projects.\n📂 View All Workshop Materials on GitHub\n\n\nWorkshop Topics\n\n\n\nTopic\nFormat\nLink\n\n\n\n\nExporting Stata Results\nStata .do file\nView on GitHub\n\n\nMulticollinearity\nWorkshop notes\nView on GitHub\n\n\nSample Size Calculation using G*Power\nWorkshop notes\nView on GitHub\n\n\nMultiple Imputation using mi in Stata\nWorkshop notes\nView on GitHub\n\n\nLearning Points from the Ankuda RP1 Project\nProject notes\nView on GitHub"
+    "text": "Weekly Huddle Statistics Workshops\nMount Sinai Hospital — Geriatrics & Palliative Care\nI run weekly statistics workshops (“huddles”) for the research team at Mount Sinai, covering practical applied biostatistics using Stata. Topics are driven by real analytical challenges encountered in our research projects.\n📂 View All Workshop Materials on GitHub\n\n\n\nTopic\nFormat\nLink\n\n\n\n\nExporting Stata Results\nStata .do file\nView on GitHub\n\n\nMulticollinearity\nPDF\nView on GitHub\n\n\nSample Size Calculation using G*Power\nPDF\nView on GitHub\n\n\nMultiple Imputation using mi in Stata\nPDF\nView on GitHub\n\n\nLearning Points from the Ankuda RP1 Project\nPDF\nView on GitHub"
   },
   {
     "objectID": "slides.html#other-teaching-materials",
@@ -154,6 +161,76 @@
     "text": "Notes & Analytical Decisions\nKey methodological choices documented for collaborators and technical reviewers.\n\nPrimary outcome: Program evaluation metrics\nRandomization approach: (add details — block, stratified, etc.)\nAnalysis population: (ITT, per-protocol, or both)\nMissing data approach: (add your approach)\nPre-specified subgroup analyses: (list if any)"
   },
   {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Yihan Wang, PhD",
+    "section": "",
+    "text": "Health Data Scientist · Senior Research Scientist, Mount Sinai Hospital\n5+ years working with Medicare & Medicaid claims data — causal inference, survival analysis, and longitudinal modeling in aging, ADRD, and emergency and hospital visit outcomes. Currently expanding into machine learning methods for healthcare.\nView My Work   GitHub   LinkedIn"
+  },
+  {
+    "objectID": "index.html#research",
+    "href": "index.html#research",
+    "title": "Yihan Wang, PhD",
+    "section": "What I Work On",
+    "text": "What I Work On\n\n\n📋 CMS Claims Data\nLarge-scale Medicare & Medicaid data — harmonization, linkage, and analytics across millions of beneficiaries.\n\n\n🔗 Causal Inference\nPropensity scoring, instrumental variables, and difference-in-differences to answer real-world treatment questions.\n\n\n📈 Survival & Longitudinal Analysis\nTime-to-event modeling, competing risks, and repeated measures in aging populations.\n\n\n🤖 Machine Learning (In Progress)\nExpanding into gradient boosting, survival ML, and NLP for clinical text — applied to claims and EHR data.\n\n\n🛠️ Tools\nStata · R · Python (learning) · SQL\n\n\n🏥 Domain\nGeriatrics · ADRD · Emergency & Hospital Visit Outcomes · Health Services Research"
+  },
+  {
+    "objectID": "index.html#featured-projects",
+    "href": "index.html#featured-projects",
+    "title": "Yihan Wang, PhD",
+    "section": "Featured Projects",
+    "text": "Featured Projects\nJapan Loneliness Study — Stata code and analysis pipeline for a published mediation analysis examining mobile phone use and loneliness among older Japanese adults. Innovation in Aging, 2020.\nWTC First Responders Frailty Study (Ongoing) — Lead biostatistician on a clinical study examining frailty trajectories in World Trade Center first responders. Responsible for statistical analysis plan, modeling, and results interpretation.\nADRD Drug Repurposing Study (In Progress) — Lead analyst using large-scale CMS claims data to identify candidate drugs for Alzheimer’s Disease and Related Dementias (ADRD) repurposing. Applying causal inference methods to observational claims data.\nPalliative Care at Home RCT (Recruitment Ongoing) — Biostatistician on a randomized controlled trial evaluating a home-based palliative care intervention. Responsible for research database management, CONSORT diagram design, and statistical analysis planning."
+  },
+  {
+    "objectID": "index.html#currently-learning",
+    "href": "index.html#currently-learning",
+    "title": "Yihan Wang, PhD",
+    "section": "Currently Learning",
+    "text": "Currently Learning\nI’m actively building toward health data science and applied ML roles — redoing past analyses in Python, working through survival ML methods, and developing explainability skills (SHAP) for clinical model deployment.\n\nOpen to roles in health data science, real-world evidence (RWE), and applied ML in clinical settings."
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "I’m a senior research scientist in the Brookdale Department of Geriatrics and Palliative Care at Mount Sinai Hospital, where I’ve spent 5+ years working with large-scale CMS Medicare and Medicaid claims data to study aging, ADRD, and emergency and hospital visit outcomes.\nMy core expertise is in CMS Medicare and Medicaid data — from raw claims ingestion and harmonization through to analysis and results interpretation. I’ve built pipelines and models using Stata and R, applying methods including regression, longitudinal analysis, survival modeling, and causal inference frameworks.\nI currently serve as lead biostatistician on a WTC first responders frailty study, lead analyst on an ADRD drug repurposing project using CMS claims, and biostatistician on a randomized controlled trial of a palliative care at home intervention.\nI’m currently in a deliberate transition toward health data science and applied machine learning — combining my domain expertise and analytical rigor with modern ML methods. I’m actively building Python skills, exploring gradient boosting and survival ML models, and developing literacy in explainability tools for clinical deployment contexts."
+  },
+  {
+    "objectID": "about.html#yihan-wang-phd",
+    "href": "about.html#yihan-wang-phd",
+    "title": "About",
+    "section": "",
+    "text": "I’m a senior research scientist in the Brookdale Department of Geriatrics and Palliative Care at Mount Sinai Hospital, where I’ve spent 5+ years working with large-scale CMS Medicare and Medicaid claims data to study aging, ADRD, and emergency and hospital visit outcomes.\nMy core expertise is in CMS Medicare and Medicaid data — from raw claims ingestion and harmonization through to analysis and results interpretation. I’ve built pipelines and models using Stata and R, applying methods including regression, longitudinal analysis, survival modeling, and causal inference frameworks.\nI currently serve as lead biostatistician on a WTC first responders frailty study, lead analyst on an ADRD drug repurposing project using CMS claims, and biostatistician on a randomized controlled trial of a palliative care at home intervention.\nI’m currently in a deliberate transition toward health data science and applied machine learning — combining my domain expertise and analytical rigor with modern ML methods. I’m actively building Python skills, exploring gradient boosting and survival ML models, and developing literacy in explainability tools for clinical deployment contexts."
+  },
+  {
+    "objectID": "about.html#skills",
+    "href": "about.html#skills",
+    "title": "About",
+    "section": "Skills",
+    "text": "Skills\nStatistical Methods Regression · Longitudinal analysis · Survival analysis · Causal inference (PSM, IV, DiD) · Mediation analysis · Multilevel modeling\nData CMS Medicare & Medicaid claims · EHR-linked data · Large-scale data harmonization · Survey data\nTools Stata · R · Python (developing) · SQL · Git/GitHub\nDomain Geriatrics · ADRD · Emergency & Hospital Visit Outcomes · Health Services Research · Palliative Care"
+  },
+  {
+    "objectID": "about.html#education",
+    "href": "about.html#education",
+    "title": "About",
+    "section": "Education",
+    "text": "Education\nPh.D. Social Work. Boston College\nM.A. Public Administration. University of Maryland, College Park\nB.A. English. China Agricultural University"
+  },
+  {
+    "objectID": "about.html#selected-publications",
+    "href": "about.html#selected-publications",
+    "title": "About",
+    "section": "Selected Publications",
+    "text": "Selected Publications\nHarada, K., Wang, Y., Shichijo, Y., Doan, J., Hung, W., Rosen, G., Baim-Lance, A., Lerner, S., Apoeso, O., Ko, F., & Chow, S. (2026). The role of geriatric syndromes in kidney transplant decision-making: A domain-based analysis of comprehensive geriatric assessment in older adults. Journal of the American Geriatrics Society. https://doi.org/10.1111/jgs.70324\nWong, J., Wang, Y., Abbas, M., Bollens-Lund, E., Reich, A. J., Ankuda, C., & Cooper, Z. (2024). Long-term changes in pain, depression, function and informal caregiving after major elective surgeries among seriously ill older adults. Annals of Surgery.\nWang, Y. & Gonzales, E. (2019). Examining the prevalence, risk, and protective factors to family caregiving in China: Findings from CHARLS. China Journal of Social Work, 12(9), 3-19. https://doi.org/10.1080/17525098.2019.1591697\nWang, Y., Matz, C., Miller, J., Carr, D. C., & Kohlbacher, F. (2018). Uses and gratifications sought from mobile phones and loneliness among Japanese midlife and older adults: A mediation analysis. Innovation in Aging, 2(3). https://doi.org/10.1093/geroni/igy027\nWang, Y. & Matz, C. (2018). Gender differences in the effect of social resources and social status on the retirement satisfaction and health of retirees. Journal of Gerontological Social Work, 62(1), 86-107. https://doi.org/10.1080/01634372.2018.1474156"
+  },
+  {
+    "objectID": "about.html#contact",
+    "href": "about.html#contact",
+    "title": "About",
+    "section": "Contact",
+    "text": "Contact\n\n💼 LinkedIn\n💻 GitHub\n📧 honoluluhan717@gmail.com\n\n\nI’m open to roles in health data science, real-world evidence, and applied ML in clinical or payer settings."
+  },
+  {
     "objectID": "adrd-repurposing.html",
     "href": "adrd-repurposing.html",
     "title": "ADRD Drug Repurposing Study",
@@ -224,74 +301,137 @@
     "text": "Notes & Analytical Decisions\nKey methodological choices documented for collaborators and technical reviewers.\n\nDrug exposure definition: (add your exposure definition here)\nADRD outcome definition: (add your outcome definition — ICD codes, etc.)\nComorbidity approach: Bynum algorithm applied to Medicare claims\nMissing data approach: (add your approach)\nSensitivity analyses planned: (list robustness checks)"
   },
   {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
-    "section": "",
-    "text": "I’m a senior research scientist in the Brookdale Department of Geriatrics and Palliative Care at Mount Sinai Hospital, where I’ve spent 5+ years working with large-scale CMS Medicare and Medicaid claims data to study aging, ADRD, and emergency and hospital visit outcomes.\nMy core expertise is in CMS Medicare and Medicaid data — from raw claims ingestion and harmonization through to analysis and results interpretation. I’ve built pipelines and models using Stata and R, applying methods including regression, longitudinal analysis, survival modeling, and causal inference frameworks.\nI currently serve as lead biostatistician on a WTC first responders frailty study, lead analyst on an ADRD drug repurposing project using CMS claims, and biostatistician on a randomized controlled trial of a palliative care at home intervention.\nI’m currently in a deliberate transition toward health data science and applied machine learning — combining my domain expertise and analytical rigor with modern ML methods. I’m actively building Python skills, exploring gradient boosting and survival ML models, and developing literacy in explainability tools for clinical deployment contexts."
+    "objectID": "margins-stata.html#when-to-use-the-margins-command",
+    "href": "margins-stata.html#when-to-use-the-margins-command",
+    "title": "A Powerful Post-Estimation Tool in Stata: Margins",
+    "section": "When to Use the margins Command?",
+    "text": "When to Use the margins Command?\nFor more complex models in Stata, it is often easier to interpret margins — specifically, margins of responses or margins of changes in responses.\n\nMargins are statistics calculated from predictions of a previously fit model at fixed values of some covariates and averaging over the remaining covariates.\n\nMargins answers: “What does my model have to say about such-and-such a group or such-and-such a person?”"
   },
   {
-    "objectID": "about.html#yihan-wang-phd",
-    "href": "about.html#yihan-wang-phd",
-    "title": "About",
-    "section": "",
-    "text": "I’m a senior research scientist in the Brookdale Department of Geriatrics and Palliative Care at Mount Sinai Hospital, where I’ve spent 5+ years working with large-scale CMS Medicare and Medicaid claims data to study aging, ADRD, and emergency and hospital visit outcomes.\nMy core expertise is in CMS Medicare and Medicaid data — from raw claims ingestion and harmonization through to analysis and results interpretation. I’ve built pipelines and models using Stata and R, applying methods including regression, longitudinal analysis, survival modeling, and causal inference frameworks.\nI currently serve as lead biostatistician on a WTC first responders frailty study, lead analyst on an ADRD drug repurposing project using CMS claims, and biostatistician on a randomized controlled trial of a palliative care at home intervention.\nI’m currently in a deliberate transition toward health data science and applied machine learning — combining my domain expertise and analytical rigor with modern ML methods. I’m actively building Python skills, exploring gradient boosting and survival ML models, and developing literacy in explainability tools for clinical deployment contexts."
+    "objectID": "margins-stata.html#types-of-margins-of-responses",
+    "href": "margins-stata.html#types-of-margins-of-responses",
+    "title": "A Powerful Post-Estimation Tool in Stata: Margins",
+    "section": "Types of Margins of Responses",
+    "text": "Types of Margins of Responses\n\n\n\n\n\n\n\n\nAbbreviation\nName\nDescription\n\n\n\n\nAPM\nAverage Predictive Margins\nAverage of responses among actual people in the data\n\n\nPMM\nPredictive Margins at the Means\nExpected response for a person with average characteristics\n\n\nPMR\nPredictive Margins at Representative Values\nExpected response across a range of covariate values"
   },
   {
-    "objectID": "about.html#skills",
-    "href": "about.html#skills",
-    "title": "About",
-    "section": "Skills",
-    "text": "Skills\nStatistical Methods Regression · Longitudinal analysis · Survival analysis · Causal inference (PSM, IV, DiD) · Mediation analysis · Multilevel modeling\nData CMS Medicare & Medicaid claims · EHR-linked data · Large-scale data harmonization · Survey data\nTools Stata · R · Python (developing) · SQL · Git/GitHub\nDomain Geriatrics · ADRD · Emergency & Hospital Visit Outcomes · Health Services Research · Palliative Care"
+    "objectID": "margins-stata.html#types-of-margins-of-changes-in-responses",
+    "href": "margins-stata.html#types-of-margins-of-changes-in-responses",
+    "title": "A Powerful Post-Estimation Tool in Stata: Margins",
+    "section": "Types of Margins of Changes in Responses",
+    "text": "Types of Margins of Changes in Responses\n\n\n\n\n\n\n\n\nAbbreviation\nName\nDescription\n\n\n\n\nAME\nAverage Marginal Effects\nAverage of changes in responses among actual people\n\n\nMEM\nMarginal Effects at the Means\nExpected change for a person with average characteristics\n\n\nMER\nMarginal Effects at Representative Values\nExpected change across a range of covariate values"
   },
   {
-    "objectID": "about.html#education",
-    "href": "about.html#education",
-    "title": "About",
-    "section": "Education",
-    "text": "Education\nPh.D. Social Work. Boston College\nM.A. Public Administration. University of Maryland, College Park\nB.A. English. China Agricultural University"
+    "objectID": "margins-stata.html#where-to-use-the-margins-command",
+    "href": "margins-stata.html#where-to-use-the-margins-command",
+    "title": "A Powerful Post-Estimation Tool in Stata: Margins",
+    "section": "Where to Use the margins Command?",
+    "text": "Where to Use the margins Command?\n\nThe margins command can only be used after running a regression — it acts on the most recent regression results\nThe marginsplot command graphs any margins or comparisons of margins — it acts on the most recent margins results\n\nregress y x1 x2 x3\nmargins\nmarginsplot"
   },
   {
-    "objectID": "about.html#selected-publications",
-    "href": "about.html#selected-publications",
-    "title": "About",
-    "section": "Selected Publications",
-    "text": "Selected Publications\nHarada, K., Wang, Y., Shichijo, Y., Doan, J., Hung, W., Rosen, G., Baim-Lance, A., Lerner, S., Apoeso, O., Ko, F., & Chow, S. (2026). The role of geriatric syndromes in kidney transplant decision-making: A domain-based analysis of comprehensive geriatric assessment in older adults. Journal of the American Geriatrics Society. https://doi.org/10.1111/jgs.70324\nWong, J., Wang, Y., Abbas, M., Bollens-Lund, E., Reich, A. J., Ankuda, C., & Cooper, Z. (2024). Long-term changes in pain, depression, function and informal caregiving after major elective surgeries among seriously ill older adults. Annals of Surgery.\nWang, Y. & Gonzales, E. (2019). Examining the prevalence, risk, and protective factors to family caregiving in China: Findings from CHARLS. China Journal of Social Work, 12(9), 3-19. https://doi.org/10.1080/17525098.2019.1591697\nWang, Y., Matz, C., Miller, J., Carr, D. C., & Kohlbacher, F. (2018). Uses and gratifications sought from mobile phones and loneliness among Japanese midlife and older adults: A mediation analysis. Innovation in Aging, 2(3). https://doi.org/10.1093/geroni/igy027\nWang, Y. & Matz, C. (2018). Gender differences in the effect of social resources and social status on the retirement satisfaction and health of retirees. Journal of Gerontological Social Work, 62(1), 86-107. https://doi.org/10.1080/01634372.2018.1474156"
+    "objectID": "margins-stata.html#example-data-nhanes-ii",
+    "href": "margins-stata.html#example-data-nhanes-ii",
+    "title": "A Powerful Post-Estimation Tool in Stata: Margins",
+    "section": "Example Data: NHANES II",
+    "text": "Example Data: NHANES II\nMargins of Responses Example\nPredicting continuous systolic blood pressure (bpsystol) as a function of:\n\nAge (age)\nDiabetes status (diabetes)\nGeographic region (region)\n\nUsing OLS regression\n\nDataset: NHANES II (Second National Health and Nutrition Examination Survey, mid-to-late 1970s) wwwn.cdc.gov/nchs/nhanes/nhanes2"
   },
   {
-    "objectID": "about.html#contact",
-    "href": "about.html#contact",
-    "title": "About",
-    "section": "Contact",
-    "text": "Contact\n\n💼 LinkedIn\n💻 GitHub\n📧 honoluluhan717@gmail.com\n\n\nI’m open to roles in health data science, real-world evidence, and applied ML in clinical or payer settings."
+    "objectID": "margins-stata.html#average-predictive-margins-apm",
+    "href": "margins-stata.html#average-predictive-margins-apm",
+    "title": "A Powerful Post-Estimation Tool in Stata: Margins",
+    "section": "Average Predictive Margins (APM)",
+    "text": "Average Predictive Margins (APM)\nThe mean predicted value of systolic blood pressure is 130.89, based on each observation in the data.\nregress bpsystol age i.diabetes i.region\nmargins\n\nAPM gives the average of the predicted values across all actual observations."
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Yihan Wang, PhD",
-    "section": "",
-    "text": "Health Data Scientist · Senior Research Scientist, Mount Sinai Hospital\n5+ years working with Medicare & Medicaid claims data — causal inference, survival analysis, and longitudinal modeling in aging, ADRD, and emergency and hospital visit outcomes. Currently expanding into machine learning methods for healthcare.\nView My Work   GitHub   LinkedIn"
+    "objectID": "margins-stata.html#apm-dummy-categorical-variables",
+    "href": "margins-stata.html#apm-dummy-categorical-variables",
+    "title": "A Powerful Post-Estimation Tool in Stata: Margins",
+    "section": "APM: Dummy & Categorical Variables",
+    "text": "APM: Dummy & Categorical Variables\nmargins diabetes\nmargins region\n\n\n\nGroup\nMean Predicted SBP\n\n\n\n\nNo diabetes\n130.51\n\n\nNortheast region\n131.28\n\n\nWest region\n130.47"
   },
   {
-    "objectID": "index.html#research",
-    "href": "index.html#research",
-    "title": "Yihan Wang, PhD",
-    "section": "What I Work On",
-    "text": "What I Work On\n\n\n📋 CMS Claims Data\nLarge-scale Medicare & Medicaid data — harmonization, linkage, and analytics across millions of beneficiaries.\n\n\n🔗 Causal Inference\nPropensity scoring, instrumental variables, and difference-in-differences to answer real-world treatment questions.\n\n\n📈 Survival & Longitudinal Analysis\nTime-to-event modeling, competing risks, and repeated measures in aging populations.\n\n\n🤖 Machine Learning (In Progress)\nExpanding into gradient boosting, survival ML, and NLP for clinical text — applied to claims and EHR data.\n\n\n🛠️ Tools\nStata · R · Python (learning) · SQL\n\n\n🏥 Domain\nGeriatrics · ADRD · Emergency & Hospital Visit Outcomes · Health Services Research"
+    "objectID": "margins-stata.html#predictive-margins-at-the-means-pmm",
+    "href": "margins-stata.html#predictive-margins-at-the-means-pmm",
+    "title": "A Powerful Post-Estimation Tool in Stata: Margins",
+    "section": "Predictive Margins at the Means (PMM)",
+    "text": "Predictive Margins at the Means (PMM)\nmargins, atmeans\nmargins diabetes, atmeans\nThe predicted systolic blood pressure for a person with diabetes is 138.31, holding all other covariates at their mean values.\n\nPMM answers: “What is the predicted outcome for a person with perfectly average characteristics?”"
   },
   {
-    "objectID": "index.html#featured-projects",
-    "href": "index.html#featured-projects",
-    "title": "Yihan Wang, PhD",
-    "section": "Featured Projects",
-    "text": "Featured Projects\nJapan Loneliness Study — Stata code and analysis pipeline for a published mediation analysis examining mobile phone use and loneliness among older Japanese adults. Innovation in Aging, 2020.\nWTC First Responders Frailty Study (Ongoing) — Lead biostatistician on a clinical study examining frailty trajectories in World Trade Center first responders. Responsible for statistical analysis plan, modeling, and results interpretation.\nADRD Drug Repurposing Study (In Progress) — Lead analyst using large-scale CMS claims data to identify candidate drugs for Alzheimer’s Disease and Related Dementias (ADRD) repurposing. Applying causal inference methods to observational claims data.\nPalliative Care at Home RCT (Recruitment Ongoing) — Biostatistician on a randomized controlled trial evaluating a home-based palliative care intervention. Responsible for research database management, CONSORT diagram design, and statistical analysis planning."
+    "objectID": "margins-stata.html#predictive-margins-at-representative-values-pmr",
+    "href": "margins-stata.html#predictive-margins-at-representative-values-pmr",
+    "title": "A Powerful Post-Estimation Tool in Stata: Margins",
+    "section": "Predictive Margins at Representative Values (PMR)",
+    "text": "Predictive Margins at Representative Values (PMR)\nmargins, at(age=80)\nmargins, at(age=(20 30 40 50 60 70 80))\n\nMean predicted SBP with age set to 80 is 151.52\nMean predicted SBP across age range 20–80 ranges from 132–152"
   },
   {
-    "objectID": "index.html#currently-learning",
-    "href": "index.html#currently-learning",
-    "title": "Yihan Wang, PhD",
-    "section": "Currently Learning",
-    "text": "Currently Learning\nI’m actively building toward health data science and applied ML roles — redoing past analyses in Python, working through survival ML methods, and developing explainability skills (SHAP) for clinical model deployment.\n\nOpen to roles in health data science, real-world evidence (RWE), and applied ML in clinical settings."
+    "objectID": "margins-stata.html#example-margins-of-changes-in-responses",
+    "href": "margins-stata.html#example-margins-of-changes-in-responses",
+    "title": "A Powerful Post-Estimation Tool in Stata: Margins",
+    "section": "Example: Margins of Changes in Responses",
+    "text": "Example: Margins of Changes in Responses\nPredicting probability of diabetes (diabetes) as a function of:\n\nRace (black)\nSex (female)\nAge (age)\n\nUsing logistic regression with the same NHANES II dataset\nlogit diabetes i.black i.female age\nmargins"
+  },
+  {
+    "objectID": "margins-stata.html#average-marginal-effects-ame",
+    "href": "margins-stata.html#average-marginal-effects-ame",
+    "title": "A Powerful Post-Estimation Tool in Stata: Margins",
+    "section": "Average Marginal Effects (AME)",
+    "text": "Average Marginal Effects (AME)\nmargins, dydx(*)\n\n\n\nGroup\nAvg Predicted Probability of Diabetes\n\n\n\n\nBlack\n8.44%\n\n\nNon-Black\n4.43%\n\n\nFemale\n5.15%\n\n\nMale\n4.47%\n\n\n\n\nThe average marginal effect of sex: +0.68 percentage points (female vs. male)"
+  },
+  {
+    "objectID": "margins-stata.html#marginal-effects-at-the-means-mem",
+    "href": "margins-stata.html#marginal-effects-at-the-means-mem",
+    "title": "A Powerful Post-Estimation Tool in Stata: Margins",
+    "section": "Marginal Effects at the Means (MEM)",
+    "text": "Marginal Effects at the Means (MEM)\nmargins, dydx(*) atmeans\n\nCalculate marginal effects with all other covariates fixed at their sample means\nGives the predicted probability for each group, holding other variables constant\nGives the change in probability when group membership changes from a to b, holding other variables at the mean"
+  },
+  {
+    "objectID": "margins-stata.html#marginal-effects-at-representative-values-mer",
+    "href": "margins-stata.html#marginal-effects-at-representative-values-mer",
+    "title": "A Powerful Post-Estimation Tool in Stata: Margins",
+    "section": "Marginal Effects at Representative Values (MER)",
+    "text": "Marginal Effects at Representative Values (MER)\nmargins, dydx(*) at(age=70 black=1)\nFor a 70-year-old Black person, their predicted probability of diabetes is 19.12%, holding all other variables at their original values."
+  },
+  {
+    "objectID": "margins-stata.html#mer-across-a-range",
+    "href": "margins-stata.html#mer-across-a-range",
+    "title": "A Powerful Post-Estimation Tool in Stata: Margins",
+    "section": "MER: Across a Range",
+    "text": "MER: Across a Range\nmargins black female, at(age=(20 30 40 50 60 70))\nmarginsplot\n\n\n\nGroup\nAge 20\nAge 70\n\n\n\n\nBlack\n0.61%\n8.78%\n\n\nFemale\n0.10%\n1.53%"
+  },
+  {
+    "objectID": "margins-stata.html#margins-with-interactions",
+    "href": "margins-stata.html#margins-with-interactions",
+    "title": "A Powerful Post-Estimation Tool in Stata: Margins",
+    "section": "Margins with Interactions",
+    "text": "Margins with Interactions\nResearch question: Does marital status (marital) affect the relationship between sex and general happiness (happy), controlling for income (rincome) and education (educ)?\nmlogit happy i.sex##i.marital rincome educ\nmargins marital, at(sex=(0 1))\nmarginsplot\n\nDataset: General Social Survey (GSS) — gss.norc.org\n\n\n⚠️ Interpretation of interactions in multinomial logit models can be tricky — use margins to make results interpretable."
+  },
+  {
+    "objectID": "margins-stata.html#margins-with-interactions-results",
+    "href": "margins-stata.html#margins-with-interactions-results",
+    "title": "A Powerful Post-Estimation Tool in Stata: Margins",
+    "section": "Margins with Interactions: Results",
+    "text": "Margins with Interactions: Results\nFixing income and education at specific levels:\n\nDifferent marital statuses have different predicted probabilities of happiness compared to the base category\nmarginsplot visualizes these predicted probabilities across groups"
+  },
+  {
+    "objectID": "margins-stata.html#example-margins-with-dummy-variables",
+    "href": "margins-stata.html#example-margins-with-dummy-variables",
+    "title": "A Powerful Post-Estimation Tool in Stata: Margins",
+    "section": "Example: Margins with Dummy Variables",
+    "text": "Example: Margins with Dummy Variables\nResearch question: Does depression affect the relationship between serious illness and 90-day Medicare expenditure post-surgery?\nglm tot_paid_by_mc_p90 i.ind_depression##i.ind_si_any, family(gamma) link(log)\nmargins ind_depression#ind_si_any\n\nProject work using Medpar data linked to HRS data\n\n\n⚠️ Default regression output coefficients do not directly translate to dollar amounts — use margins to get interpretable results"
+  },
+  {
+    "objectID": "margins-stata.html#margins-with-dummy-variables-results",
+    "href": "margins-stata.html#margins-with-dummy-variables-results",
+    "title": "A Powerful Post-Estimation Tool in Stata: Margins",
+    "section": "Margins with Dummy Variables: Results",
+    "text": "Margins with Dummy Variables: Results\nmargins ind_depression#ind_si_any\nmarginsplot, recast(bar) by(ind_si_any)\n\n\n\nGroup\nAvg Predicted 90-day Medicare Expenditure\n\n\n\n\nNo depression, no serious illness\n$6,401.18\n\n\nDepression, no serious illness\n$8,611.21"
+  },
+  {
+    "objectID": "margins-stata.html#references",
+    "href": "margins-stata.html#references",
+    "title": "A Powerful Post-Estimation Tool in Stata: Margins",
+    "section": "References",
+    "text": "References\n\nStata Regression Models | Harvard IQSS Data Science Workshops\nGSS General Social Survey | NORC\nExploring Regression Results using Margins | UW-Madison\nNHANES II | CDC"
   },
   {
     "objectID": "research.html",

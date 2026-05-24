@@ -17,6 +17,15 @@ A practical workshop covering the `margins` command in Stata — APM, PMM, PMR, 
 
 ---
 
+### Research Use of Medicare Prescription Drug Event (PDE) Data
+*December 2025 · Mount Sinai Hospital*
+
+An overview of CMS Medicare Part D Prescription Drug Event data — what it captures, its limitations, core variables, NDC codes, brand vs. generic naming, and how researchers link PDE with other Medicare files for pharmacoepidemiology and drug utilization research.
+
+🖥️ **[View Presentation](pde-medicare.qmd)**
+
+---
+
 ## Weekly Huddle Statistics Workshops
 
 **Mount Sinai Hospital — Geriatrics & Palliative Care**
