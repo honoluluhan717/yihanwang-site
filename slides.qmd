@@ -25,6 +25,7 @@ I run weekly statistics workshops ("huddles") for the research team at Mount Sin
 | Sample Size Calculation using G*Power | Workshop notes | [View on GitHub](https://github.com/honoluluhan717/huddle-workshops/blob/main/calculating%20sample%20using%20gpower.pdf){target="_blank"} |
 | Multiple Imputation using `mi` in Stata | Workshop notes | [View on GitHub](https://github.com/honoluluhan717/huddle-workshops/blob/main/multiple%20imputation%20using%20mi.pdf){target="_blank"} |
 | Learning Points from the Ankuda RP1 Project | Project notes | [View on GitHub](https://github.com/honoluluhan717/huddle-workshops/blob/main/some%20learning%20points%20from%20the%20Ankuda_RP1%20project.pdf){target="_blank"} |
+
 ---
 
 ## Other Teaching Materials
@@ -38,15 +39,3 @@ Lecture notes developed for the China House data camp — introduces R fundament
 Workshop materials from the Institute for Quantitative Social Science.
 
 📂 [View on GitHub](https://github.com/honoluluhan717/Harvard-IQSS-DSS-workshops){target="_blank"}
-
----
-
-## Slides & Presentations
-
-*Coming soon — converting existing presentations to web format.*
-
-Topics will include:
-- CMS data infrastructure and harmonization approaches
-- Causal inference methods in health services research
-- Survival analysis in aging populations
-- Machine learning for healthcare: opportunities and challenges
