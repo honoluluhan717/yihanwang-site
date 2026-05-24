@@ -77,11 +77,11 @@
     "text": "This page collects teaching materials, workshop handouts, and instructional resources developed for training junior researchers and clinical staff in biostatistics and data science."
   },
   {
-    "objectID": "slides.html#weekly-huddle-statistics-workshops",
-    "href": "slides.html#weekly-huddle-statistics-workshops",
+    "objectID": "slides.html#huddle-statistics-workshops",
+    "href": "slides.html#huddle-statistics-workshops",
     "title": "Teaching & Workshops",
-    "section": "Weekly Huddle Statistics Workshops",
-    "text": "Weekly Huddle Statistics Workshops\nMount Sinai Hospital — Geriatrics & Palliative Care\nI run weekly statistics workshops (“huddles”) for the research team at Mount Sinai, covering practical applied biostatistics using Stata. Topics are driven by real analytical challenges encountered in our research projects.\n📂 View All Workshop Materials on GitHub\n\n\nWorkshop Topics\n\n\n\nTopic\nFormat\nLink\n\n\n\n\nExporting Stata Results\nStata .do file\nView on GitHub\n\n\nMulticollinearity\nWorkshop notes\nView on GitHub\n\n\nSample Size Calculation using G*Power\nWorkshop notes\nView on GitHub\n\n\nMultiple Imputation using mi in Stata\nWorkshop notes\nView on GitHub\n\n\nLearning Points from the Ankuda RP1 Project\nProject notes\nView on GitHub"
+    "section": "Huddle Statistics Workshops",
+    "text": "Huddle Statistics Workshops\nMount Sinai Hospital — Geriatrics & Palliative Care\nI run statistics workshops (“huddles”) for the research team at Mount Sinai, covering practical applied biostatistics using Stata. Topics are driven by real analytical challenges encountered in our research projects.\n📂 View All Workshop Materials on GitHub\n\n\nWorkshop Topics\n\n\n\nTopic\nFormat\nLink\n\n\n\n\nExporting Stata Results\nStata .do file\nView on GitHub\n\n\nMulticollinearity\nWorkshop notes\nView on GitHub\n\n\nSample Size Calculation using G*Power\nWorkshop notes\nView on GitHub\n\n\nMultiple Imputation using mi in Stata\nWorkshop notes\nView on GitHub\n\n\nLearning Points from the Ankuda RP1 Project\nProject notes\nView on GitHub"
   },
   {
     "objectID": "slides.html#other-teaching-materials",
@@ -89,13 +89,6 @@
     "title": "Teaching & Workshops",
     "section": "Other Teaching Materials",
     "text": "Other Teaching Materials\n\nBase R for Beginners\nLecture notes developed for the China House data camp — introduces R fundamentals to students with no prior programming experience.\n📂 View on GitHub\n\n\nHarvard IQSS Data Science Workshops\nWorkshop materials from the Institute for Quantitative Social Science.\n📂 View on GitHub"
-  },
-  {
-    "objectID": "slides.html#slides-presentations",
-    "href": "slides.html#slides-presentations",
-    "title": "Teaching & Workshops",
-    "section": "Slides & Presentations",
-    "text": "Slides & Presentations\nComing soon — converting existing presentations to web format.\nTopics will include: - CMS data infrastructure and harmonization approaches - Causal inference methods in health services research - Survival analysis in aging populations - Machine learning for healthcare: opportunities and challenges"
   },
   {
     "objectID": "palliative-care-rct.html",
