@@ -48,6 +48,8 @@ Stata · R · Python · SQL
 Geriatrics · ADRD · Emergency & Hospital Visit Outcomes · Palliative Medicine & Health Services Research · Social Gerontology
 :::
 
+:::
+
 
 
 ---
