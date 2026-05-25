@@ -56,13 +56,13 @@ Geriatrics · ADRD · Emergency & Hospital Visit Outcomes · Health Services Res
 
 ## Featured Projects
 
-**[Japan Loneliness Study](https://github.com/honoluluhan717/Japan-loneliness-study)** — Stata code and analysis pipeline for a published mediation analysis examining mobile phone use and loneliness among older Japanese adults. *Innovation in Aging, 2020.*
+**[Japan Loneliness Study](https://github.com/honoluluhan717/Japan-loneliness-study){target="_blank"}** — Stata code and analysis pipeline for a published mediation analysis examining mobile phone use and loneliness among older Japanese adults. *Innovation in Aging, 2020.*
 
-**[WTC First Responders Frailty Study](wtc-frailty.qmd)** *(Ongoing)* — Lead biostatistician on a clinical study examining frailty trajectories in World Trade Center first responders. Responsible for statistical analysis plan, modeling, and results interpretation.
+**[WTC First Responders Frailty Study](https://github.com/honoluluhan717/wtc-frailty){target="_blank"}** *(Ongoing)* — Lead biostatistician on a clinical study examining frailty trajectories in World Trade Center first responders. Responsible for statistical analysis plan, modeling, and results interpretation.
 
-**[ADRD Drug Repurposing Study](adrd-repurposing.qmd)** *(In Progress)* — Lead analyst using large-scale CMS claims data to identify candidate drugs for Alzheimer's Disease and Related Dementias (ADRD) repurposing. Applying causal inference methods to observational claims data.
+**[ADRD Drug Repurposing Study](https://github.com/honoluluhan717/adrd-repurposing){target="_blank"}** *(In Progress)* — Lead analyst using large-scale CMS claims data to identify candidate drugs for Alzheimer's Disease and Related Dementias (ADRD) repurposing. Applying causal inference methods to observational claims data.
 
-**[Palliative Care at Home RCT](palliative-care-rct.qmd)** *(Recruitment Ongoing)* — Biostatistician on a randomized controlled trial evaluating a home-based palliative care intervention. Responsible for research database management, CONSORT diagram design, and statistical analysis planning.
+**[Palliative Care at Home RCT](https://github.com/honoluluhan717/palliative-care-rct){target="_blank"}** *(Recruitment Ongoing)* — Biostatistician on a randomized controlled trial evaluating a home-based palliative care intervention. Responsible for research database management, CONSORT diagram design, and statistical analysis planning.
 
 ---
 
