@@ -11,6 +11,8 @@ website:
         text: Research & Code
       - href: slides.qmd
         text: Teaching
+      - href: presentations.qmd
+        text: Presentations
       - href: about.qmd
         text: About
   page-footer:
@@ -21,3 +23,4 @@ format:
     theme: cosmo
     css: styles.css
     toc: false
+    link-external-newwindow: true
