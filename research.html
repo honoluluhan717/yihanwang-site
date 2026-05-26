@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>wtc-frailty-readme – Yihan Wang</title>
+<title>Research &amp; Code – Yihan Wang</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -97,12 +97,16 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./research.html"> 
+    <a class="nav-link active" href="./research.html" aria-current="page"> 
 <span class="menu-text">Research &amp; Code</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="./slides.html"> 
 <span class="menu-text">Teaching</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./presentations.html"> 
+<span class="menu-text">Presentations</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="./about.html"> 
@@ -121,61 +125,89 @@ ul.task-list li input[type="checkbox"] {
 <!-- margin-sidebar -->
     
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Research &amp; Code</h1>
+</div>
 
 
 
+<div class="quarto-title-meta">
 
-<section id="wtc-first-responders-frailty-study" class="level1">
-<h1>WTC First Responders Frailty Study</h1>
-<p><strong>Status:</strong> Ongoing | <strong>Role:</strong> Lead Biostatistician | <strong>Software:</strong> Stata</p>
-<section id="overview" class="level2">
-<h2 class="anchored" data-anchor-id="overview">Overview</h2>
-<p>This repository contains the statistical analysis code for a longitudinal study examining frailty trajectories among World Trade Center (WTC) first responders. The study investigates frailty prevalence, predictors, risk factors, and health outcomes in this well-characterized cohort with long-term follow-up data.</p>
-</section>
-<section id="research-questions" class="level2">
-<h2 class="anchored" data-anchor-id="research-questions">Research Questions</h2>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>This page collects published analyses, code pipelines, and working notebooks. Code is linked to GitHub repositories where available.</p>
+<hr>
+<section id="published-work" class="level2">
+<h2 class="anchored" data-anchor-id="published-work">Published Work</h2>
+<section id="uses-and-gratifications-sought-from-mobile-phones-and-loneliness-among-japanese-midlife-and-older-adults" class="level3">
+<h3 class="anchored" data-anchor-id="uses-and-gratifications-sought-from-mobile-phones-and-loneliness-among-japanese-midlife-and-older-adults">Uses and Gratifications Sought From Mobile Phones and Loneliness Among Japanese Midlife and Older Adults</h3>
+<p><em>Innovation in Aging, 2020</em></p>
+<p>Mediation analysis examining how mobile phone use patterns relate to loneliness outcomes in a nationally representative Japanese sample.</p>
 <ul>
-<li>What is the prevalence of frailty in WTC first responders, and how has it changed over time?</li>
-<li>What are the key predictors and risk factors for frailty in this population?</li>
-<li>How does frailty relate to downstream health outcomes including hospitalizations, functional decline, and mortality?</li>
+<li><strong>Methods:</strong> Mediation analysis, regression modeling</li>
+<li><strong>Tools:</strong> Stata</li>
+<li><strong><a href="https://github.com/honoluluhan717/Japan-loneliness-study">View Code on GitHub</a></strong></li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="cms-medicare-medicaid-analyses" class="level2">
+<h2 class="anchored" data-anchor-id="cms-medicare-medicaid-analyses">CMS Medicare &amp; Medicaid Analyses</h2>
+<p><em>Detailed notebooks and code pipelines coming soon — currently preparing de-identified examples.</em></p>
+<p>Topics will include: - Claims data harmonization workflows - Survival analysis in Medicare beneficiaries - Causal inference with observational claims data - Longitudinal modeling of care utilization</p>
+<hr>
+</section>
+<section id="ongoing-projects" class="level2">
+<h2 class="anchored" data-anchor-id="ongoing-projects">Ongoing Projects</h2>
+<section id="wtc-first-responders-frailty-study" class="level3">
+<h3 class="anchored" data-anchor-id="wtc-first-responders-frailty-study">WTC First Responders Frailty Study</h3>
+<p>Longitudinal study of frailty prevalence, predictors, risk factors, and health outcomes in World Trade Center first responders. Lead biostatistician — responsible for statistical analysis plan, all Stata pipelines, and results interpretation.</p>
+<ul>
+<li><strong>Methods:</strong> Mixed effects models, survival analysis, causal inference, longitudinal regression</li>
+<li><strong>Tools:</strong> Stata</li>
+<li><strong><a href="https://github.com/honoluluhan717/wtc-frailty-study" target="_blank">View Code on GitHub</a></strong></li>
 </ul>
 </section>
-<section id="study-design" class="level2">
-<h2 class="anchored" data-anchor-id="study-design">Study Design</h2>
-<p>Longitudinal / repeated measures — participants assessed at multiple time points enabling analysis of frailty onset, progression, and reversal over time.</p>
-</section>
-<section id="statistical-methods" class="level2">
-<h2 class="anchored" data-anchor-id="statistical-methods">Statistical Methods</h2>
+<section id="adrd-drug-repurposing-study" class="level3">
+<h3 class="anchored" data-anchor-id="adrd-drug-repurposing-study">ADRD Drug Repurposing Study</h3>
+<p>Using large-scale CMS Medicare &amp; Medicaid claims data to identify candidate drugs for Alzheimer’s Disease and Related Dementias (ADRD) repurposing. Lead analyst applying causal inference methods to observational claims data.</p>
 <ul>
-<li>Descriptive statistics (frailty prevalence and sample characteristics)</li>
-<li>Longitudinal regression (frailty trajectories over time)</li>
-<li>Mixed effects models (within-person change)</li>
-<li>Survival analysis (time to frailty onset and outcomes)</li>
-<li>Causal inference (effect of WTC exposures on frailty risk)</li>
+<li><strong>Methods:</strong> Causal inference, pharmacoepidemiology, claims data analysis</li>
+<li><strong>Tools:</strong> Stata, SQL</li>
+<li><strong><a href="https://github.com/honoluluhan717/adrd-drug-repurposing" target="_blank">View Code on GitHub</a></strong></li>
 </ul>
 </section>
-<section id="repository-structure" class="level2">
-<h2 class="anchored" data-anchor-id="repository-structure">Repository Structure</h2>
-<pre><code>wtc-frailty/
-├── 01_data_cleaning/       # Data harmonization and cleaning scripts
-├── 02_descriptive/         # Descriptive statistics and tables
-├── 03_longitudinal/        # Mixed effects and trajectory models
-├── 04_survival/            # Time-to-event analyses
-├── 05_causal/              # Causal inference models
-├── 06_sensitivity/         # Sensitivity and robustness analyses
-└── notes/                  # Analytical decision notes and SAP</code></pre>
+<section id="palliative-care-at-home-rct" class="level3">
+<h3 class="anchored" data-anchor-id="palliative-care-at-home-rct">Palliative Care at Home RCT</h3>
+<p>Randomized controlled trial evaluating a home-based palliative care intervention. Responsible for research database management, consort diagram design, and statistical analysis planning.</p>
+<ul>
+<li><strong>Methods:</strong> RCT design, consort reporting, longitudinal outcomes</li>
+<li><strong>Tools:</strong> Stata, R</li>
+<li><strong><a href="https://github.com/honoluluhan717/palliative-care-rct" target="_blank">View Code on GitHub</a></strong></li>
+</ul>
+<hr>
 </section>
-<section id="how-to-use" class="level2">
-<h2 class="anchored" data-anchor-id="how-to-use">How to Use</h2>
-<p>All scripts are written in Stata. Run in order (01 → 06). Each script includes inline comments explaining analytical decisions and model specifications.</p>
 </section>
-<section id="contact" class="level2">
-<h2 class="anchored" data-anchor-id="contact">Contact</h2>
-<p>Yihan Wang, PhD · <a href="https://honoluluhan717.github.io/yihanwang-site">honoluluhan717.github.io/yihanwang-site</a> · <a href="https://www.linkedin.com/in/yihan-wang-6a1832294/">LinkedIn</a></p>
+<section id="in-progress" class="level2">
+<h2 class="anchored" data-anchor-id="in-progress">In Progress</h2>
+<ul>
+<li>Python reimplementation of CMS survival analysis pipeline</li>
+<li>XGBoost model for healthcare utilization prediction</li>
+<li>SHAP explainability walkthrough for clinical ML models</li>
+</ul>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
@@ -252,7 +284,7 @@ ul.task-list li input[type="checkbox"] {
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/honoluluhan717\.github\.io\/yihanwang-site\/");
+        var filterRegex = new RegExp('/' + window.location.host + '/');
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
@@ -266,6 +298,11 @@ ul.task-list li input[type="checkbox"] {
           if (link.dataset.originalHref !== undefined) {
             link.href = link.dataset.originalHref;
           }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
         }
       }
     function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {

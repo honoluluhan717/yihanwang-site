@@ -28,5 +28,11 @@
   },
   "pde-medicare.qmd": {
     "pde-medicare.html": "edcdacef"
+  },
+  "presentations.qmd": {
+    "presentations.html": "99cda428"
+  },
+  "presentations.rmd": {
+    "presentations.html": "9ce07e24"
   }
 }
