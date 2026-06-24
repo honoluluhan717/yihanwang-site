@@ -1,0 +1,604 @@
+[
+  {
+    "objectID": "wtc-frailty.html",
+    "href": "wtc-frailty.html",
+    "title": "WTC First Responders Frailty Study",
+    "section": "",
+    "text": "This ongoing study examines frailty trajectories among World Trade Center (WTC) first responders — a unique cohort with well-characterized environmental exposures and long-term health monitoring. As lead biostatistician, I am responsible for the full statistical analysis plan, modeling strategy, and results interpretation."
+  },
+  {
+    "objectID": "wtc-frailty.html#overview",
+    "href": "wtc-frailty.html#overview",
+    "title": "WTC First Responders Frailty Study",
+    "section": "",
+    "text": "This ongoing study examines frailty trajectories among World Trade Center (WTC) first responders — a unique cohort with well-characterized environmental exposures and long-term health monitoring. As lead biostatistician, I am responsible for the full statistical analysis plan, modeling strategy, and results interpretation."
+  },
+  {
+    "objectID": "wtc-frailty.html#research-questions",
+    "href": "wtc-frailty.html#research-questions",
+    "title": "WTC First Responders Frailty Study",
+    "section": "Research Questions",
+    "text": "Research Questions\n\nWhat is the prevalence of frailty in WTC first responders, and how has it changed over time?\nWhat are the key predictors and risk factors for frailty in this population?\nHow does frailty relate to downstream health outcomes including hospitalizations, functional decline, and mortality?"
+  },
+  {
+    "objectID": "wtc-frailty.html#study-design",
+    "href": "wtc-frailty.html#study-design",
+    "title": "WTC First Responders Frailty Study",
+    "section": "Study Design",
+    "text": "Study Design\nLongitudinal / repeated measures — participants assessed at multiple time points, enabling analysis of frailty onset, progression, and reversal over time."
+  },
+  {
+    "objectID": "wtc-frailty.html#statistical-methods",
+    "href": "wtc-frailty.html#statistical-methods",
+    "title": "WTC First Responders Frailty Study",
+    "section": "Statistical Methods",
+    "text": "Statistical Methods\n\n\n\n\n\n\n\nMethod\nPurpose\n\n\n\n\nDescriptive statistics\nFrailty prevalence and sample characteristics at each wave\n\n\nLongitudinal regression\nFrailty trajectories over time, adjusting for covariates\n\n\nMixed effects models\nWithin-person change accounting for repeated measures\n\n\nSurvival analysis\nTime to frailty onset and frailty-related outcomes\n\n\nCausal inference\nEstimating effect of WTC exposures on frailty risk"
+  },
+  {
+    "objectID": "wtc-frailty.html#my-role",
+    "href": "wtc-frailty.html#my-role",
+    "title": "WTC First Responders Frailty Study",
+    "section": "My Role",
+    "text": "My Role\n\nDesigned and wrote the statistical analysis plan (SAP)\nBuilt and maintained all Stata analysis pipelines\nConducted all primary and sensitivity analyses\nInterpreted and communicated results to clinical collaborators\nContributed to manuscript writing for methods sections"
+  },
+  {
+    "objectID": "wtc-frailty.html#tools-software",
+    "href": "wtc-frailty.html#tools-software",
+    "title": "WTC First Responders Frailty Study",
+    "section": "Tools & Software",
+    "text": "Tools & Software\n\nStata — primary analysis environment\nData cleaning, harmonization, and longitudinal linkage of clinical assessment data"
+  },
+  {
+    "objectID": "wtc-frailty.html#code",
+    "href": "wtc-frailty.html#code",
+    "title": "WTC First Responders Frailty Study",
+    "section": "Code",
+    "text": "Code\nCode will be added as the study progresses toward publication. All scripts include inline comments explaining analytical decisions.\n📂 View Repository on GitHub"
+  },
+  {
+    "objectID": "wtc-frailty.html#status",
+    "href": "wtc-frailty.html#status",
+    "title": "WTC First Responders Frailty Study",
+    "section": "Status",
+    "text": "Status\n🟡 Ongoing — analyses done, manuscript in preparation."
+  },
+  {
+    "objectID": "wtc-frailty.html#notes-analytical-decisions",
+    "href": "wtc-frailty.html#notes-analytical-decisions",
+    "title": "WTC First Responders Frailty Study",
+    "section": "Notes & Analytical Decisions",
+    "text": "Notes & Analytical Decisions\n\nFrailty operationalization: (add your frailty definition/index here — e.g. Fried phenotype, deficit accumulation index)\nMissing data approach: (multiple imputation)\nCovariate selection: (note key confounders included and rationale)"
+  },
+  {
+    "objectID": "slides.html",
+    "href": "slides.html",
+    "title": "Teaching & Workshops",
+    "section": "",
+    "text": "This page collects teaching materials, workshop handouts, presentations, and instructional resources developed for training junior researchers and clinical staff in biostatistics and data science."
+  },
+  {
+    "objectID": "slides.html#presentations",
+    "href": "slides.html#presentations",
+    "title": "Teaching & Workshops",
+    "section": "Presentations",
+    "text": "Presentations\n\nMargins in Stata\nApril 2023 · Mount Sinai Hospital\nA practical workshop covering the margins command in Stata — APM, PMM, PMR, AME, MEM, MER, interactions, and dummy variables. Includes worked examples using NHANES II, GSS, and Medicare claims data.\n🖥️ View Presentation\n\n\n\nResearch Use of Medicare Prescription Drug Event (PDE) Data\nDecember 2025 · Mount Sinai Hospital\nAn overview of CMS Medicare Part D Prescription Drug Event data — what it captures, its limitations, core variables, NDC codes, brand vs. generic naming, and how researchers link PDE with other Medicare files for pharmacoepidemiology and drug utilization research.\n🖥️ View Presentation"
+  },
+  {
+    "objectID": "slides.html#huddle-statistics-workshops",
+    "href": "slides.html#huddle-statistics-workshops",
+    "title": "Teaching & Workshops",
+    "section": "Huddle Statistics Workshops",
+    "text": "Huddle Statistics Workshops\nMount Sinai Hospital — Geriatrics & Palliative Care\nI run statistics workshops (“huddles”) for the research team at Mount Sinai, covering practical applied biostatistics using Stata. Topics are driven by real analytical challenges encountered in our research projects.\n📂 View All Workshop Materials on GitHub\n\n\n\nTopic\nFormat\nLink\n\n\n\n\nExporting Stata Results\nStata .do file\nView on GitHub\n\n\nMulticollinearity\nPDF\nView on GitHub\n\n\nSample Size Calculation using G*Power\nPDF\nView on GitHub\n\n\nMultiple Imputation using mi in Stata\nPDF\nView on GitHub\n\n\nLearning Points from the Ankuda RP1 Project\nPDF\nView on GitHub"
+  },
+  {
+    "objectID": "slides.html#other-teaching-materials",
+    "href": "slides.html#other-teaching-materials",
+    "title": "Teaching & Workshops",
+    "section": "Other Teaching Materials",
+    "text": "Other Teaching Materials\n\nBase R for Beginners\nLecture notes developed for the China House data camp — introduces R fundamentals to students with no prior programming experience.\n📂 View on GitHub\n\n\nHarvard IQSS Data Science Workshops\nWorkshop materials from the Institute for Quantitative Social Science.\n📂 View on GitHub"
+  },
+  {
+    "objectID": "presentations.html",
+    "href": "presentations.html",
+    "title": "Conference Presentations",
+    "section": "",
+    "text": "Wang, Y., Matz, C., Miller, J., Carr, D. C., & Kohlbacher, F. (November 2018). Uses and gratifications sought from mobile phone use and loneliness among Japanese older adults: a mediation analysis. Gerontological Society of America Annual Conference, Boston.\nWang, Y., Woo, B., & Jiang, N. (2018). A systematic review of risk and protective factors of loneliness among Asian immigrants in the U.S.: An ecological approach. Gerontological Society of America Annual Conference, Boston.\nWang, Y. & Wang, Y. (August 2018). Productive activities and loneliness among middle-aged and older Japanese. International Federation on Ageing 14th Global Conference, Toronto.\nWang, Y., Matz, C., Miller, J., Carr, D. C., & Kohlbacher, F. (August 2018). Uses and gratifications sought from mobile phone use and mental health outcomes among Japanese older adults. International Federation on Ageing 14th Global Conference, Toronto.\nEaston, S. D., Safadi, N. S., Crea, T. M., Hasson, R. G., & Wang, Y. (2018). Health and well-being of public sector social workers in occupied Palestinian territories. A technical report presented for the Ministry of Social Development, Palestinian National Authority. Online.\nWang, Y. (June 2018). Managing elder care in China and the United Kingdom: Aging workforce from the East and West. Work and Family Researchers Network (WFRN), Washington DC.\nWang, Y., Easton, S. D., Safadi, N. S., & Hasson, R. G. (January 2018). The Kessler psychological distress scale: translation and validation of an Arabic version. Society for Social Work and Research (SSWR), Washington DC.\nSafadi, N. S., Easton, S. D., Wang, Y., & Hasson, R. G. (January 2018). Life and job satisfaction among public sector social workers in the occupied Palestinian territories. Society for Social Work and Research (SSWR), Washington DC.\nWang, Y. & Matz, C. (July 2017). Health and well-being of retirees: Roles of social interaction and exchange reciprocity. World Congress of Gerontology and Geriatrics, San Francisco.\nWang, Y. & Gonzales, E. (November 2016). Intergenerational caregiving and mental health: Findings from the CHARLS. Gerontological Society of America, New Orleans.\nWang, Y. (November 2015). Transitioning from institutional care to community-based care: Case examples from the United States and Japan. Gerontological Society of America, Orlando."
+  },
+  {
+    "objectID": "palliative-care-rct.html",
+    "href": "palliative-care-rct.html",
+    "title": "Palliative Care at Home RCT",
+    "section": "",
+    "text": "This randomized controlled trial (RCT) evaluates a home-based palliative care intervention program for patients with serious illness. As biostatistician on the team, I am responsible for research database management, CONSORT diagram design, and statistical analysis planning.\nThe study aims to assess whether a structured palliative care program delivered at home improves patient and caregiver outcomes compared to usual care."
+  },
+  {
+    "objectID": "palliative-care-rct.html#overview",
+    "href": "palliative-care-rct.html#overview",
+    "title": "Palliative Care at Home RCT",
+    "section": "",
+    "text": "This randomized controlled trial (RCT) evaluates a home-based palliative care intervention program for patients with serious illness. As biostatistician on the team, I am responsible for research database management, CONSORT diagram design, and statistical analysis planning.\nThe study aims to assess whether a structured palliative care program delivered at home improves patient and caregiver outcomes compared to usual care."
+  },
+  {
+    "objectID": "palliative-care-rct.html#research-questions",
+    "href": "palliative-care-rct.html#research-questions",
+    "title": "Palliative Care at Home RCT",
+    "section": "Research Questions",
+    "text": "Research Questions\n\nDoes the palliative care at home intervention improve outcomes compared to usual care?\nWhat is the enrollment pattern and retention rate across study sites?\nHow does the intervention affect program-level evaluation metrics?"
+  },
+  {
+    "objectID": "palliative-care-rct.html#study-design",
+    "href": "palliative-care-rct.html#study-design",
+    "title": "Palliative Care at Home RCT",
+    "section": "Study Design",
+    "text": "Study Design\nRandomized Controlled Trial (RCT) - Participants randomized to intervention (palliative care at home) vs. control (usual care) - Recruitment ongoing across multiple sites - Data collected and managed via REDCap"
+  },
+  {
+    "objectID": "palliative-care-rct.html#my-role",
+    "href": "palliative-care-rct.html#my-role",
+    "title": "Palliative Care at Home RCT",
+    "section": "My Role",
+    "text": "My Role\n\nBiostatistician — statistical analysis planning and execution\nResearch database management — maintaining and cleaning REDCap data\nCONSORT diagram design — tracking enrollment, randomization, and attrition\nSOP development — standard operating procedures for data management workflows"
+  },
+  {
+    "objectID": "palliative-care-rct.html#tools-software",
+    "href": "palliative-care-rct.html#tools-software",
+    "title": "Palliative Care at Home RCT",
+    "section": "Tools & Software",
+    "text": "Tools & Software\n\nREDCap — research database and data collection\nStata · R · SAS — statistical analyses\nCONSORT reporting — enrollment and flow diagrams"
+  },
+  {
+    "objectID": "palliative-care-rct.html#repository-contents",
+    "href": "palliative-care-rct.html#repository-contents",
+    "title": "Palliative Care at Home RCT",
+    "section": "Repository Contents",
+    "text": "Repository Contents\npalliative-care-rct/\n├── Dementia R01 Enrollment Presentation v2   # Enrollment status and progress\n├── SOP - REDCap CROMS report                 # Data management SOP\n└── Consort Diagram 050726                    # CONSORT diagram (May 2026)\n📂 View Repository on GitHub"
+  },
+  {
+    "objectID": "palliative-care-rct.html#status",
+    "href": "palliative-care-rct.html#status",
+    "title": "Palliative Care at Home RCT",
+    "section": "Status",
+    "text": "Status\n🟡 Recruitment Ongoing — data collection in progress, analysis planned post-recruitment."
+  },
+  {
+    "objectID": "palliative-care-rct.html#notes-analytical-decisions",
+    "href": "palliative-care-rct.html#notes-analytical-decisions",
+    "title": "Palliative Care at Home RCT",
+    "section": "Notes & Analytical Decisions",
+    "text": "Notes & Analytical Decisions\nKey methodological choices documented for collaborators and technical reviewers.\n\nPrimary outcome: Program evaluation metrics\nRandomization approach: (add details — block, stratified, etc.)\nAnalysis population: (ITT, per-protocol, or both)\nMissing data approach: (add your approach)\nPre-specified subgroup analyses: (list if any)"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Yihan Wang, PhD",
+    "section": "",
+    "text": "Health Data Scientist · Senior Research Scientist, Mount Sinai Hospital\n5+ years working with Medicare & Medicaid claims data — causal inference, survival analysis, and longitudinal modeling in aging, ADRD, and emergency and hospital visit outcomes. Currently expanding into machine learning methods for healthcare.\nView My Work   GitHub   LinkedIn"
+  },
+  {
+    "objectID": "index.html#research",
+    "href": "index.html#research",
+    "title": "Yihan Wang, PhD",
+    "section": "What I Work On",
+    "text": "What I Work On\n\n\n📋 CMS Claims Data\nLarge-scale Medicare & Medicaid data — harmonization, linkage, and analytics across millions of beneficiaries.\n\n\n🔗 Causal Inference\nPropensity scoring, instrumental variables, and difference-in-differences to answer real-world treatment questions.\n\n\n📈 Survival & Longitudinal Analysis\nTime-to-event modeling, competing risks, and repeated measures in aging populations.\n\n\n🤖 Machine Learning\nGradient boosting, survival ML, and NLP for clinical text — actively building applied skills for EHR and claims data.\n\n\n🛠️ Tools\nStata · R · Python · SQL\n\n\n🏥 Domain\nGeriatrics · ADRD · Emergency & Hospital Visit Outcomes · Health Services Research"
+  },
+  {
+    "objectID": "index.html#featured-projects",
+    "href": "index.html#featured-projects",
+    "title": "Yihan Wang, PhD",
+    "section": "Featured Projects",
+    "text": "Featured Projects\nJapan Loneliness Study — Stata code and analysis pipeline for a published mediation analysis examining mobile phone use and loneliness among older Japanese adults. Innovation in Aging, 2020.\nWTC First Responders Frailty Study — Lead analyst on a clinical study examining frailty trajectories in World Trade Center first responders. Responsible for statistical analysis plan, modeling, and results interpretation.\nADRD Drug Repurposing Study — Lead analyst using large-scale CMS claims data to identify candidate drugs for Alzheimer’s Disease and Related Dementias (ADRD) repurposing. Applying causal inference methods to observational claims data.\nPalliative Care at Home RCT (Recruitment Ongoing) — Biostatistician on a randomized controlled trial evaluating a home-based palliative care intervention. Responsible for research database management, consort diagram design, and statistical analysis planning."
+  },
+  {
+    "objectID": "index.html#currently-learning",
+    "href": "index.html#currently-learning",
+    "title": "Yihan Wang, PhD",
+    "section": "Currently Learning",
+    "text": "Currently Learning\nI’m actively building toward health data science and applied ML roles — redoing past analyses in Python, working through survival ML methods, and developing explainability skills (SHAP) for clinical model deployment.\n\nOpen to roles in health data science, real-world evidence (RWE), and applied ML in clinical settings."
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "I’m a senior research scientist in the Brookdale Department of Geriatrics and Palliative Care at Mount Sinai Hospital, where I’ve spent 5+ years working with large-scale CMS Medicare and Medicaid claims data to study aging, ADRD, and emergency and hospital visit outcomes.\nMy core expertise is in CMS Medicare and Medicaid data — from raw claims ingestion and harmonization through to analysis and results interpretation. I’ve built pipelines and models using Stata and R, applying methods including regression, longitudinal analysis, survival modeling, and causal inference frameworks.\nI’m currently in a deliberate transition toward health data science and applied machine learning — combining my domain expertise and analytical rigor with modern ML methods. I’m actively building Python skills, exploring gradient boosting and survival ML models, and developing literacy in explainability tools for clinical deployment contexts."
+  },
+  {
+    "objectID": "about.html#yihan-wang-phd",
+    "href": "about.html#yihan-wang-phd",
+    "title": "About",
+    "section": "",
+    "text": "I’m a senior research scientist in the Brookdale Department of Geriatrics and Palliative Care at Mount Sinai Hospital, where I’ve spent 5+ years working with large-scale CMS Medicare and Medicaid claims data to study aging, ADRD, and emergency and hospital visit outcomes.\nMy core expertise is in CMS Medicare and Medicaid data — from raw claims ingestion and harmonization through to analysis and results interpretation. I’ve built pipelines and models using Stata and R, applying methods including regression, longitudinal analysis, survival modeling, and causal inference frameworks.\nI’m currently in a deliberate transition toward health data science and applied machine learning — combining my domain expertise and analytical rigor with modern ML methods. I’m actively building Python skills, exploring gradient boosting and survival ML models, and developing literacy in explainability tools for clinical deployment contexts."
+  },
+  {
+    "objectID": "about.html#skills",
+    "href": "about.html#skills",
+    "title": "About",
+    "section": "Skills",
+    "text": "Skills\nStatistical Methods Regression · Longitudinal analysis · Survival analysis · Causal inference (PSM, IV, DiD) · Mediation analysis · Multilevel modeling\nData CMS Medicare & Medicaid claims · EHR-linked data · Health and Retirement Study (HRS)· · MHATS · Large-scale data harmonization · Survey data\nTools Stata · R · Python · SQL · Git/GitHub\nDomain Geriatrics · ADRD · Emergency & Hospital Visit Outcomes · Palliative Care and Health Services Research · Social Gerontology"
+  },
+  {
+    "objectID": "about.html#education",
+    "href": "about.html#education",
+    "title": "About",
+    "section": "Education",
+    "text": "Education\nPh.D. in Social Work. Boston College\nMaster of Public Administration. University of Maryland, College Park"
+  },
+  {
+    "objectID": "about.html#selected-publications",
+    "href": "about.html#selected-publications",
+    "title": "About",
+    "section": "Selected Publications",
+    "text": "Selected Publications\nHarada, K., Wang, Y., Shichijo, Y., Doan, J., Hung, W., Rosen, G., Baim-Lance, A., Lerner, S., Apoeso, O., Ko, F., & Chow, S. (2026). The role of geriatric syndromes in kidney transplant decision-making: A domain-based analysis of comprehensive geriatric assessment in older adults. Journal of the American Geriatrics Society. https://doi.org/10.1111/jgs.70324\nWong, J., Wang, Y., Abbas, M., Bollens-Lund, E., Reich, A. J., Ankuda, C., & Cooper, Z. (2024). Long-term changes in pain, depression, function and informal caregiving after major elective surgeries among seriously ill older adults. Annals of Surgery.\nWang, Y. & Gonzales, E. (2019). Examining the prevalence, risk, and protective factors to family caregiving in China: Findings from CHARLS. China Journal of Social Work, 12(9), 3-19. https://doi.org/10.1080/17525098.2019.1591697\nWang, Y., Matz, C., Miller, J., Carr, D. C., & Kohlbacher, F. (2018). Uses and gratifications sought from mobile phones and loneliness among Japanese midlife and older adults: A mediation analysis. Innovation in Aging, 2(3). https://doi.org/10.1093/geroni/igy027\nWang, Y. & Matz, C. (2018). Gender differences in the effect of social resources and social status on the retirement satisfaction and health of retirees. Journal of Gerontological Social Work, 62(1), 86-107. https://doi.org/10.1080/01634372.2018.1474156"
+  },
+  {
+    "objectID": "about.html#contact",
+    "href": "about.html#contact",
+    "title": "About",
+    "section": "Contact",
+    "text": "Contact\n\n💼 LinkedIn\n💻 GitHub\n📧 honoluluhan717@gmail.com\n\n\nI’m open to roles in health data science, real-world evidence, and applied ML in clinical or payer settings."
+  },
+  {
+    "objectID": "adrd-repurposing.html",
+    "href": "adrd-repurposing.html",
+    "title": "ADRD Drug Repurposing Study",
+    "section": "",
+    "text": "This ongoing study leverages large-scale CMS Medicare claims data to identify candidate drugs for repurposing in Alzheimer’s Disease and Related Dementias (ADRD). As lead analyst, I am responsible for the full analytical pipeline — from data extraction and harmonization through causal inference modeling and results interpretation.\nDrug repurposing using real-world claims data offers a powerful, cost-effective approach to identifying existing medications that may slow cognitive decline or reduce ADRD-related outcomes in older adults."
+  },
+  {
+    "objectID": "adrd-repurposing.html#overview",
+    "href": "adrd-repurposing.html#overview",
+    "title": "ADRD Drug Repurposing Study",
+    "section": "",
+    "text": "This ongoing study leverages large-scale CMS Medicare claims data to identify candidate drugs for repurposing in Alzheimer’s Disease and Related Dementias (ADRD). As lead analyst, I am responsible for the full analytical pipeline — from data extraction and harmonization through causal inference modeling and results interpretation.\nDrug repurposing using real-world claims data offers a powerful, cost-effective approach to identifying existing medications that may slow cognitive decline or reduce ADRD-related outcomes in older adults."
+  },
+  {
+    "objectID": "adrd-repurposing.html#research-questions",
+    "href": "adrd-repurposing.html#research-questions",
+    "title": "ADRD Drug Repurposing Study",
+    "section": "Research Questions",
+    "text": "Research Questions\n\nWhich existing medications are associated with reduced ADRD incidence or progression in Medicare beneficiaries?\nCan causal inference methods applied to observational claims data provide credible evidence for drug repurposing candidates?\nWhat is the role of comorbidities and polypharmacy in moderating these associations?"
+  },
+  {
+    "objectID": "adrd-repurposing.html#data",
+    "href": "adrd-repurposing.html#data",
+    "title": "ADRD Drug Repurposing Study",
+    "section": "Data",
+    "text": "Data\nCMS Medicare Claims Data - Large-scale administrative claims covering Medicare beneficiaries - Includes inpatient, outpatient, carrier, and prescription drug (Part D) claims - Data harmonization, linkage, and cleaning performed as part of analytical pipeline"
+  },
+  {
+    "objectID": "adrd-repurposing.html#statistical-methods",
+    "href": "adrd-repurposing.html#statistical-methods",
+    "title": "ADRD Drug Repurposing Study",
+    "section": "Statistical Methods",
+    "text": "Statistical Methods\n\n\n\n\n\n\n\nMethod\nPurpose\n\n\n\n\nCausal inference\nEstimating drug effects using observational claims data\n\n\nPropensity score methods\nControlling for confounding by indication\n\n\nSurvival analysis\nTime to ADRD diagnosis or progression\n\n\nComorbidity adjustment\nBynum algorithm for comorbidity classification\n\n\nRegression modeling\nAssociation between drug exposure and outcomes"
+  },
+  {
+    "objectID": "adrd-repurposing.html#my-role",
+    "href": "adrd-repurposing.html#my-role",
+    "title": "ADRD Drug Repurposing Study",
+    "section": "My Role",
+    "text": "My Role\n\nLead analyst — full responsibility for analytical pipeline and results\nData extraction, harmonization, and cleaning from CMS Medicare claims\nStatistical analysis plan design and execution\nComorbidity classification using the Bynum algorithm\nResults interpretation and manuscript contribution"
+  },
+  {
+    "objectID": "adrd-repurposing.html#tools-software",
+    "href": "adrd-repurposing.html#tools-software",
+    "title": "ADRD Drug Repurposing Study",
+    "section": "Tools & Software",
+    "text": "Tools & Software\n\nStata · R · SAS — multiple tools used across pipeline stages\nCMS Medicare claims data infrastructure\nBynum comorbidity algorithm implementation"
+  },
+  {
+    "objectID": "adrd-repurposing.html#repository-structure",
+    "href": "adrd-repurposing.html#repository-structure",
+    "title": "ADRD Drug Repurposing Study",
+    "section": "Repository Structure",
+    "text": "Repository Structure\nadrd-drug-repurposing/\n├── Background/       # Study background and aims\n├── Bynum Algo/       # Comorbidity classification algorithm\n├── Code/             # Primary analysis scripts\n├── Codebook/         # Variable definitions and data dictionary\n├── Comorbidities/    # Comorbidity analysis files\n├── Misc/             # Supplementary materials\n├── Output/           # Results and output tables\n└── Paper/            # Manuscript drafts\n📂 View Repository on GitHub"
+  },
+  {
+    "objectID": "adrd-repurposing.html#status",
+    "href": "adrd-repurposing.html#status",
+    "title": "ADRD Drug Repurposing Study",
+    "section": "Status",
+    "text": "Status\n🟡 In Progress — analyses ongoing, manuscript in preparation."
+  },
+  {
+    "objectID": "adrd-repurposing.html#notes-analytical-decisions",
+    "href": "adrd-repurposing.html#notes-analytical-decisions",
+    "title": "ADRD Drug Repurposing Study",
+    "section": "Notes & Analytical Decisions",
+    "text": "Notes & Analytical Decisions\nKey methodological choices documented for collaborators and technical reviewers.\n\nDrug exposure definition: (add your exposure definition here)\nADRD outcome definition: (add your outcome definition — ICD codes, etc.)\nComorbidity approach: Bynum algorithm applied to Medicare claims\nMissing data approach: (add your approach)\nSensitivity analyses planned: (list robustness checks)"
+  },
+  {
+    "objectID": "margins-stata.html#when-to-use-the-margins-command",
+    "href": "margins-stata.html#when-to-use-the-margins-command",
+    "title": "A Powerful Post-Estimation Tool in Stata: Margins",
+    "section": "When to Use the margins Command?",
+    "text": "When to Use the margins Command?\nFor more complex models in Stata, it is often easier to interpret margins — specifically, margins of responses or margins of changes in responses.\n\nMargins are statistics calculated from predictions of a previously fit model at fixed values of some covariates and averaging over the remaining covariates.\n\nMargins answers: “What does my model have to say about such-and-such a group or such-and-such a person?”"
+  },
+  {
+    "objectID": "margins-stata.html#types-of-margins-of-responses",
+    "href": "margins-stata.html#types-of-margins-of-responses",
+    "title": "A Powerful Post-Estimation Tool in Stata: Margins",
+    "section": "Types of Margins of Responses",
+    "text": "Types of Margins of Responses\n\n\n\n\n\n\n\n\nAbbreviation\nName\nDescription\n\n\n\n\nAPM\nAverage Predictive Margins\nAverage of responses among actual people in the data\n\n\nPMM\nPredictive Margins at the Means\nExpected response for a person with average characteristics\n\n\nPMR\nPredictive Margins at Representative Values\nExpected response across a range of covariate values"
+  },
+  {
+    "objectID": "margins-stata.html#types-of-margins-of-changes-in-responses",
+    "href": "margins-stata.html#types-of-margins-of-changes-in-responses",
+    "title": "A Powerful Post-Estimation Tool in Stata: Margins",
+    "section": "Types of Margins of Changes in Responses",
+    "text": "Types of Margins of Changes in Responses\n\n\n\n\n\n\n\n\nAbbreviation\nName\nDescription\n\n\n\n\nAME\nAverage Marginal Effects\nAverage of changes in responses among actual people\n\n\nMEM\nMarginal Effects at the Means\nExpected change for a person with average characteristics\n\n\nMER\nMarginal Effects at Representative Values\nExpected change across a range of covariate values"
+  },
+  {
+    "objectID": "margins-stata.html#where-to-use-the-margins-command",
+    "href": "margins-stata.html#where-to-use-the-margins-command",
+    "title": "A Powerful Post-Estimation Tool in Stata: Margins",
+    "section": "Where to Use the margins Command?",
+    "text": "Where to Use the margins Command?\n\nThe margins command can only be used after running a regression — it acts on the most recent regression results\nThe marginsplot command graphs any margins or comparisons of margins — it acts on the most recent margins results\n\nregress y x1 x2 x3\nmargins\nmarginsplot"
+  },
+  {
+    "objectID": "margins-stata.html#example-data-nhanes-ii",
+    "href": "margins-stata.html#example-data-nhanes-ii",
+    "title": "A Powerful Post-Estimation Tool in Stata: Margins",
+    "section": "Example Data: NHANES II",
+    "text": "Example Data: NHANES II\nMargins of Responses Example\nPredicting continuous systolic blood pressure (bpsystol) as a function of:\n\nAge (age)\nDiabetes status (diabetes)\nGeographic region (region)\n\nUsing OLS regression\n\nDataset: NHANES II (Second National Health and Nutrition Examination Survey, mid-to-late 1970s) wwwn.cdc.gov/nchs/nhanes/nhanes2"
+  },
+  {
+    "objectID": "margins-stata.html#average-predictive-margins-apm",
+    "href": "margins-stata.html#average-predictive-margins-apm",
+    "title": "A Powerful Post-Estimation Tool in Stata: Margins",
+    "section": "Average Predictive Margins (APM)",
+    "text": "Average Predictive Margins (APM)\nThe mean predicted value of systolic blood pressure is 130.89, based on each observation in the data.\nregress bpsystol age i.diabetes i.region\nmargins\n\nAPM gives the average of the predicted values across all actual observations."
+  },
+  {
+    "objectID": "margins-stata.html#apm-dummy-categorical-variables",
+    "href": "margins-stata.html#apm-dummy-categorical-variables",
+    "title": "A Powerful Post-Estimation Tool in Stata: Margins",
+    "section": "APM: Dummy & Categorical Variables",
+    "text": "APM: Dummy & Categorical Variables\nmargins diabetes\nmargins region\n\n\n\nGroup\nMean Predicted SBP\n\n\n\n\nNo diabetes\n130.51\n\n\nNortheast region\n131.28\n\n\nWest region\n130.47"
+  },
+  {
+    "objectID": "margins-stata.html#predictive-margins-at-the-means-pmm",
+    "href": "margins-stata.html#predictive-margins-at-the-means-pmm",
+    "title": "A Powerful Post-Estimation Tool in Stata: Margins",
+    "section": "Predictive Margins at the Means (PMM)",
+    "text": "Predictive Margins at the Means (PMM)\nmargins, atmeans\nmargins diabetes, atmeans\nThe predicted systolic blood pressure for a person with diabetes is 138.31, holding all other covariates at their mean values.\n\nPMM answers: “What is the predicted outcome for a person with perfectly average characteristics?”"
+  },
+  {
+    "objectID": "margins-stata.html#predictive-margins-at-representative-values-pmr",
+    "href": "margins-stata.html#predictive-margins-at-representative-values-pmr",
+    "title": "A Powerful Post-Estimation Tool in Stata: Margins",
+    "section": "Predictive Margins at Representative Values (PMR)",
+    "text": "Predictive Margins at Representative Values (PMR)\nmargins, at(age=80)\nmargins, at(age=(20 30 40 50 60 70 80))\n\nMean predicted SBP with age set to 80 is 151.52\nMean predicted SBP across age range 20–80 ranges from 132–152"
+  },
+  {
+    "objectID": "margins-stata.html#example-margins-of-changes-in-responses",
+    "href": "margins-stata.html#example-margins-of-changes-in-responses",
+    "title": "A Powerful Post-Estimation Tool in Stata: Margins",
+    "section": "Example: Margins of Changes in Responses",
+    "text": "Example: Margins of Changes in Responses\nPredicting probability of diabetes (diabetes) as a function of:\n\nRace (black)\nSex (female)\nAge (age)\n\nUsing logistic regression with the same NHANES II dataset\nlogit diabetes i.black i.female age\nmargins"
+  },
+  {
+    "objectID": "margins-stata.html#average-marginal-effects-ame",
+    "href": "margins-stata.html#average-marginal-effects-ame",
+    "title": "A Powerful Post-Estimation Tool in Stata: Margins",
+    "section": "Average Marginal Effects (AME)",
+    "text": "Average Marginal Effects (AME)\nmargins, dydx(*)\n\n\n\nGroup\nAvg Predicted Probability of Diabetes\n\n\n\n\nBlack\n8.44%\n\n\nNon-Black\n4.43%\n\n\nFemale\n5.15%\n\n\nMale\n4.47%\n\n\n\n\nThe average marginal effect of sex: +0.68 percentage points (female vs. male)"
+  },
+  {
+    "objectID": "margins-stata.html#marginal-effects-at-the-means-mem",
+    "href": "margins-stata.html#marginal-effects-at-the-means-mem",
+    "title": "A Powerful Post-Estimation Tool in Stata: Margins",
+    "section": "Marginal Effects at the Means (MEM)",
+    "text": "Marginal Effects at the Means (MEM)\nmargins, dydx(*) atmeans\n\nCalculate marginal effects with all other covariates fixed at their sample means\nGives the predicted probability for each group, holding other variables constant\nGives the change in probability when group membership changes from a to b, holding other variables at the mean"
+  },
+  {
+    "objectID": "margins-stata.html#marginal-effects-at-representative-values-mer",
+    "href": "margins-stata.html#marginal-effects-at-representative-values-mer",
+    "title": "A Powerful Post-Estimation Tool in Stata: Margins",
+    "section": "Marginal Effects at Representative Values (MER)",
+    "text": "Marginal Effects at Representative Values (MER)\nmargins, dydx(*) at(age=70 black=1)\nFor a 70-year-old Black person, their predicted probability of diabetes is 19.12%, holding all other variables at their original values."
+  },
+  {
+    "objectID": "margins-stata.html#mer-across-a-range",
+    "href": "margins-stata.html#mer-across-a-range",
+    "title": "A Powerful Post-Estimation Tool in Stata: Margins",
+    "section": "MER: Across a Range",
+    "text": "MER: Across a Range\nmargins black female, at(age=(20 30 40 50 60 70))\nmarginsplot\n\n\n\nGroup\nAge 20\nAge 70\n\n\n\n\nBlack\n0.61%\n8.78%\n\n\nFemale\n0.10%\n1.53%"
+  },
+  {
+    "objectID": "margins-stata.html#margins-with-interactions",
+    "href": "margins-stata.html#margins-with-interactions",
+    "title": "A Powerful Post-Estimation Tool in Stata: Margins",
+    "section": "Margins with Interactions",
+    "text": "Margins with Interactions\nResearch question: Does marital status (marital) affect the relationship between sex and general happiness (happy), controlling for income (rincome) and education (educ)?\nmlogit happy i.sex##i.marital rincome educ\nmargins marital, at(sex=(0 1))\nmarginsplot\n\nDataset: General Social Survey (GSS) — gss.norc.org\n\n\n⚠️ Interpretation of interactions in multinomial logit models can be tricky — use margins to make results interpretable."
+  },
+  {
+    "objectID": "margins-stata.html#margins-with-interactions-results",
+    "href": "margins-stata.html#margins-with-interactions-results",
+    "title": "A Powerful Post-Estimation Tool in Stata: Margins",
+    "section": "Margins with Interactions: Results",
+    "text": "Margins with Interactions: Results\nFixing income and education at specific levels:\n\nDifferent marital statuses have different predicted probabilities of happiness compared to the base category\nmarginsplot visualizes these predicted probabilities across groups"
+  },
+  {
+    "objectID": "margins-stata.html#example-margins-with-dummy-variables",
+    "href": "margins-stata.html#example-margins-with-dummy-variables",
+    "title": "A Powerful Post-Estimation Tool in Stata: Margins",
+    "section": "Example: Margins with Dummy Variables",
+    "text": "Example: Margins with Dummy Variables\nResearch question: Does depression affect the relationship between serious illness and 90-day Medicare expenditure post-surgery?\nglm tot_paid_by_mc_p90 i.ind_depression##i.ind_si_any, family(gamma) link(log)\nmargins ind_depression#ind_si_any\n\nProject work using Medpar data linked to HRS data\n\n\n⚠️ Default regression output coefficients do not directly translate to dollar amounts — use margins to get interpretable results"
+  },
+  {
+    "objectID": "margins-stata.html#margins-with-dummy-variables-results",
+    "href": "margins-stata.html#margins-with-dummy-variables-results",
+    "title": "A Powerful Post-Estimation Tool in Stata: Margins",
+    "section": "Margins with Dummy Variables: Results",
+    "text": "Margins with Dummy Variables: Results\nmargins ind_depression#ind_si_any\nmarginsplot, recast(bar) by(ind_si_any)\n\n\n\nGroup\nAvg Predicted 90-day Medicare Expenditure\n\n\n\n\nNo depression, no serious illness\n$6,401.18\n\n\nDepression, no serious illness\n$8,611.21"
+  },
+  {
+    "objectID": "margins-stata.html#references",
+    "href": "margins-stata.html#references",
+    "title": "A Powerful Post-Estimation Tool in Stata: Margins",
+    "section": "References",
+    "text": "References\n\nStata Regression Models | Harvard IQSS Data Science Workshops\nGSS General Social Survey | NORC\nExploring Regression Results using Margins | UW-Madison\nNHANES II | CDC"
+  },
+  {
+    "objectID": "pde-medicare.html#what-is-pde-data",
+    "href": "pde-medicare.html#what-is-pde-data",
+    "title": "Research Use of Medicare Prescription Drug Event (PDE) Data",
+    "section": "What Is PDE Data?",
+    "text": "What Is PDE Data?\nPDE = Prescription Drug Event — the record of prescription-drug fills under Medicare Part D.\n\nWhenever a Part D beneficiary fills a prescription, the plan submits a PDE record summarizing the fill event\nPDE data are standardized — not raw transactional claims but CMS-defined summary extracts"
+  },
+  {
+    "objectID": "pde-medicare.html#why-pde-matters-who-reports-it",
+    "href": "pde-medicare.html#why-pde-matters-who-reports-it",
+    "title": "Research Use of Medicare Prescription Drug Event (PDE) Data",
+    "section": "Why PDE Matters / Who Reports It",
+    "text": "Why PDE Matters / Who Reports It\n\nAll Part D plan sponsors (stand-alone PDPs and Medicare Advantage plans with drug benefits) must report PDE data to CMS for every covered fill\nProvides a comprehensive view of outpatient prescription drug utilization among Medicare beneficiaries under Part D"
+  },
+  {
+    "objectID": "pde-medicare.html#pde-data-contents-core-variables",
+    "href": "pde-medicare.html#pde-data-contents-core-variables",
+    "title": "Research Use of Medicare Prescription Drug Event (PDE) Data",
+    "section": "PDE Data Contents — Core Variables",
+    "text": "PDE Data Contents — Core Variables\nPDE records include many standardized fields. Key ones:\n\n\n\nVariable\nDescription\n\n\n\n\nBeneficiary ID\nEncrypted unique identifier\n\n\nPrescription fill date\nDate the drug was dispensed\n\n\nBrand & generic drug names\nDrug identification\n\n\nDosage form & strength\nFormulation details\n\n\nQuantity & days supply\nUtilization metrics\n\n\nCoverage & payment\nCost and subsidy data"
+  },
+  {
+    "objectID": "pde-medicare.html#part-d-pde-reconciliation-process",
+    "href": "pde-medicare.html#part-d-pde-reconciliation-process",
+    "title": "Research Use of Medicare Prescription Drug Event (PDE) Data",
+    "section": "Part D PDE Reconciliation Process",
+    "text": "Part D PDE Reconciliation Process\n\n\nBeshearse et al. (2023) — Comparison of outpatient antibiotic prescriptions among older adults in IQVIA Xponent and publicly available Medicare Part D data. Antimicrobial Stewardship & Healthcare Epidemiology."
+  },
+  {
+    "objectID": "pde-medicare.html#what-pde-captures-and-what-it-doesnt",
+    "href": "pde-medicare.html#what-pde-captures-and-what-it-doesnt",
+    "title": "Research Use of Medicare Prescription Drug Event (PDE) Data",
+    "section": "What PDE Captures — And What It Doesn’t",
+    "text": "What PDE Captures — And What It Doesn’t\n\n\n✅ What it captures:\n\nDetailed outpatient prescription drug fills under Part D\nTiming, drug identity, strength, quantity, payment data\nEnables utilization, adherence, cost, and drug-exposure analyses\n\n\n⚠️ Limitations:\n\nDrugs administered during hospitalizations may not appear\nDispensed ≠ ingested (no guarantee drug was taken)\nLimited clinical context — must link with other Medicare files\nDoesn’t capture drugs not covered by Part D (OTC, hospital-administered)"
+  },
+  {
+    "objectID": "pde-medicare.html#how-researchers-use-pde-data",
+    "href": "pde-medicare.html#how-researchers-use-pde-data",
+    "title": "Research Use of Medicare Prescription Drug Event (PDE) Data",
+    "section": "How Researchers Use PDE Data",
+    "text": "How Researchers Use PDE Data\n\nDefine medication exposure periods — when a drug was filled, days supply\nStudy drug utilization patterns — adherence (MPR, gaps), polypharmacy\nLink with Medicare claims — inpatient, outpatient, diagnoses for health outcomes, safety, pharmacoepidemiology\nCost and utilization analyses — what drugs, how often, cost burden, subsidies"
+  },
+  {
+    "objectID": "pde-medicare.html#why-request-the-part-d-drug-characteristics-file",
+    "href": "pde-medicare.html#why-request-the-part-d-drug-characteristics-file",
+    "title": "Research Use of Medicare Prescription Drug Event (PDE) Data",
+    "section": "Why Request the Part D Drug Characteristics File",
+    "text": "Why Request the Part D Drug Characteristics File\n\n\n\n\n\n\n\n\n\nPDE File Only\nPDE + Drug Characteristics File\n\n\n\n\nDrug ID\nNDC code only\nBrand + generic name\n\n\nStrength\n❌ None\n✅ Exact (e.g., 10 mg, 20 mg)\n\n\nDosage form\n❌ None\n✅ Tablet, capsule, solution\n\n\nBrand vs. generic\n❌ Cannot distinguish\n✅ Enables comparison\n\n\nDrug exposure\nLimited clinical definition\n✅ Clinically meaningful\n\n\nDose analyses\n❌ Not sufficient\n✅ Dose-response supported"
+  },
+  {
+    "objectID": "pde-medicare.html#national-drug-codes-ndc-explained",
+    "href": "pde-medicare.html#national-drug-codes-ndc-explained",
+    "title": "Research Use of Medicare Prescription Drug Event (PDE) Data",
+    "section": "National Drug Codes (NDC) Explained",
+    "text": "National Drug Codes (NDC) Explained\nExample: NDC for a 100-count bottle of Prozac 20 mg → 0777-3105-02\n\n\n\n\n\n\n\n\nSegment\nCode\nMeaning\n\n\n\n\nLabeler code\n0777\nDista Products Co. (manufacturer of Prozac)\n\n\nProduct code\n3105\nIdentifies strength, dosage form (capsule)\n\n\nPackage code\n02\nPackage size (100 capsules per bottle)"
+  },
+  {
+    "objectID": "pde-medicare.html#brand-name-vs.-generic-name-in-pde",
+    "href": "pde-medicare.html#brand-name-vs.-generic-name-in-pde",
+    "title": "Research Use of Medicare Prescription Drug Event (PDE) Data",
+    "section": "Brand Name vs. Generic Name in PDE",
+    "text": "Brand Name vs. Generic Name in PDE\n\nGeneric name = scientific/chemical name (used in datasets, PDE, research)\nBrand name = marketing name from the drug company\nOne generic can have multiple brand names\n\n\n\n\nGeneric Name\nBrand Name\nMain Use\n\n\n\n\nAtorvastatin\nLipitor\nCholesterol\n\n\nMetformin\nGlucophage\nType 2 Diabetes\n\n\nLisinopril\nPrinivil / Zestril\nBlood pressure\n\n\nAmlodipine\nNorvasc\nBlood pressure\n\n\nOmeprazole\nPrilosec\nAcid reflux"
+  },
+  {
+    "objectID": "pde-medicare.html#references",
+    "href": "pde-medicare.html#references",
+    "title": "Research Use of Medicare Prescription Drug Event (PDE) Data",
+    "section": "References",
+    "text": "References\n\nCenters for Medicare & Medicaid Services (CMS) — Medicare Part D Prescription Drug Event (PDE) Data Documentation\nResearch Data Assistance Center (ResDAC) — Prescription Drug Event (PDE) Data: Source and Processing (April 2024)\nCMS Chronic Conditions Data Warehouse (CCW) — Medicare Part D Data Dictionary & Technical Guides\nMedicare Part D Prescription Drug Benefit Manual — CMS Policy & Reporting Requirements\nDrugs.com — National Drug Code (NDC) Directory. drugs.com/ndc.html\nBeshearse et al. (2023) — Comparison of outpatient antibiotic prescriptions among older adults in IQVIA Xponent and publicly available Medicare Part D data. Antimicrobial Stewardship & Healthcare Epidemiology."
+  },
+  {
+    "objectID": "research.html",
+    "href": "research.html",
+    "title": "Research & Code",
+    "section": "",
+    "text": "This page collects published analyses, code pipelines, and working notebooks. Code is linked to GitHub repositories where available."
+  },
+  {
+    "objectID": "research.html#published-work",
+    "href": "research.html#published-work",
+    "title": "Research & Code",
+    "section": "Published Work",
+    "text": "Published Work\n\nUses and Gratifications Sought From Mobile Phones and Loneliness Among Japanese Midlife and Older Adults\nInnovation in Aging, 2020\nMediation analysis examining how mobile phone use patterns relate to loneliness outcomes in a nationally representative Japanese sample.\n\nMethods: Mediation analysis, regression modeling\nTools: Stata\nView Code on GitHub"
+  },
+  {
+    "objectID": "research.html#cms-medicare-medicaid-analyses",
+    "href": "research.html#cms-medicare-medicaid-analyses",
+    "title": "Research & Code",
+    "section": "CMS Medicare & Medicaid Analyses",
+    "text": "CMS Medicare & Medicaid Analyses\nDetailed notebooks and code pipelines coming soon — currently preparing de-identified examples.\nTopics will include: - Claims data harmonization workflows - Survival analysis in Medicare beneficiaries - Causal inference with observational claims data - Longitudinal modeling of care utilization"
+  },
+  {
+    "objectID": "research.html#ongoing-projects",
+    "href": "research.html#ongoing-projects",
+    "title": "Research & Code",
+    "section": "Ongoing Projects",
+    "text": "Ongoing Projects\n\nWTC First Responders Frailty Study\nLongitudinal study of frailty prevalence, predictors, risk factors, and health outcomes in World Trade Center first responders. Lead biostatistician — responsible for statistical analysis plan, all Stata pipelines, and results interpretation.\n\nMethods: Mixed effects models, survival analysis, causal inference, longitudinal regression\nTools: Stata\nView Code on GitHub\n\n\n\nADRD Drug Repurposing Study\nUsing large-scale CMS Medicare & Medicaid claims data to identify candidate drugs for Alzheimer’s Disease and Related Dementias (ADRD) repurposing. Lead analyst applying causal inference methods to observational claims data.\n\nMethods: Causal inference, pharmacoepidemiology, claims data analysis\nTools: Stata, SQL\nView Code on GitHub\n\n\n\nPalliative Care at Home RCT\nRandomized controlled trial evaluating a home-based palliative care intervention. Responsible for research database management, consort diagram design, and statistical analysis planning.\n\nMethods: RCT design, consort reporting, longitudinal outcomes\nTools: Stata, R\nView Code on GitHub"
+  },
+  {
+    "objectID": "research.html#in-progress",
+    "href": "research.html#in-progress",
+    "title": "Research & Code",
+    "section": "In Progress",
+    "text": "In Progress\n\nPython reimplementation of CMS survival analysis pipeline\nXGBoost model for healthcare utilization prediction\nSHAP explainability walkthrough for clinical ML models"
+  },
+  {
+    "objectID": "wtc-frailty-README.html",
+    "href": "wtc-frailty-README.html",
+    "title": "WTC First Responders Frailty Study",
+    "section": "",
+    "text": "Status: Ongoing | Role: Lead Biostatistician | Software: Stata\n\n\nThis repository contains the statistical analysis code for a longitudinal study examining frailty trajectories among World Trade Center (WTC) first responders. The study investigates frailty prevalence, predictors, risk factors, and health outcomes in this well-characterized cohort with long-term follow-up data.\n\n\n\n\nWhat is the prevalence of frailty in WTC first responders, and how has it changed over time?\nWhat are the key predictors and risk factors for frailty in this population?\nHow does frailty relate to downstream health outcomes including hospitalizations, functional decline, and mortality?\n\n\n\n\nLongitudinal / repeated measures — participants assessed at multiple time points enabling analysis of frailty onset, progression, and reversal over time.\n\n\n\n\nDescriptive statistics (frailty prevalence and sample characteristics)\nLongitudinal regression (frailty trajectories over time)\nMixed effects models (within-person change)\nSurvival analysis (time to frailty onset and outcomes)\nCausal inference (effect of WTC exposures on frailty risk)\n\n\n\n\nwtc-frailty/\n├── 01_data_cleaning/       # Data harmonization and cleaning scripts\n├── 02_descriptive/         # Descriptive statistics and tables\n├── 03_longitudinal/        # Mixed effects and trajectory models\n├── 04_survival/            # Time-to-event analyses\n├── 05_causal/              # Causal inference models\n├── 06_sensitivity/         # Sensitivity and robustness analyses\n└── notes/                  # Analytical decision notes and SAP\n\n\n\nAll scripts are written in Stata. Run in order (01 → 06). Each script includes inline comments explaining analytical decisions and model specifications.\n\n\n\nYihan Wang, PhD · honoluluhan717.github.io/yihanwang-site · LinkedIn"
+  },
+  {
+    "objectID": "wtc-frailty-README.html#overview",
+    "href": "wtc-frailty-README.html#overview",
+    "title": "WTC First Responders Frailty Study",
+    "section": "",
+    "text": "This repository contains the statistical analysis code for a longitudinal study examining frailty trajectories among World Trade Center (WTC) first responders. The study investigates frailty prevalence, predictors, risk factors, and health outcomes in this well-characterized cohort with long-term follow-up data."
+  },
+  {
+    "objectID": "wtc-frailty-README.html#research-questions",
+    "href": "wtc-frailty-README.html#research-questions",
+    "title": "WTC First Responders Frailty Study",
+    "section": "",
+    "text": "What is the prevalence of frailty in WTC first responders, and how has it changed over time?\nWhat are the key predictors and risk factors for frailty in this population?\nHow does frailty relate to downstream health outcomes including hospitalizations, functional decline, and mortality?"
+  },
+  {
+    "objectID": "wtc-frailty-README.html#study-design",
+    "href": "wtc-frailty-README.html#study-design",
+    "title": "WTC First Responders Frailty Study",
+    "section": "",
+    "text": "Longitudinal / repeated measures — participants assessed at multiple time points enabling analysis of frailty onset, progression, and reversal over time."
+  },
+  {
+    "objectID": "wtc-frailty-README.html#statistical-methods",
+    "href": "wtc-frailty-README.html#statistical-methods",
+    "title": "WTC First Responders Frailty Study",
+    "section": "",
+    "text": "Descriptive statistics (frailty prevalence and sample characteristics)\nLongitudinal regression (frailty trajectories over time)\nMixed effects models (within-person change)\nSurvival analysis (time to frailty onset and outcomes)\nCausal inference (effect of WTC exposures on frailty risk)"
+  },
+  {
+    "objectID": "wtc-frailty-README.html#repository-structure",
+    "href": "wtc-frailty-README.html#repository-structure",
+    "title": "WTC First Responders Frailty Study",
+    "section": "",
+    "text": "wtc-frailty/\n├── 01_data_cleaning/       # Data harmonization and cleaning scripts\n├── 02_descriptive/         # Descriptive statistics and tables\n├── 03_longitudinal/        # Mixed effects and trajectory models\n├── 04_survival/            # Time-to-event analyses\n├── 05_causal/              # Causal inference models\n├── 06_sensitivity/         # Sensitivity and robustness analyses\n└── notes/                  # Analytical decision notes and SAP"
+  },
+  {
+    "objectID": "wtc-frailty-README.html#how-to-use",
+    "href": "wtc-frailty-README.html#how-to-use",
+    "title": "WTC First Responders Frailty Study",
+    "section": "",
+    "text": "All scripts are written in Stata. Run in order (01 → 06). Each script includes inline comments explaining analytical decisions and model specifications."
+  },
+  {
+    "objectID": "wtc-frailty-README.html#contact",
+    "href": "wtc-frailty-README.html#contact",
+    "title": "WTC First Responders Frailty Study",
+    "section": "",
+    "text": "Yihan Wang, PhD · honoluluhan717.github.io/yihanwang-site · LinkedIn"
+  }
+]
